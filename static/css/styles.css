@@ -423,18 +423,19 @@ body.dark-mode .experimental-tag {
     }
 
     header {
-        flex-direction: column;
+        flex-direction: row;
+        justify-content: space-between;
         align-items: center;
         gap: 15px;
     }
 
     .gradient-title {
         font-size: 2em;
-        text-align: center;
+        text-align: left;
     }
 
     .dark-mode-toggle {
-        margin-top: 10px;
+        margin-top: 0;
     }
 
     .results-section {
