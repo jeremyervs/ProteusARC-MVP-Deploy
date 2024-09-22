@@ -136,60 +136,59 @@ document.addEventListener('DOMContentLoaded', function() {
             }]
         };
 
+        const chartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                r: {
+                    angleLines: {
+                        display: true,
+                        color: getGridColor
+                    },
+                    suggestedMin: 0,
+                    suggestedMax: 100,
+                    ticks: {
+                        stepSize: 25,
+                        color: getTextColor,
+                        backdropColor: 'transparent',
+                        font: {
+                            size: window.innerWidth < 768 ? 8 : 10
+                        },
+                        showLabelBackdrop: false
+                    },
+                    pointLabels: {
+                        font: {
+                            size: window.innerWidth < 768 ? 10 : 12
+                        },
+                        color: getTextColor
+                    }
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Change Pattern Visualization',
+                    font: {
+                        size: window.innerWidth < 768 ? 16 : 18
+                    },
+                    color: getTextColor
+                },
+                legend: {
+                    display: false
+                }
+            }
+        };
+
         if (chart) {
             chart.data = data;
-            chart.options.scales.r.grid.color = getGridColor();
-            chart.options.scales.r.ticks.color = getTextColor();
-            chart.options.scales.r.pointLabels.color = getTextColor();
-            chart.options.plugins.title.color = getTextColor();
+            chart.options = chartOptions;
             chart.update();
         } else {
             const ctx = document.getElementById('radarChart').getContext('2d');
             chart = new Chart(ctx, {
                 type: 'radar',
                 data: data,
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        r: {
-                            angleLines: {
-                                display: true,
-                                color: getGridColor
-                            },
-                            suggestedMin: 0,
-                            suggestedMax: 100,
-                            ticks: {
-                                stepSize: 25,
-                                color: getTextColor,
-                                backdropColor: 'transparent',
-                                font: {
-                                    size: 10
-                                },
-                                showLabelBackdrop: false
-                            },
-                            pointLabels: {
-                                font: {
-                                    size: 12
-                                },
-                                color: getTextColor
-                            }
-                        }
-                    },
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Change Pattern Visualization',
-                            font: {
-                                size: 18
-                            },
-                            color: getTextColor
-                        },
-                        legend: {
-                            display: false
-                        }
-                    }
-                }
+                options: chartOptions
             });
         }
 
@@ -306,6 +305,15 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('An error occurred while analyzing the scenario. Please try again.');
         });
     }
+
+    window.addEventListener('resize', () => {
+        if (chart) {
+            chart.options.scales.r.ticks.font.size = window.innerWidth < 768 ? 8 : 10;
+            chart.options.scales.r.pointLabels.font.size = window.innerWidth < 768 ? 10 : 12;
+            chart.options.plugins.title.font.size = window.innerWidth < 768 ? 16 : 18;
+            chart.update();
+        }
+    });
 
     setTimeout(updateChart, 0);
 });

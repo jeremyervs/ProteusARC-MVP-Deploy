@@ -418,6 +418,20 @@ body.dark-mode .experimental-tag {
 }
 
 @media (max-width: 768px) {
+    .app-container {
+        padding: 10px;
+    }
+
+    header {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .gradient-title {
+        font-size: 2em;
+    }
+
     .results-section {
         flex-direction: column;
     }
@@ -440,5 +454,44 @@ body.dark-mode .experimental-tag {
     .directions-content {
         width: 95%;
         margin: 5% auto;
+    }
+
+    .slider-labels {
+        font-size: 12px;
+    }
+
+    .percent-display {
+        font-size: 10px;
+    }
+
+    #analysisSummary {
+        max-height: 300px;
+    }
+
+    #aiAnalysisResult {
+        max-height: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .gradient-title {
+        font-size: 1.8em;
+    }
+
+    .card {
+        padding: 15px;
+    }
+
+    .slider-labels {
+        font-size: 10px;
+    }
+
+    .percent-display {
+        font-size: 9px;
+    }
+
+    #analysisSummary,
+    #aiAnalysisResult {
+        max-height: 250px;
     }
 }
