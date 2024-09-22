@@ -34,7 +34,6 @@ document.addEventListener('DOMContentLoaded', function() {
     let chart = null;
     let tempValues = Array(gradients.length / 2).fill(50);
 
-    // Create sliders
     for (let i = 0; i < gradients.length; i += 2) {
         const sliderContainer = document.createElement('div');
         sliderContainer.className = 'slider-container';
@@ -72,41 +71,34 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Populate gradient definitions
     gradients.forEach(gradient => {
         const definitionP = document.createElement('p');
         definitionP.innerHTML = `<strong>${gradient.label}:</strong> ${gradient.def}`;
         gradientDefinitions.appendChild(definitionP);
     });
 
-    // View Directions click event
     viewDirections.addEventListener('click', function() {
         directionsPopup.style.display = 'block';
     });
 
-    // Close popup
     closePopup.addEventListener('click', function() {
         directionsPopup.style.display = 'none';
     });
 
-    // Close popup when clicking outside
     window.addEventListener('click', function(event) {
         if (event.target == directionsPopup) {
             directionsPopup.style.display = 'none';
         }
     });
 
-    // Update chart
     updateChartButton.addEventListener('click', function() {
         updateChart();
     });
 
-    // Analyze scenario
     analyzeScenarioButton.addEventListener('click', function() {
         analyzeScenario();
     });
 
-    // Export functionality
     exportButton.addEventListener('click', showExportOptions);
 
     function updatePercentages(slider) {
@@ -136,12 +128,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 data: tempValues.flatMap(v => [100 - v, v]),
                 fill: true,
                 backgroundColor: 'rgba(74, 144, 226, 0.2)',
-                borderColor: 'rgba(74, 144, 226, 1)',
-                pointBackgroundColor: 'rgba(74, 144, 226, 1)',
-                borderWidth: 2,
-                pointBorderColor: '#fff',
-                pointHoverBackgroundColor: '#fff',
-                pointHoverBorderColor: 'rgba(74, 144, 226, 1)'
+                borderColor: 'transparent',
+                pointBackgroundColor: 'transparent',
+                pointBorderColor: 'transparent',
+                pointHoverBackgroundColor: 'transparent',
+                pointHoverBorderColor: 'transparent'
             }]
         };
 
@@ -170,7 +161,11 @@ document.addEventListener('DOMContentLoaded', function() {
                             suggestedMax: 100,
                             ticks: {
                                 stepSize: 25,
-                                color: getTextColor
+                                color: getTextColor,
+                                backdropColor: 'transparent',
+                                font: {
+                                    size: 10
+                                }
                             },
                             pointLabels: {
                                 font: {
@@ -197,7 +192,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
-        // Generate analysis summary
         const summary = document.getElementById('analysisSummary');
         summary.innerHTML = `<h3>Analysis Summary for "${changeTitle}"</h3>`;
         gradients.forEach((gradient, index) => {
@@ -210,17 +204,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Dark mode toggle
     darkModeToggle.addEventListener('change', function() {
         document.body.classList.toggle('dark-mode', this.checked);
         if (chart) {
             chart.options.scales.r.grid.color = getGridColor();
             chart.update();
         }
-        updateChart(); // Update chart colors based on dark mode
+        updateChart();
     });
 
-    // Show export options
     function showExportOptions() {
         const exportOptions = document.createElement('div');
         exportOptions.className = 'export-options';
@@ -234,7 +226,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('exportCSV').addEventListener('click', () => exportResults('csv'));
         document.getElementById('exportJSON').addEventListener('click', () => exportResults('json'));
 
-        // Close export options when clicking outside
         document.addEventListener('click', (e) => {
             if (!exportOptions.contains(e.target) && e.target !== exportButton) {
                 document.body.removeChild(exportOptions);
@@ -242,7 +233,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Export functionality
     function exportResults(format) {
         const changeTitle = changeTitleInput.value || 'Untitled Change';
 
@@ -316,6 +306,5 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Initial chart update
     setTimeout(updateChart, 0);
 });
