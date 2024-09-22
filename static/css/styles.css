@@ -353,10 +353,11 @@ body.dark-mode .moon-icon {
 }
 
 #resetButton,
-#analyzeButton,
+#updateChartButton,
 #analyzeScenarioButton {
     flex: 1 1 30%;
     min-width: 120px;
+    margin-top: 0;
 }
 
 #resetButton {
@@ -368,12 +369,7 @@ body.dark-mode .moon-icon {
     background: var(--border-color);
 }
 
-#analyzeButton {
-    flex: 2;
-}
-
 #analyzeScenarioButton {
-    flex: 2;
     background: linear-gradient(to right, #4caf50, #45a049);
 }
 
@@ -450,10 +446,14 @@ body.dark-mode .experimental-tag {
     }
 
     #resetButton,
-    #analyzeButton,
+    #updateChartButton,
     #analyzeScenarioButton {
         width: 100%;
         margin-top: 10px;
+    }
+
+    #resetButton {
+        margin-top: 0;
     }
 
     .directions-content {
