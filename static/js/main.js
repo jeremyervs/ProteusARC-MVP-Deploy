@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const directionsPopup = document.getElementById('directionsPopup');
     const closePopup = document.querySelector('.close-popup');
     const gradientDefinitions = document.getElementById('gradientDefinitions');
+    const resetButton = document.getElementById('resetButton');
 
     let chart = null;
     let tempValues = Array(gradients.length / 2).fill(50);
@@ -100,6 +101,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     exportButton.addEventListener('click', showExportOptions);
+
+    resetButton.addEventListener('click', resetSliders);
 
     function updatePercentages(slider) {
         const value = slider.value;
@@ -308,6 +311,15 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Error:', error);
             alert('An error occurred while analyzing the scenario. Please try again.');
         });
+    }
+
+    function resetSliders() {
+        document.querySelectorAll('.slider').forEach(slider => {
+            slider.value = 50;
+            updatePercentages(slider);
+        });
+        tempValues = Array(gradients.length / 2).fill(50);
+        updateChart();
     }
 
     window.addEventListener('resize', () => {

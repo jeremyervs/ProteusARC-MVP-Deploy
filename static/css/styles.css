@@ -423,19 +423,18 @@ body.dark-mode .experimental-tag {
     }
 
     header {
-        flex-direction: row;
-        justify-content: space-between;
+        flex-direction: column;
         align-items: center;
         gap: 15px;
     }
 
     .gradient-title {
         font-size: 2em;
-        text-align: left;
+        text-align: center;
     }
 
     .dark-mode-toggle {
-        margin-left: auto;
+        margin-top: 10px;
     }
 
     .results-section {
@@ -455,6 +454,7 @@ body.dark-mode .experimental-tag {
     #analyzeButton,
     #analyzeScenarioButton {
         width: 100%;
+        margin-top: 10px;
     }
 
     .directions-content {
@@ -462,18 +462,12 @@ body.dark-mode .experimental-tag {
         margin: 5% auto;
     }
 
-    .slider-labels {
-        font-size: 14px;
-    }
-
+    .slider-labels,
     .percent-display {
         font-size: 14px;
     }
 
-    #analysisSummary {
-        max-height: 300px;
-    }
-
+    #analysisSummary,
     #aiAnalysisResult {
         max-height: 300px;
     }
@@ -488,10 +482,7 @@ body.dark-mode .experimental-tag {
         padding: 15px;
     }
 
-    .slider-labels {
-        font-size: 12px;
-    }
-
+    .slider-labels,
     .percent-display {
         font-size: 12px;
     }
