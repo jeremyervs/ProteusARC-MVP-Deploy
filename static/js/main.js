@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function getGridColor() {
-        return document.body.classList.contains('dark-mode') ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+        return document.body.classList.contains('dark-mode') ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)';
     }
 
     function updateChart() {
@@ -128,11 +128,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 data: tempValues.flatMap(v => [100 - v, v]),
                 fill: true,
                 backgroundColor: 'rgba(74, 144, 226, 0.2)',
-                borderColor: 'transparent',
-                pointBackgroundColor: 'transparent',
-                pointBorderColor: 'transparent',
-                pointHoverBackgroundColor: 'transparent',
-                pointHoverBorderColor: 'transparent'
+                borderColor: 'rgba(74, 144, 226, 1)',
+                pointBackgroundColor: 'rgba(74, 144, 226, 1)',
+                borderWidth: 2,
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: 'rgba(74, 144, 226, 1)'
             }]
         };
 
@@ -143,6 +144,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 r: {
                     angleLines: {
                         display: true,
+                        color: getGridColor
+                    },
+                    grid: {
                         color: getGridColor
                     },
                     suggestedMin: 0,
