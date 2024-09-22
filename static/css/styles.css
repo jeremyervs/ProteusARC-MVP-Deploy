@@ -285,7 +285,7 @@ body.dark-mode .moon-icon {
     display: flex;
     justify-content: space-between;
     margin-top: 5px;
-    font-size: 12px;
+    font-size: 14px;
     color: var(--text-color);
 }
 
@@ -463,11 +463,11 @@ body.dark-mode .experimental-tag {
     }
 
     .slider-labels {
-        font-size: 12px;
+        font-size: 14px;
     }
 
     .percent-display {
-        font-size: 10px;
+        font-size: 14px;
     }
 
     #analysisSummary {
@@ -489,11 +489,11 @@ body.dark-mode .experimental-tag {
     }
 
     .slider-labels {
-        font-size: 10px;
+        font-size: 12px;
     }
 
     .percent-display {
-        font-size: 9px;
+        font-size: 12px;
     }
 
     #analysisSummary,
