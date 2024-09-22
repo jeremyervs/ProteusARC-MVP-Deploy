@@ -84,7 +84,7 @@ def analyze_scenario():
         ]
 
         response = client.chat.completions.create(
-            model="gpt-4o-mini",  # Changed from gpt-4 to gpt-4o-mini
+            model="gpt-4o-mini",  # Using gpt-4o-mini as it's suitable for this task
             messages=messages,
             max_tokens=1000,
             n=1,
