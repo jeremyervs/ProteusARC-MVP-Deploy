@@ -406,15 +406,13 @@ body.dark-mode .moon-icon {
     color: #888;
     margin-left: 10px;
     font-style: italic;
-    background-color: #f0f0f0;
     padding: 2px 6px;
     border-radius: 4px;
-    transition: background-color 0.3s, color 0.3s;
+    transition: color 0.3s;
 }
 
 body.dark-mode .experimental-tag {
-    background-color: #4a5568;
-    color: #f0f0f0;
+    color: #aaa;
 }
 
 @media (max-width: 768px) {
@@ -430,7 +428,7 @@ body.dark-mode .experimental-tag {
     }
 
     .gradient-title {
-        font-size: 2em;
+        font-size: 1.8em;
         text-align: left;
     }
 
@@ -472,11 +470,18 @@ body.dark-mode .experimental-tag {
     #aiAnalysisResult {
         max-height: 300px;
     }
+
+    .experimental-tag {
+        font-size: 0.7em;
+        display: block;
+        margin-left: 0;
+        margin-top: 5px;
+    }
 }
 
 @media (max-width: 480px) {
     .gradient-title {
-        font-size: 1.8em;
+        font-size: 1.5em;
     }
 
     .card {
