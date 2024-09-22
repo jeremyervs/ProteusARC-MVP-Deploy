@@ -165,7 +165,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                 backdropColor: 'transparent',
                                 font: {
                                     size: 10
-                                }
+                                },
+                                showLabelBackdrop: false
                             },
                             pointLabels: {
                                 font: {
