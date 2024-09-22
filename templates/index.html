@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GradiShape - Gradients of Change Analysis Tool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1 class="gradient-title">GradiShape</h1>
+            <div class="dark-mode-toggle">
+                <span class="toggle-icon sun-icon">☀</span>
+                <input type="checkbox" id="darkModeToggle" class="toggle-checkbox">
+                <label for="darkModeToggle" class="toggle-label">
+                    <span class="toggle-inner"></span>
+                    <span class="toggle-switch"></span>
+                </label>
+                <span class="toggle-icon moon-icon">☾</span>
+            </div>
+        </header>
+        
+        <main>
+            <div class="card input-card">
+                <input type="text" id="changeTitle" placeholder="Enter title of change being examined">
+            </div>
+            
+            <div class="card sliders-card">
+                <div class="gradients-header">
+                    <h2>Change Gradients</h2>
+                    <span id="viewDirections" class="view-directions">View Definitions</span>
+                </div>
+                <div id="sliders"></div>
+                <div class="button-group">
+                    <button id="resetButton">Reset Sliders</button>
+                    <button id="updateChartButton">Update Chart</button>
+                    <button id="analyzeScenarioButton">Analyze Scenario</button>
+                </div>
+            </div>
+            
+            <div class="results-section">
+                <div class="card chart-card">
+                    <canvas id="radarChart"></canvas>
+                </div>
+                <div class="card analysis-card">
+                    <div id="analysisSummary"></div>
+                    <button id="exportButton">Export Results</button>
+                </div>
+            </div>
+            
+            <div class="card ai-analysis-card">
+                <h3>✨ AI Analysis <span class='experimental-tag'>(Experimental: results may vary)</span></h3>
+                <div id="aiAnalysisResult">
+                    <!-- AI-generated analysis will be displayed here -->
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <div id="directionsPopup" class="directions-popup">
+        <div class="directions-content">
+            <span class="close-popup">&times;</span>
+            <h2>Gradient Definitions</h2>
+            <div id="gradientDefinitions"></div>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
