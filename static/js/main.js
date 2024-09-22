@@ -128,12 +128,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 data: tempValues.flatMap(v => [100 - v, v]),
                 fill: true,
                 backgroundColor: 'rgba(74, 144, 226, 0.2)',
-                borderColor: 'rgba(74, 144, 226, 1)',
-                pointBackgroundColor: 'rgba(74, 144, 226, 1)',
-                borderWidth: 2,
-                pointBorderColor: '#fff',
-                pointHoverBackgroundColor: '#fff',
-                pointHoverBorderColor: 'rgba(74, 144, 226, 1)'
+                borderColor: 'transparent',
+                pointBackgroundColor: 'transparent',
+                pointBorderColor: 'transparent',
+                borderWidth: 0,
+                pointRadius: 0,
+                pointHoverRadius: 0,
             }]
         };
 
@@ -156,13 +156,13 @@ document.addEventListener('DOMContentLoaded', function() {
                         color: getTextColor,
                         backdropColor: 'transparent',
                         font: {
-                            size: window.innerWidth < 768 ? 8 : 10
+                            size: window.innerWidth < 768 ? 10 : 12
                         },
                         showLabelBackdrop: false
                     },
                     pointLabels: {
                         font: {
-                            size: window.innerWidth < 768 ? 10 : 12
+                            size: window.innerWidth < 768 ? 12 : 14
                         },
                         color: getTextColor
                     }
@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     display: true,
                     text: 'Change Pattern Visualization',
                     font: {
-                        size: window.innerWidth < 768 ? 16 : 18
+                        size: window.innerWidth < 768 ? 18 : 20
                     },
                     color: getTextColor
                 },
@@ -312,9 +312,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     window.addEventListener('resize', () => {
         if (chart) {
-            chart.options.scales.r.ticks.font.size = window.innerWidth < 768 ? 8 : 10;
-            chart.options.scales.r.pointLabels.font.size = window.innerWidth < 768 ? 10 : 12;
-            chart.options.plugins.title.font.size = window.innerWidth < 768 ? 16 : 18;
+            chart.options.scales.r.ticks.font.size = window.innerWidth < 768 ? 10 : 12;
+            chart.options.scales.r.pointLabels.font.size = window.innerWidth < 768 ? 12 : 14;
+            chart.options.plugins.title.font.size = window.innerWidth < 768 ? 18 : 20;
             chart.update();
         }
     });
