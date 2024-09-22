@@ -1,0 +1,979 @@
+:root {
+    --bg-color: #f0f4f8;
+    --card-bg: #ffffff;
+    --text-color: #333333;
+    --primary-color: #4a90e2;
+    --secondary-color: #f0f0f0;
+    --border-color: #e0e0e0;
+    --gradient-start: #4a90e2;
+    --gradient-end: #63b3ed;
+}
+
+body.dark-mode {
+    --bg-color: #1a202c;
+    --card-bg: #2d3748;
+    --text-color: #f0f0f0;
+    --primary-color: #63b3ed;
+    --secondary-color: #4a5568;
+    --border-color: #4a5568;
+    --gradient-start: #2b6cb0;
+    --gradient-end: #4299e1;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.app-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.gradient-title {
+    background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    font-size: 2.5em;
+    font-weight: 600;
+}
+
+.card {
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input[type="text"]:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+    outline: none;
+}
+
+button {
+    display: block;
+    width: 100%;
+    padding: 12px 24px;
+    margin-top: 20px;
+    background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.gradients-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 20px;
+}
+
+.gradients-header h2 {
+    font-weight: 600;
+}
+
+.view-directions {
+    color: var(--primary-color);
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: underline;
+}
+
+.slider-container {
+    margin-bottom: 20px;
+}
+
+.slider-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 8px;
+    border-radius: 5px;
+    background: var(--secondary-color);
+    outline: none;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.slider:hover {
+    opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.results-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.chart-card, .analysis-card {
+    flex: 1;
+    min-width: 300px;
+}
+
+.chart-card {
+    height: 500px;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.analysis-card {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.dark-mode-toggle {
+    display: flex;
+    align-items: center;
+}
+
+.toggle-checkbox {
+    opacity: 0;
+    position: absolute;
+}
+
+.toggle-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    width: 50px;
+    height: 26px;
+    background: #d1d5db;
+    border-radius: 100px;
+    position: relative;
+    transition: background-color 0.2s;
+}
+
+.toggle-label .toggle-inner {
+    width: 22px;
+    height: 22px;
+    background: #fff;
+    border-radius: 50%;
+    transition: 0.3s;
+    box-shadow: 0 0 2px 0 rgba(10, 10, 10, 0.29);
+}
+
+.toggle-checkbox:checked + .toggle-label .toggle-inner {
+    transform: translateX(24px);
+    background: var(--primary-color);
+}
+
+.toggle-icon {
+    font-size: 20px;
+    margin: 0 10px;
+    transition: opacity 0.3s;
+}
+
+.sun-icon {
+    color: #f39c12;
+}
+
+.moon-icon {
+    color: #718096;
+}
+
+body:not(.dark-mode) .sun-icon {
+    opacity: 1;
+}
+
+body:not(.dark-mode) .moon-icon {
+    opacity: 0.5;
+}
+
+body.dark-mode .sun-icon {
+    opacity: 0.5;
+}
+
+body.dark-mode .moon-icon {
+    opacity: 1;
+}
+
+.export-options {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--card-bg);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.export-options h3 {
+    margin-bottom: 15px;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+.percent-display {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    font-size: 12px;
+    color: var(--text-color);
+}
+
+#analysisSummary h3 {
+    margin-bottom: 20px;
+}
+
+#analysisSummary {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.directions-popup {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.directions-content {
+    background-color: var(--card-bg);
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 600px;
+    max-height: 80%;
+    overflow-y: auto;
+}
+
+.close-popup {
+    color: var(--text-color);
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-popup:hover,
+.close-popup:focus {
+    color: var(--primary-color);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#gradientDefinitions {
+    margin-top: 20px;
+}
+
+#gradientDefinitions p {
+    margin-bottom: 10px;
+}
+
+.button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+#resetButton,
+#analyzeButton,
+#analyzeScenarioButton {
+    flex: 1 1 30%;
+    min-width: 120px;
+}
+
+#resetButton {
+    background: var(--secondary-color);
+    color: var(--text-color);
+}
+
+#resetButton:hover {
+    background: var(--border-color);
+}
+
+#analyzeButton {
+    flex: 2;
+}
+
+#analyzeScenarioButton {
+    flex: 2;
+    background: linear-gradient(to right, #4caf50, #45a049);
+}
+
+#analyzeScenarioButton:hover {
+    background: linear-gradient(to right, #45a049, #4caf50);
+}
+
+.ai-analysis-card {
+    margin-top: 20px;
+}
+
+.ai-analysis-card h3 {
+    margin-bottom: 15px;
+}
+
+#aiAnalysisResult {
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 15px;
+    min-height: 100px;
+    max-height: 400px;
+    overflow-y: auto;
+    margin-top: 20px;
+}
+
+.experimental-tag {
+    font-size: 0.8em;
+    font-weight: normal;
+    color: #888;
+    margin-left: 10px;
+}
+
+@media (max-width: 768px) {
+    .results-section {
+        flex-direction: column;
+    }
+    
+    .chart-card,
+    .analysis-card {
+        max-width: 100%;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    #resetButton,
+    #analyzeButton,
+    #analyzeScenarioButton {
+        width: 100%;
+    }
+
+    .directions-content {
+        width: 95%;
+        margin: 5% auto;
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const gradients = [
+        { label: 'Endogenous', def: 'Change that originates from within the system or entity, driven by internal factors such as organizational policies, personal motivations, or inherent dynamics.' },
+        { label: 'Exogenous', def: 'Change that originates from outside the system or entity, influenced by external forces such as market trends, regulations, or environmental factors.' },
+        { label: 'Stable', def: 'Incremental change that maintains the core structure or identity, resulting in a state that remains recognizable over time.' },
+        { label: 'Transformational', def: 'Significant and fundamental change that alters the system or entity in a way that it becomes completely new or unrecognizable.' },
+        { label: 'Transactional', def: 'A one-time event or action that is implemented and concluded quickly, with immediate effects.' },
+        { label: 'Continuing', def: 'An ongoing process of change that evolves over time, requiring sustained effort and adaptation.' },
+        { label: 'Individual', def: 'Change initiated by a single person or a small group, often characterized by leadership or heroic efforts that drive the transformation.' },
+        { label: 'Community', def: 'Change that emerges from the collective action of a larger group or society, involving widespread participation and consensus.' },
+        { label: 'Passive', def: 'Change achieved through peaceful and non-confrontational means, such as dialogue, negotiation, or gradual reforms.' },
+        { label: 'Violent', def: 'Change that occurs through conflict, force, or aggressive actions, often involving revolutions, wars, or significant upheaval.' },
+        { label: 'Top Down', def: 'Change initiated by those in positions of authority or leadership, typically through directives, policies, or executive orders.' },
+        { label: 'Bottom Up', def: 'Change that starts at the grassroots level, driven by individuals or groups at the lower levels of an organization or society.' },
+        { label: 'Dominant', def: 'Change led by a single entity or group exerting control, often characterized by a hierarchical or authoritative approach.' },
+        { label: 'Partnership', def: 'Change that is driven by collaborative efforts and shared decision-making, emphasizing equality and mutual support among participants.' },
+        { label: 'Trend', def: 'Change that follows current patterns or fads, often temporary and reactive to the present environment.' },
+        { label: 'Vision', def: 'Change guided by a long-term strategic outlook, aiming for transformative outcomes that may reshape the future.' },
+        { label: 'Accidental', def: 'Change that results from unforeseen events or mistakes, leading to unexpected outcomes or innovations.' },
+        { label: 'Deliberate', def: 'Change that is carefully planned and executed, based on extensive research, strategy, and intentional actions.' }
+    ];
+
+    const slidersContainer = document.getElementById('sliders');
+    const updateChartButton = document.getElementById('updateChartButton');
+    const analyzeScenarioButton = document.getElementById('analyzeScenarioButton');
+    const changeTitleInput = document.getElementById('changeTitle');
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const exportButton = document.getElementById('exportButton');
+    const viewDirections = document.getElementById('viewDirections');
+    const directionsPopup = document.getElementById('directionsPopup');
+    const closePopup = document.querySelector('.close-popup');
+    const gradientDefinitions = document.getElementById('gradientDefinitions');
+    const resetButton = document.getElementById('resetButton');
+    const aiAnalysisResult = document.getElementById('aiAnalysisResult');
+
+    let chart = null;
+    let tempValues = Array(gradients.length / 2).fill(50);
+
+    // Create sliders
+    for (let i = 0; i < gradients.length; i += 2) {
+        const sliderContainer = document.createElement('div');
+        sliderContainer.className = 'slider-container';
+        
+        const labels = document.createElement('div');
+        labels.className = 'slider-labels';
+        labels.innerHTML = `
+            <span>${gradients[i].label}</span>
+            <span>${gradients[i+1].label}</span>
+        `;
+        
+        const slider = document.createElement('input');
+        slider.type = 'range';
+        slider.min = 0;
+        slider.max = 100;
+        slider.value = 50;
+        slider.className = 'slider';
+        slider.id = `slider-${i/2}`;
+
+        const percentDisplay = document.createElement('div');
+        percentDisplay.className = 'percent-display';
+        percentDisplay.innerHTML = `
+            <span id="${slider.id}-left-percent">50%</span>
+            <span id="${slider.id}-right-percent">50%</span>
+        `;
+
+        sliderContainer.appendChild(labels);
+        sliderContainer.appendChild(slider);
+        sliderContainer.appendChild(percentDisplay);
+        slidersContainer.appendChild(sliderContainer);
+
+        slider.addEventListener('input', function() {
+            updatePercentages(this);
+            tempValues[parseInt(this.id.split('-')[1])] = parseInt(this.value);
+        });
+    }
+
+    // Populate gradient definitions
+    gradients.forEach(gradient => {
+        const definitionP = document.createElement('p');
+        definitionP.innerHTML = `<strong>${gradient.label}:</strong> ${gradient.def}`;
+        gradientDefinitions.appendChild(definitionP);
+    });
+
+    // View Directions click event
+    viewDirections.addEventListener('click', function() {
+        directionsPopup.style.display = 'block';
+    });
+
+    // Close popup
+    closePopup.addEventListener('click', function() {
+        directionsPopup.style.display = 'none';
+    });
+
+    // Close popup when clicking outside
+    window.addEventListener('click', function(event) {
+        if (event.target == directionsPopup) {
+            directionsPopup.style.display = 'none';
+        }
+    });
+
+    // Update chart
+    updateChartButton.addEventListener('click', function() {
+        updateChart();
+    });
+
+    // Analyze scenario
+    analyzeScenarioButton.addEventListener('click', function() {
+        analyzeScenario();
+    });
+
+    // Export functionality
+    exportButton.addEventListener('click', showExportOptions);
+
+    // Reset sliders
+    resetButton.addEventListener('click', resetSliders);
+
+    function resetSliders() {
+        document.querySelectorAll('.slider').forEach(slider => {
+            slider.value = 50;
+            updatePercentages(slider);
+        });
+        tempValues = Array(gradients.length / 2).fill(50);
+        if (chart) {
+            updateChart();
+        }
+    }
+
+    function updatePercentages(slider) {
+        const value = slider.value;
+        const leftPercent = 100 - value;
+        const rightPercent = value;
+        const sliderId = slider.id;
+        document.getElementById(`${sliderId}-left-percent`).textContent = `${leftPercent}%`;
+        document.getElementById(`${sliderId}-right-percent`).textContent = `${rightPercent}%`;
+    }
+
+    function getTextColor() {
+        return document.body.classList.contains('dark-mode') ? '#ffffff' : '#333333';
+    }
+
+    function getGridColor() {
+        return document.body.classList.contains('dark-mode') ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+    }
+
+    function updateChart() {
+        const changeTitle = changeTitleInput.value || 'Untitled Change';
+
+        const data = {
+            labels: gradients.map(g => g.label),
+            datasets: [{
+                label: changeTitle,
+                data: tempValues.flatMap(v => [100 - v, v]),
+                fill: true,
+                backgroundColor: 'rgba(74, 144, 226, 0.2)',
+                borderColor: 'rgba(74, 144, 226, 1)',
+                pointBackgroundColor: 'rgba(74, 144, 226, 1)',
+                borderWidth: 2,
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: 'rgba(74, 144, 226, 1)'
+            }]
+        };
+
+        if (chart) {
+            chart.data = data;
+            chart.options.scales.r.grid.color = getGridColor();
+            chart.options.scales.r.ticks.color = getTextColor();
+            chart.options.scales.r.pointLabels.color = getTextColor();
+            chart.options.plugins.title.color = getTextColor();
+            chart.update();
+        } else {
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            chart = new Chart(ctx, {
+                type: 'radar',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            top: 20,
+                            right: 20,
+                            bottom: 20,
+                            left: 20
+                        }
+                    },
+                    elements: {
+                        line: {
+                            tension: 0.1
+                        },
+                        point: {
+                            radius: 3,
+                            hitRadius: 10,
+                            hoverRadius: 5
+                        }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: true,
+                                color: getGridColor
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 100,
+                            max: 100,
+                            ticks: {
+                                stepSize: 25,
+                                display: true,
+                                color: getTextColor,
+                                backdropColor: 'transparent'
+                            },
+                            pointLabels: {
+                                font: {
+                                    size: 12,
+                                    family: 'Poppins, sans-serif'
+                                },
+                                padding: 10,
+                                color: getTextColor
+                            }
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Change Pattern Visualization',
+                            font: {
+                                size: 18,
+                                weight: 'bold',
+                                family: 'Poppins, sans-serif'
+                            },
+                            padding: {
+                                top: 10,
+                                bottom: 30
+                            },
+                            color: getTextColor
+                        },
+                        legend: {
+                            display: false
+                        }
+                    },
+                    animation: {
+                        duration: 500,
+                        easing: 'easeInOutQuart'
+                    }
+                }
+            });
+        }
+
+        // Generate analysis summary
+        const summary = document.getElementById('analysisSummary');
+        summary.innerHTML = `<h3>Analysis Summary for "${changeTitle}"</h3>`;
+        gradients.forEach((gradient, index) => {
+            const value = index % 2 === 0 ? 100 - tempValues[index/2] : tempValues[Math.floor(index/2)];
+            summary.innerHTML += `
+                <div class="summary-item">
+                    <p><strong>${gradient.label}:</strong> ${value}%</p>
+                </div>
+            `;
+        });
+    }
+
+    // Dark mode toggle
+    darkModeToggle.addEventListener('change', function() {
+        document.body.classList.toggle('dark-mode', this.checked);
+        if (chart) {
+            chart.options.scales.r.grid.color = getGridColor();
+            chart.update();
+        }
+        updateChart(); // Update chart colors based on dark mode
+    });
+
+    // Show export options
+    function showExportOptions() {
+        const exportOptions = document.createElement('div');
+        exportOptions.className = 'export-options';
+        exportOptions.innerHTML = `
+            <h3>Export Options</h3>
+            <button id="exportCSV">Export as CSV</button>
+            <button id="exportJSON">Export as JSON</button>
+        `;
+        document.body.appendChild(exportOptions);
+
+        document.getElementById('exportCSV').addEventListener('click', () => exportResults('csv'));
+        document.getElementById('exportJSON').addEventListener('click', () => exportResults('json'));
+
+        // Close export options when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!exportOptions.contains(e.target) && e.target !== exportButton) {
+                document.body.removeChild(exportOptions);
+            }
+        });
+    }
+
+    // Export functionality
+    function exportResults(format) {
+        const changeTitle = changeTitleInput.value || 'Untitled Change';
+
+        if (format === 'csv') {
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += `Change Title: ${changeTitle}\n\n`;
+            csvContent += "Gradient,Value\n";
+            gradients.forEach((gradient, index) => {
+                const value = index % 2 === 0 ? 100 - tempValues[index/2] : tempValues[Math.floor(index/2)];
+                csvContent += `"${gradient.label}",${value}\n`;
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            downloadFile(encodedUri, `${changeTitle}_analysis.csv`);
+        } else if (format === 'json') {
+            const jsonContent = {
+                changeTitle,
+                results: gradients.map((gradient, index) => ({
+                    gradient: gradient.label,
+                    value: index % 2 === 0 ? 100 - tempValues[index/2] : tempValues[Math.floor(index/2)]
+                }))
+            };
+            const blob = new Blob([JSON.stringify(jsonContent, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            downloadFile(url, `${changeTitle}_analysis.json`);
+            URL.revokeObjectURL(url);
+        }
+    }
+
+    function downloadFile(url, filename) {
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", filename);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    function analyzeScenario() {
+        const changeTitle = changeTitleInput.value || 'Untitled Change';
+        const gradientValues = gradients.map((gradient, index) => ({
+            gradient: gradient.label,
+            value: index % 2 === 0 ? 100 - tempValues[index/2] : tempValues[Math.floor(index/2)]
+        }));
+
+        aiAnalysisResult.innerHTML = '<p>Analyzing scenario... Please wait.</p>';
+
+        fetch('/analyze_scenario', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                changeTitle: changeTitle,
+                gradientValues: gradientValues
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                aiAnalysisResult.innerHTML = `<p>Error: ${data.error}</p>`;
+            } else {
+                aiAnalysisResult.innerHTML = `
+                    <h4>AI Analysis for "${changeTitle}"</h4>
+                    <br>
+                    <p>${data.analysis.replace(/\n/g, '<br>')}</p>
+                `;
+            }
+        })
+        .catch((error) => {
+            aiAnalysisResult.innerHTML = `<p>Error: ${error.message}</p>`;
+        });
+    }
+
+    setTimeout(updateChart, 0);
+    document.querySelectorAll('.slider').forEach(updatePercentages);
+});
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GradiShape - Gradients of Change Analysis Tool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1 class="gradient-title">GradiShape</h1>
+            <div class="dark-mode-toggle">
+                <span class="toggle-icon sun-icon">☀</span>
+                <input type="checkbox" id="darkModeToggle" class="toggle-checkbox">
+                <label for="darkModeToggle" class="toggle-label">
+                    <span class="toggle-inner"></span>
+                    <span class="toggle-switch"></span>
+                </label>
+                <span class="toggle-icon moon-icon">☾</span>
+            </div>
+        </header>
+        
+        <main>
+            <div class="card input-card">
+                <input type="text" id="changeTitle" placeholder="Enter title of change being examined">
+            </div>
+            
+            <div class="card sliders-card">
+                <div class="gradients-header">
+                    <h2>Change Gradients</h2>
+                    <span id="viewDirections" class="view-directions">View Definitions</span>
+                </div>
+                <div id="sliders"></div>
+                <div class="button-group">
+                    <button id="resetButton">Reset Sliders</button>
+                    <button id="updateChartButton">Update Chart</button>
+                    <button id="analyzeScenarioButton">Analyze Scenario</button>
+                </div>
+            </div>
+            
+            <div class="results-section">
+                <div class="card chart-card">
+                    <canvas id="radarChart"></canvas>
+                </div>
+                <div class="card analysis-card">
+                    <div id="analysisSummary"></div>
+                    <button id="exportButton">Export Results</button>
+                </div>
+            </div>
+            
+            <div class="card ai-analysis-card">
+                <h3>✨ AI Analysis <span class='experimental-tag'>(Experimental: results may vary)</span></h3>
+                <div id="aiAnalysisResult">
+                    <!-- AI-generated analysis will be displayed here -->
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <div id="directionsPopup" class="directions-popup">
+        <div class="directions-content">
+            <span class="close-popup">&times;</span>
+            <h2>Gradient Definitions</h2>
+            <div id="gradientDefinitions"></div>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
+
+import os
+from flask import Flask, render_template, request, jsonify
+from openai import OpenAI
+from typing import List, Dict, Any
+
+app = Flask(__name__)
+
+# Set up OpenAI API key
+client = OpenAI(api_key=os.environ.get('OPENAI_API_KEY'))
+
+# Gradient definitions
+gradient_definitions = {
+    'Endogenous': 'Change that originates from within the system or entity, driven by internal factors such as organizational policies, personal motivations, or inherent dynamics.',
+    'Exogenous': 'Change that originates from outside the system or entity, influenced by external forces such as market trends, regulations, or environmental factors.',
+    'Stable': 'Incremental change that maintains the core structure or identity, resulting in a state that remains recognizable over time.',
+    'Transformational': 'Significant and fundamental change that alters the system or entity in a way that it becomes completely new or unrecognizable.',
+    'Transactional': 'A one-time event or action that is implemented and concluded quickly, with immediate effects.',
+    'Continuing': 'An ongoing process of change that evolves over time, requiring sustained effort and adaptation.',
+    'Individual': 'Change initiated by a single person or a small group, often characterized by leadership or heroic efforts that drive the transformation.',
+    'Community': 'Change that emerges from the collective action of a larger group or society, involving widespread participation and consensus.',
+    'Passive': 'Change achieved through peaceful and non-confrontational means, such as dialogue, negotiation, or gradual reforms.',
+    'Violent': 'Change that occurs through conflict, force, or aggressive actions, often involving revolutions, wars, or significant upheaval.',
+    'Top Down': 'Change initiated by those in positions of authority or leadership, typically through directives, policies, or executive orders.',
+    'Bottom Up': 'Change that starts at the grassroots level, driven by individuals or groups at the lower levels of an organization or society.',
+    'Dominant': 'Change led by a single entity or group exerting control, often characterized by a hierarchical or authoritative approach.',
+    'Partnership': 'Change that is driven by collaborative efforts and shared decision-making, emphasizing equality and mutual support among participants.',
+    'Trend': 'Change that follows current patterns or fads, often temporary and reactive to the present environment.',
+    'Vision': 'Change guided by a long-term strategic outlook, aiming for transformative outcomes that may reshape the future.',
+    'Accidental': 'Change that results from unforeseen events or mistakes, leading to unexpected outcomes or innovations.',
+    'Deliberate': 'Change that is carefully planned and executed, based on extensive research, strategy, and intentional actions.'
+}
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/analyze_scenario', methods=['POST'])
+def analyze_scenario():
+    data: Dict[str, Any] = request.json or {}
+    change_title: str = data.get('changeTitle', 'Untitled Change')
+    gradient_values: List[Dict[str, Any]] = data.get('gradientValues', [])
+    change_type: str = data.get('changeType', 'current')  # Default to 'current' if not provided
+
+    # Input validation
+    if not gradient_values:
+        return jsonify({"error": "No gradient values provided."}), 400
+
+    for gradient in gradient_values:
+        value = gradient.get('value')
+        if value is None or not (0 <= value <= 100):
+            return jsonify({"error": f"Invalid value for {gradient['gradient']}. Please provide a number between 0 and 100."}), 400
+
+    # Construct the prompt for OpenAI
+    prompt = f"You are analyzing a {change_type} change scenario titled '{change_title}'.\n\n"
+    prompt += "Definitions of Change Gradients:\n"
+    for gradient in gradient_values:
+        definition = gradient_definitions.get(gradient['gradient'], '')
+        prompt += f"{gradient['gradient']}: {definition}\n"
+    
+    prompt += "\nUser's gradient values:\n"
+    for gradient in gradient_values:
+        prompt += f"{gradient['gradient']}: {gradient['value']}%\n"
+
+    prompt += "\nPlease perform the following steps:\n"
+    prompt += "1. Establish your own baseline analysis of the change being examined by assigning a score (0-100) to each gradient based on widely accepted current knowledge.\n"
+    prompt += "2. Compare your baseline scores with the user's scores and assess the alignment.\n"
+    prompt += "3. Explain any significant deviations in a clear and understandable manner.\n"
+    prompt += "4. Craft a potential alternate scenario based on these deviations.\n"
+    prompt += "5. Present your response efficiently yet sufficiently in plain text, using whitespace between paragraphs for readability. Do not use Markdown formatting."
+
+    try:
+        # Make API call to OpenAI
+        messages = [
+            {"role": "system", "content": "You are an AI assistant analyzing change scenarios."},
+            {"role": "user", "content": prompt}
+        ]
+
+        response = client.chat.completions.create(
+            model="gpt-4",  # Using GPT-4 as it's the most capable model currently available
+            messages=messages,
+            max_tokens=1000,
+            n=1,
+            temperature=0.7,
+        )
+
+        # Extract the generated text from the API response
+        analysis = response.choices[0].message.content
+        if analysis is not None:
+            analysis = analysis.strip()
+        else:
+            analysis = "No analysis generated."
+
+        return jsonify({"analysis": analysis})
+    except Exception as e:
+        return jsonify({"error": f"An error occurred while analyzing the scenario: {str(e)}"}), 500
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
