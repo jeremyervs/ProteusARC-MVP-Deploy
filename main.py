@@ -2,6 +2,7 @@ import os
 from flask import Flask, render_template, request, jsonify
 from openai import OpenAI
 from typing import List, Dict, Any
+import re
 
 app = Flask(__name__)
 
@@ -74,12 +75,15 @@ def analyze_scenario():
     prompt += "2. Compare your baseline scores with the user's scores and assess the alignment.\n"
     prompt += "3. Explain any significant deviations in a clear and understandable manner.\n"
     prompt += "4. Craft a potential alternate scenario based on these deviations.\n"
-    prompt += "5. Present your response efficiently yet sufficiently in plain text, using whitespace between paragraphs for readability. Do not use Markdown formatting."
+    prompt += "5. Present your response efficiently yet sufficiently in plain text. Do not use any Markdown formatting.\n"
+    prompt += "6. Use proper spacing between paragraphs and sections for readability.\n"
+    prompt += "7. Use clear headings (in plain text) for each section of your analysis.\n"
+    prompt += "8. Ensure there are blank lines between paragraphs and sections.\n"
 
     try:
         # Make API call to OpenAI
         messages = [
-            {"role": "system", "content": "You are an AI assistant analyzing change scenarios."},
+            {"role": "system", "content": "You are an AI assistant analyzing change scenarios. Provide your analysis in plain text format without any Markdown. Use proper spacing and clear headings."},
             {"role": "user", "content": prompt}
         ]
 
@@ -94,7 +98,14 @@ def analyze_scenario():
         # Extract the generated text from the API response
         analysis = response.choices[0].message.content
         if analysis is not None:
+            # Post-processing to ensure proper formatting
             analysis = analysis.strip()
+            # Remove any potential Markdown formatting
+            analysis = re.sub(r'[*#_`~]', '', analysis)
+            # Ensure proper spacing between paragraphs
+            analysis = re.sub(r'\n{3,}', '\n\n', analysis)
+            # Ensure headings are followed by a blank line
+            analysis = re.sub(r'(^|\n)([A-Z][^:\n]+:)(\n)(?!\n)', r'\1\2\n\n', analysis, flags=re.MULTILINE)
         else:
             analysis = "No analysis generated."
 
