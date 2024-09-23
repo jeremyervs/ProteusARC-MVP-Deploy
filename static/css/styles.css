@@ -411,18 +411,6 @@ body.dark-mode .experimental-tag {
     color: #aaa;
 }
 
-@keyframes pulse {
-    0% {
-        opacity: 0.6;
-    }
-    50% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0.6;
-    }
-}
-
 .loading-message {
     text-align: center;
     color: var(--text-color);
@@ -430,15 +418,62 @@ body.dark-mode .experimental-tag {
     border-radius: 8px;
     background-color: var(--card-bg);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    animation: pulse 1.5s infinite ease-in-out;
 }
 
-.loading-message p {
-    font-size: 16px;
-    margin: 0;
+.loading-steps {
+    margin-top: 20px;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.loading-steps .step {
+    position: relative;
+    padding-left: 30px;
+    opacity: 0.5;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.loading-steps .step::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--primary-color);
+    background-color: var(--card-bg);
+    transition: background-color 0.3s ease-in-out;
+}
+
+.loading-steps .step.active {
+    opacity: 1;
+}
+
+.loading-steps .step.active::before {
+    background-color: var(--primary-color);
+}
+
+@keyframes fadeInStep {
+    0% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.loading-steps .step {
+    animation: fadeInStep 1s ease-in-out infinite;
+    animation-play-state: paused;
+}
+
+.loading-steps .step-1 { animation-delay: 0s; }
+.loading-steps .step-2 { animation-delay: 1s; }
+.loading-steps .step-3 { animation-delay: 2s; }
+.loading-steps .step-4 { animation-delay: 3s; }
+
+.loading-steps .step.active {
+    animation-play-state: running;
 }
 
 .loading-spinner {

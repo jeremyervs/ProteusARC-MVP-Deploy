@@ -288,8 +288,24 @@ document.addEventListener('DOMContentLoaded', function() {
         const aiAnalysisResult = document.getElementById('aiAnalysisResult');
         aiAnalysisResult.innerHTML = `
             <div class="loading-message">
-                <p><span class="loading-spinner"></span>Generating AI analysis… Please wait.</p>
+                <p>Analyzing scenario for "${changeTitle}"...</p>
+                <div class="loading-steps">
+                    <p class="step step-1">Establishing baseline</p>
+                    <p class="step step-2">Comparing with user input</p>
+                    <p class="step step-3">Identifying deviations</p>
+                    <p class="step step-4">Generating insights</p>
+                </div>
+                <p>This may take a few moments. Please wait.</p>
             </div>`;
+
+        let currentStep = 1;
+        const loadingInterval = setInterval(() => {
+            document.querySelector(`.step-${currentStep}`).classList.add('active');
+            currentStep++;
+            if (currentStep > 4) {
+                clearInterval(loadingInterval);
+            }
+        }, 1000);
 
         fetch('/analyze_scenario', {
             method: 'POST',
@@ -303,16 +319,19 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(data => {
+            clearInterval(loadingInterval);
             if (data.error) {
                 aiAnalysisResult.innerHTML = `<p class="error-message">Error: ${data.error}</p>`;
             } else {
                 aiAnalysisResult.innerHTML = `
                     <h4>AI Analysis for "${changeTitle}"</h4>
+                    <br>
                     <div class="analysis-content">${data.analysis.replace(/\n/g, '<br>')}</div>
                 `;
             }
         })
         .catch((error) => {
+            clearInterval(loadingInterval);
             console.error('Error:', error);
             aiAnalysisResult.innerHTML = '<p class="error-message">An error occurred while analyzing the scenario. Please try again.</p>';
         });
