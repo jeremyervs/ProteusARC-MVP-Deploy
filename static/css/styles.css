@@ -411,6 +411,30 @@ body.dark-mode .experimental-tag {
     color: #aaa;
 }
 
+.loading-message {
+    text-align: center;
+    font-style: italic;
+    color: var(--text-color);
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.6;
+    }
+}
+
+.error-message {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
 @media (max-width: 768px) {
     .app-container {
         padding: 10px;

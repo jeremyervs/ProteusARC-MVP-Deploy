@@ -285,6 +285,9 @@ document.addEventListener('DOMContentLoaded', function() {
             value: index % 2 === 0 ? 100 - tempValues[index/2] : tempValues[Math.floor(index/2)]
         }));
 
+        const aiAnalysisResult = document.getElementById('aiAnalysisResult');
+        aiAnalysisResult.innerHTML = '<p class="loading-message">Analyzing scenario... Please wait.</p>';
+
         fetch('/analyze_scenario', {
             method: 'POST',
             headers: {
@@ -298,9 +301,8 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             if (data.error) {
-                alert(`Error: ${data.error}`);
+                aiAnalysisResult.innerHTML = `<p class="error-message">Error: ${data.error}</p>`;
             } else {
-                const aiAnalysisResult = document.getElementById('aiAnalysisResult');
                 aiAnalysisResult.innerHTML = `
                     <h3>AI Analysis for "${changeTitle}"</h3>
                     <p>${data.analysis}</p>
@@ -309,7 +311,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch((error) => {
             console.error('Error:', error);
-            alert('An error occurred while analyzing the scenario. Please try again.');
+            aiAnalysisResult.innerHTML = '<p class="error-message">An error occurred while analyzing the scenario. Please try again.</p>';
         });
     }
 
