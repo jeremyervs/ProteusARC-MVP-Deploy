@@ -288,7 +288,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const aiAnalysisResult = document.getElementById('aiAnalysisResult');
         aiAnalysisResult.innerHTML = `
             <div class="loading-message">
-                <p><span class="loading-spinner"></span>Generating AI analysis… Please wait.</p>
+                <p><span class="loading-spinner"></span>Generating AI analysis using gpt-4o-mini model… Please wait.</p>
+                <div class="loading-steps">
+                    <div class="step step-1">Establishing baseline analysis...</div>
+                    <div class="step step-2">Comparing with user input...</div>
+                    <div class="step step-3">Identifying significant deviations...</div>
+                    <div class="step step-4">Generating insights and alternate scenarios...</div>
+                </div>
             </div>`;
 
         scrollToAIAnalysis();
