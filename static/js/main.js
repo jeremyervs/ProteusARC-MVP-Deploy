@@ -312,11 +312,20 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="analysis-content">${data.analysis.replace(/\n/g, '<br>')}</div>
                 `;
             }
+            scrollToAIAnalysis();
         })
         .catch((error) => {
             console.error('Error:', error);
             aiAnalysisResult.innerHTML = '<p class="error-message">An error occurred while analyzing the scenario. Please try again.</p>';
+            scrollToAIAnalysis();
         });
+    }
+
+    function scrollToAIAnalysis() {
+        const aiAnalysisElement = document.querySelector('.ai-analysis-card');
+        if (aiAnalysisElement) {
+            aiAnalysisElement.scrollIntoView({ behavior: 'smooth' });
+        }
     }
 
     function resetSliders() {
