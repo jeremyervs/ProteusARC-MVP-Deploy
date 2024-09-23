@@ -200,7 +200,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         const summary = document.getElementById('analysisSummary');
-        summary.innerHTML = `<h3>Analysis Summary for "${changeTitle}"</h3>`;
+        summary.innerHTML = `<h3>Gradient Values for "${changeTitle}"</h3>`;
         gradients.forEach((gradient, index) => {
             const value = index % 2 === 0 ? 100 - tempValues[index/2] : tempValues[Math.floor(index/2)];
             summary.innerHTML += `
