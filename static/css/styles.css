@@ -418,6 +418,14 @@ body.dark-mode .experimental-tag {
     animation: pulse 1.5s infinite;
 }
 
+.loading-steps {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.9em;
+    text-align: left;
+    padding-left: 20px;
+}
+
 @keyframes pulse {
     0% {
         opacity: 0.6;

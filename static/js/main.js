@@ -286,7 +286,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }));
 
         const aiAnalysisResult = document.getElementById('aiAnalysisResult');
-        aiAnalysisResult.innerHTML = '<p class="loading-message">Analyzing scenario... Please wait.</p>';
+        aiAnalysisResult.innerHTML = `
+            <p class="loading-message">
+                Analyzing scenario for "${changeTitle}"...<br>
+                <span class="loading-steps">
+                    1. Establishing baseline<br>
+                    2. Comparing with user input<br>
+                    3. Identifying deviations<br>
+                    4. Generating insights
+                </span><br>
+                This may take a few moments. Please wait.
+            </p>`;
 
         fetch('/analyze_scenario', {
             method: 'POST',
