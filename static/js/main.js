@@ -288,7 +288,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const aiAnalysisResult = document.getElementById('aiAnalysisResult');
         aiAnalysisResult.innerHTML = `
             <div class="loading-message">
-                <p>Generating AI analysis… Please wait.</p>
+                <p><span class="loading-spinner"></span>Generating AI analysis… Please wait.</p>
             </div>`;
 
         fetch('/analyze_scenario', {

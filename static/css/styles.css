@@ -411,6 +411,18 @@ body.dark-mode .experimental-tag {
     color: #aaa;
 }
 
+@keyframes pulse {
+    0% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.6;
+    }
+}
+
 .loading-message {
     text-align: center;
     color: var(--text-color);
@@ -418,11 +430,31 @@ body.dark-mode .experimental-tag {
     border-radius: 8px;
     background-color: var(--card-bg);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    animation: pulse 1.5s infinite ease-in-out;
 }
 
 .loading-message p {
     font-size: 16px;
     margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--text-color);
+    border-radius: 50%;
+    border-top: 2px solid var(--primary-color);
+    margin-right: 10px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 .error-message {
