@@ -291,6 +291,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 <p><span class="loading-spinner"></span>Generating AI analysis… Please wait.</p>
             </div>`;
 
+        scrollToAIAnalysis();
+
         fetch('/analyze_scenario', {
             method: 'POST',
             headers: {
@@ -312,12 +314,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="analysis-content">${data.analysis.replace(/\n/g, '<br>')}</div>
                 `;
             }
-            scrollToAIAnalysis();
         })
         .catch((error) => {
             console.error('Error:', error);
             aiAnalysisResult.innerHTML = '<p class="error-message">An error occurred while analyzing the scenario. Please try again.</p>';
-            scrollToAIAnalysis();
         });
     }
 
