@@ -287,16 +287,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const aiAnalysisResult = document.getElementById('aiAnalysisResult');
         aiAnalysisResult.innerHTML = `
-            <p class="loading-message">
-                Analyzing scenario for "${changeTitle}"...<br>
-                <span class="loading-steps">
-                    1. Establishing baseline<br>
-                    2. Comparing with user input<br>
-                    3. Identifying deviations<br>
-                    4. Generating insights
-                </span><br>
-                This may take a few moments. Please wait.
-            </p>`;
+            <div class="loading-message">
+                <p>Analyzing scenario for "${changeTitle}"...</p>
+                <div class="loading-steps">
+                    <p class="step step-1">Establishing baseline</p>
+                    <p class="step step-2">Comparing with user input</p>
+                    <p class="step step-3">Identifying deviations</p>
+                    <p class="step step-4">Generating insights</p>
+                </div>
+                <p>This may take a few moments. Please wait.</p>
+            </div>`;
 
         fetch('/analyze_scenario', {
             method: 'POST',
@@ -314,8 +314,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 aiAnalysisResult.innerHTML = `<p class="error-message">Error: ${data.error}</p>`;
             } else {
                 aiAnalysisResult.innerHTML = `
-                    <h3>AI Analysis for "${changeTitle}"</h3>
-                    <p>${data.analysis}</p>
+                    <h4>AI Analysis for "${changeTitle}"</h4>
+                    <div class="analysis-content">${data.analysis.replace(/\n/g, '<br>')}</div>
                 `;
             }
         })
