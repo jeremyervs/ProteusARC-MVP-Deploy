@@ -31,12 +31,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const closePopup = document.querySelector('.close-popup');
     const gradientDefinitions = document.getElementById('gradientDefinitions');
     const resetButton = document.getElementById('resetButton');
-    const aiAnalysisResult = document.getElementById('aiAnalysisResult');
 
     let chart = null;
     let tempValues = Array(gradients.length / 2).fill(50);
+    let chartProcessed = false;
 
-    // Create sliders
+    analyzeScenarioButton.disabled = true;
+    analyzeScenarioButton.title = "Process gradients first to enable AI Analysis";
+
+    const buttonGroup = document.querySelector('.button-group');
+    const aiButtonHint = document.createElement('div');
+    aiButtonHint.id = 'aiButtonHint';
+    aiButtonHint.textContent = "Process gradients to enable AI Analysis";
+    aiButtonHint.style.display = "block";
+    buttonGroup.insertAdjacentElement('afterend', aiButtonHint);
+
     for (let i = 0; i < gradients.length; i += 2) {
         const sliderContainer = document.createElement('div');
         sliderContainer.className = 'slider-container';
@@ -71,59 +80,47 @@ document.addEventListener('DOMContentLoaded', function() {
         slider.addEventListener('input', function() {
             updatePercentages(this);
             tempValues[parseInt(this.id.split('-')[1])] = parseInt(this.value);
+            indicateChartNeedsUpdate();
         });
     }
 
-    // Populate gradient definitions
     gradients.forEach(gradient => {
         const definitionP = document.createElement('p');
         definitionP.innerHTML = `<strong>${gradient.label}:</strong> ${gradient.def}`;
         gradientDefinitions.appendChild(definitionP);
     });
 
-    // View Directions click event
     viewDirections.addEventListener('click', function() {
         directionsPopup.style.display = 'block';
     });
 
-    // Close popup
     closePopup.addEventListener('click', function() {
         directionsPopup.style.display = 'none';
     });
 
-    // Close popup when clicking outside
     window.addEventListener('click', function(event) {
         if (event.target == directionsPopup) {
             directionsPopup.style.display = 'none';
         }
     });
 
-    // Update chart
     updateChartButton.addEventListener('click', function() {
         updateChart();
+        chartProcessed = true;
+        analyzeScenarioButton.disabled = false;
+        analyzeScenarioButton.title = "Analyze the current scenario";
+        aiButtonHint.style.display = "none";
     });
 
-    // Analyze scenario
     analyzeScenarioButton.addEventListener('click', function() {
-        analyzeScenario();
+        if (chartProcessed) {
+            analyzeScenario();
+        }
     });
 
-    // Export functionality
     exportButton.addEventListener('click', showExportOptions);
 
-    // Reset sliders
     resetButton.addEventListener('click', resetSliders);
-
-    function resetSliders() {
-        document.querySelectorAll('.slider').forEach(slider => {
-            slider.value = 50;
-            updatePercentages(slider);
-        });
-        tempValues = Array(gradients.length / 2).fill(50);
-        if (chart) {
-            updateChart();
-        }
-    }
 
     function updatePercentages(slider) {
         const value = slider.value;
@@ -135,11 +132,21 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function getTextColor() {
-        return getComputedStyle(document.documentElement).getPropertyValue('--chart-text-color').trim();
+        return document.body.classList.contains('dark-mode') ? '#ffffff' : '#333333';
     }
 
     function getGridColor() {
-        return document.body.classList.contains('dark-mode') ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+        return document.body.classList.contains('dark-mode') ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)';
+    }
+
+    function updateChartColors() {
+        if (chart) {
+            chart.options.scales.r.grid.color = getGridColor();
+            chart.options.scales.r.ticks.color = getTextColor();
+            chart.options.scales.r.pointLabels.color = getTextColor();
+            chart.options.plugins.title.color = getTextColor();
+            chart.update();
+        }
     }
 
     function updateChart() {
@@ -151,23 +158,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 label: changeTitle,
                 data: tempValues.flatMap(v => [100 - v, v]),
                 fill: true,
-                backgroundColor: 'rgba(74, 144, 226, 0.2)',
-                borderColor: 'rgba(74, 144, 226, 1)',
-                pointBackgroundColor: 'rgba(74, 144, 226, 1)',
-                borderWidth: 2,
-                pointBorderColor: '#fff',
-                pointHoverBackgroundColor: '#fff',
-                pointHoverBorderColor: 'rgba(74, 144, 226, 1)'
+                backgroundColor: document.body.classList.contains('dark-mode') ? 'rgba(99, 179, 237, 0.4)' : 'rgba(74, 144, 226, 0.2)',
+                borderColor: 'transparent',
+                pointBackgroundColor: 'transparent',
+                pointBorderColor: 'transparent',
+                borderWidth: 0,
+                pointRadius: 0,
+                pointHoverRadius: 0,
             }]
         };
 
         if (chart) {
             chart.data = data;
-            chart.options.scales.r.grid.color = getGridColor();
-            chart.options.scales.r.ticks.color = getTextColor();
-            chart.options.scales.r.pointLabels.color = getTextColor();
-            chart.options.plugins.title.color = getTextColor();
-            chart.update();
+            updateChartColors();
         } else {
             const ctx = document.getElementById('radarChart').getContext('2d');
             chart = new Chart(ctx, {
@@ -176,45 +179,30 @@ document.addEventListener('DOMContentLoaded', function() {
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    layout: {
-                        padding: {
-                            top: 20,
-                            right: 20,
-                            bottom: 20,
-                            left: 20
-                        }
-                    },
-                    elements: {
-                        line: {
-                            tension: 0.1
-                        },
-                        point: {
-                            radius: 3,
-                            hitRadius: 10,
-                            hoverRadius: 5
-                        }
-                    },
                     scales: {
                         r: {
                             angleLines: {
                                 display: true,
                                 color: getGridColor
                             },
+                            grid: {
+                                color: getGridColor
+                            },
                             suggestedMin: 0,
                             suggestedMax: 100,
-                            max: 100,
                             ticks: {
                                 stepSize: 25,
-                                display: true,
                                 color: getTextColor,
-                                backdropColor: 'transparent'
+                                backdropColor: 'transparent',
+                                font: {
+                                    size: window.innerWidth < 768 ? 10 : 12
+                                },
+                                showLabelBackdrop: false
                             },
                             pointLabels: {
                                 font: {
-                                    size: 12,
-                                    family: 'Poppins, sans-serif'
+                                    size: window.innerWidth < 768 ? 12 : 14
                                 },
-                                padding: 10,
                                 color: getTextColor
                             }
                         }
@@ -224,31 +212,28 @@ document.addEventListener('DOMContentLoaded', function() {
                             display: true,
                             text: 'Change Pattern Visualization',
                             font: {
-                                size: 18,
-                                weight: 'bold',
-                                family: 'Poppins, sans-serif'
-                            },
-                            padding: {
-                                top: 10,
-                                bottom: 30
+                                size: window.innerWidth < 768 ? 18 : 20
                             },
                             color: getTextColor
                         },
                         legend: {
                             display: false
                         }
-                    },
-                    animation: {
-                        duration: 500,
-                        easing: 'easeInOutQuart'
                     }
                 }
             });
         }
 
-        // Generate analysis summary
+        updateAnalysisSummary();
+        chartProcessed = true;
+        updateChartButton.classList.remove('needs-update');
+        analyzeScenarioButton.disabled = false;
+    }
+
+    function updateAnalysisSummary() {
+        const changeTitle = changeTitleInput.value || 'Untitled Change';
         const summary = document.getElementById('analysisSummary');
-        summary.innerHTML = `<h3>Analysis Summary for "${changeTitle}"</h3>`;
+        summary.innerHTML = `<h3>Gradient Values for "${changeTitle}"</h3>`;
         gradients.forEach((gradient, index) => {
             const value = index % 2 === 0 ? 100 - tempValues[index/2] : tempValues[Math.floor(index/2)];
             summary.innerHTML += `
@@ -259,17 +244,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Dark mode toggle
     darkModeToggle.addEventListener('change', function() {
         document.body.classList.toggle('dark-mode', this.checked);
-        if (chart) {
-            chart.options.scales.r.grid.color = getGridColor();
-            chart.update();
+        updateChartColors();
+        if (chartProcessed) {
+            updateChart();
         }
-        updateChart(); // Update chart colors based on dark mode
     });
 
-    // Show export options
     function showExportOptions() {
         const exportOptions = document.createElement('div');
         exportOptions.className = 'export-options';
@@ -283,7 +265,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('exportCSV').addEventListener('click', () => exportResults('csv'));
         document.getElementById('exportJSON').addEventListener('click', () => exportResults('json'));
 
-        // Close export options when clicking outside
         document.addEventListener('click', (e) => {
             if (!exportOptions.contains(e.target) && e.target !== exportButton) {
                 document.body.removeChild(exportOptions);
@@ -291,7 +272,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Export functionality
     function exportResults(format) {
         const changeTitle = changeTitleInput.value || 'Untitled Change';
 
@@ -337,7 +317,19 @@ document.addEventListener('DOMContentLoaded', function() {
             value: index % 2 === 0 ? 100 - tempValues[index/2] : tempValues[Math.floor(index/2)]
         }));
 
-        aiAnalysisResult.innerHTML = '<p>Analyzing scenario... Please wait.</p>';
+        const aiAnalysisResult = document.getElementById('aiAnalysisResult');
+        aiAnalysisResult.innerHTML = `
+            <div class="loading-message">
+                <p><span class="loading-spinner"></span>Generating AI analysis using gpt-4o-mini model… Please wait.</p>
+                <div class="loading-steps">
+                    <div class="step step-1">Establishing baseline analysis...</div>
+                    <div class="step step-2">Comparing with user input...</div>
+                    <div class="step step-3">Identifying significant deviations...</div>
+                    <div class="step step-4">Generating insights and alternate scenarios...</div>
+                </div>
+            </div>`;
+
+        scrollToAIAnalysis();
 
         fetch('/analyze_scenario', {
             method: 'POST',
@@ -352,20 +344,73 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             if (data.error) {
-                aiAnalysisResult.innerHTML = `<p>Error: ${data.error}</p>`;
+                aiAnalysisResult.innerHTML = `<p class="error-message">Error: ${data.error}</p>`;
             } else {
                 aiAnalysisResult.innerHTML = `
                     <h4>AI Analysis for "${changeTitle}"</h4>
                     <br>
-                    <p>${data.analysis.replace(/\n/g, '<br>')}</p>
+                    <div class="analysis-content">${data.analysis.replace(/\n/g, '<br>')}</div>
                 `;
             }
         })
         .catch((error) => {
-            aiAnalysisResult.innerHTML = `<p>Error: ${error.message}</p>`;
+            console.error('Error:', error);
+            aiAnalysisResult.innerHTML = '<p class="error-message">An error occurred while analyzing the scenario. Please try again.</p>';
         });
     }
 
-    setTimeout(updateChart, 0);
-    document.querySelectorAll('.slider').forEach(updatePercentages);
+    function scrollToAIAnalysis() {
+        const aiAnalysisElement = document.querySelector('.ai-analysis-card');
+        if (aiAnalysisElement) {
+            aiAnalysisElement.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    function resetSliders() {
+        document.querySelectorAll('.slider').forEach(slider => {
+            slider.value = 50;
+            updatePercentages(slider);
+        });
+        tempValues = Array(gradients.length / 2).fill(50);
+        chartProcessed = false;
+        analyzeScenarioButton.disabled = true;
+        analyzeScenarioButton.title = "Process gradients first to enable AI Analysis";
+        aiButtonHint.style.display = "block";
+        indicateChartNeedsUpdate();
+    }
+
+    function indicateChartNeedsUpdate() {
+        updateChartButton.classList.add('needs-update');
+        chartProcessed = false;
+        analyzeScenarioButton.disabled = true;
+        aiButtonHint.style.display = "block";
+    }
+
+    function showPopup(message) {
+        const popup = document.createElement('div');
+        popup.className = 'popup';
+        popup.innerHTML = `
+            <div class="popup-content">
+                <p>${message}</p>
+                <button class="close-popup-btn">OK</button>
+            </div>
+        `;
+        document.body.appendChild(popup);
+
+        const closeBtn = popup.querySelector('.close-popup-btn');
+        closeBtn.addEventListener('click', () => {
+            document.body.removeChild(popup);
+        });
+    }
+
+    window.addEventListener('resize', () => {
+        if (chart) {
+            chart.options.scales.r.ticks.font.size = window.innerWidth < 768 ? 10 : 12;
+            chart.options.scales.r.pointLabels.font.size = window.innerWidth < 768 ? 12 : 14;
+            chart.options.plugins.title.font.size = window.innerWidth < 768 ? 18 : 20;
+            chart.update();
+        }
+    });
+
+    updateChart();
 });
