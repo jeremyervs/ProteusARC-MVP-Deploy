@@ -36,6 +36,18 @@ document.addEventListener('DOMContentLoaded', function() {
     let tempValues = Array(gradients.length / 2).fill(50);
     let chartProcessed = false;
 
+    analyzeScenarioButton.disabled = true;
+    analyzeScenarioButton.title = "Process gradients first to enable AI Analysis";
+
+    const buttonGroup = document.querySelector('.button-group');
+    const aiButtonHint = document.createElement('small');
+    aiButtonHint.textContent = "Process gradients to enable AI Analysis";
+    aiButtonHint.style.display = "block";
+    aiButtonHint.style.marginTop = "5px";
+    aiButtonHint.style.color = "var(--text-color)";
+    aiButtonHint.style.opacity = "0.7";
+    buttonGroup.appendChild(aiButtonHint);
+
     for (let i = 0; i < gradients.length; i += 2) {
         const sliderContainer = document.createElement('div');
         sliderContainer.className = 'slider-container';
@@ -94,16 +106,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    updateChartButton.addEventListener('click', updateChart);
+    updateChartButton.addEventListener('click', function() {
+        updateChart();
+        chartProcessed = true;
+        analyzeScenarioButton.disabled = false;
+        analyzeScenarioButton.title = "Analyze the current scenario";
+        aiButtonHint.style.display = "none";
+    });
 
     analyzeScenarioButton.addEventListener('click', function() {
-        console.log('AI Analysis button clicked');
-        console.log('chartProcessed:', chartProcessed);
         if (chartProcessed) {
             analyzeScenario();
-        } else {
-            console.log('Showing popup');
-            showPopup('Please process the gradients first by clicking the "Process Gradients" button.');
         }
     });
 
@@ -209,7 +222,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         updateAnalysisSummary();
         chartProcessed = true;
-        console.log('Chart processed:', chartProcessed);
         updateChartButton.classList.remove('needs-update');
         analyzeScenarioButton.disabled = false;
     }
@@ -360,20 +372,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         tempValues = Array(gradients.length / 2).fill(50);
         chartProcessed = false;
-        console.log('Sliders reset, chartProcessed:', chartProcessed);
         analyzeScenarioButton.disabled = true;
+        analyzeScenarioButton.title = "Process gradients first to enable AI Analysis";
+        aiButtonHint.style.display = "block";
         indicateChartNeedsUpdate();
     }
 
     function indicateChartNeedsUpdate() {
         updateChartButton.classList.add('needs-update');
         chartProcessed = false;
-        console.log('Chart needs update, chartProcessed:', chartProcessed);
         analyzeScenarioButton.disabled = true;
     }
 
     function showPopup(message) {
-        console.log('Showing popup with message:', message);
         const popup = document.createElement('div');
         popup.className = 'popup';
         popup.innerHTML = `
@@ -400,5 +411,4 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     updateChart();
-    analyzeScenarioButton.disabled = true;
 });
