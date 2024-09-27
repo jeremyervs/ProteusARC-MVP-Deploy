@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (chartProcessed) {
             analyzeScenario();
         } else {
-            alert('Please process the gradients first by clicking the "Process Gradients" button.');
+            showPopup('Please process the gradients first by clicking the "Process Gradients" button.');
         }
     });
 
@@ -364,6 +364,23 @@ document.addEventListener('DOMContentLoaded', function() {
         updateChartButton.classList.add('needs-update');
         chartProcessed = false;
         analyzeScenarioButton.disabled = true;
+    }
+
+    function showPopup(message) {
+        const popup = document.createElement('div');
+        popup.className = 'popup';
+        popup.innerHTML = `
+            <div class="popup-content">
+                <p>${message}</p>
+                <button class="close-popup-btn">OK</button>
+            </div>
+        `;
+        document.body.appendChild(popup);
+
+        const closeBtn = popup.querySelector('.close-popup-btn');
+        closeBtn.addEventListener('click', () => {
+            document.body.removeChild(popup);
+        });
     }
 
     window.addEventListener('resize', () => {
