@@ -608,3 +608,12 @@ body.dark-mode .chart-js-tooltip {
     color: var(--text-color);
     background-color: var(--card-bg);
 }
+
+#radarChart {
+    color: var(--text-color);
+}
+
+.chart-js-tooltip {
+    color: var(--text-color);
+    background-color: var(--card-bg);
+}
