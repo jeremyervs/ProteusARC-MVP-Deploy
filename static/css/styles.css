@@ -591,3 +591,20 @@ body.dark-mode .error-message {
 body.dark-mode #aiButtonHint {
     background-color: var(--border-color);
 }
+
+.chart-card {
+    background-color: var(--card-bg);
+}
+
+body.dark-mode .chart-card {
+    background-color: var(--card-bg);
+}
+
+body.dark-mode #radarChart {
+    color: var(--text-color);
+}
+
+body.dark-mode .chart-js-tooltip {
+    color: var(--text-color);
+    background-color: var(--card-bg);
+}

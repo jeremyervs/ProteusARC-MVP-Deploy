@@ -139,6 +139,16 @@ document.addEventListener('DOMContentLoaded', function() {
         return document.body.classList.contains('dark-mode') ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)';
     }
 
+    function updateChartColors() {
+        if (chart) {
+            chart.options.scales.r.grid.color = getGridColor();
+            chart.options.scales.r.ticks.color = getTextColor();
+            chart.options.scales.r.pointLabels.color = getTextColor();
+            chart.options.plugins.title.color = getTextColor();
+            chart.update();
+        }
+    }
+
     function updateChart() {
         const changeTitle = changeTitleInput.value || 'Untitled Change';
 
@@ -160,11 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (chart) {
             chart.data = data;
-            chart.options.scales.r.grid.color = getGridColor();
-            chart.options.scales.r.ticks.color = getTextColor();
-            chart.options.scales.r.pointLabels.color = getTextColor();
-            chart.options.plugins.title.color = getTextColor();
-            chart.update();
+            updateChartColors();
         } else {
             const ctx = document.getElementById('radarChart').getContext('2d');
             chart = new Chart(ctx, {
@@ -240,10 +246,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     darkModeToggle.addEventListener('change', function() {
         document.body.classList.toggle('dark-mode', this.checked);
-        if (chart) {
-            chart.options.scales.r.grid.color = getGridColor();
-            chart.update();
-        }
+        updateChartColors();
         if (chartProcessed) {
             updateChart();
         }
