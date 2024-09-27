@@ -20,6 +20,19 @@ document.addEventListener('DOMContentLoaded', function() {
         { label: 'Deliberate', def: 'Change that is carefully planned and executed, based on extensive research, strategy, and intentional actions.' }
     ];
 
+    const chartLabels = [
+        'EN (P1)', 'EX (P2)', 'ST (P3)', 'TR (P4)', 'TX (P5)', 'CN (P6)', 'IN (P7)', 'CO (P8)',
+        'PA (P9)', 'VI (P10)', 'TD (P11)', 'BU (P12)', 'DO (P13)', 'PT (P14)', 'TN (P15)', 'VI (P16)',
+        'AC (P17)', 'DE (P18)'
+    ];
+
+    const gradientValuesLabels = [
+        'Endogenous (P1)', 'Exogenous (P2)', 'Stable (P3)', 'Transformational (P4)', 'Transactional (P5)',
+        'Continuing (P6)', 'Individual (P7)', 'Community (P8)', 'Passive (P9)', 'Violent (P10)',
+        'Top Down (P11)', 'Bottom Up (P12)', 'Dominant (P13)', 'Partnership (P14)', 'Trend (P15)',
+        'Vision (P16)', 'Accidental (P17)', 'Deliberate (P18)'
+    ];
+
     const slidersContainer = document.getElementById('sliders');
     const updateChartButton = document.getElementById('updateChartButton');
     const analyzeScenarioButton = document.getElementById('analyzeScenarioButton');
@@ -153,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const changeTitle = changeTitleInput.value || 'Untitled Change';
 
         const data = {
-            labels: gradients.map(g => g.label),
+            labels: chartLabels,
             datasets: [{
                 label: changeTitle,
                 data: tempValues.flatMap(v => [100 - v, v]),
@@ -234,11 +247,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const changeTitle = changeTitleInput.value || 'Untitled Change';
         const summary = document.getElementById('analysisSummary');
         summary.innerHTML = `<h3>Gradient Values for "${changeTitle}"</h3>`;
-        gradients.forEach((gradient, index) => {
+        gradientValuesLabels.forEach((label, index) => {
             const value = index % 2 === 0 ? 100 - tempValues[index/2] : tempValues[Math.floor(index/2)];
             summary.innerHTML += `
                 <div class="summary-item">
-                    <p><strong>${gradient.label}:</strong> ${value}%</p>
+                    <p><strong>${label}:</strong> ${value}%</p>
                 </div>
             `;
         });
@@ -279,9 +292,9 @@ document.addEventListener('DOMContentLoaded', function() {
             let csvContent = "data:text/csv;charset=utf-8,";
             csvContent += `Change Title: ${changeTitle}\n\n`;
             csvContent += "Gradient,Value\n";
-            gradients.forEach((gradient, index) => {
+            gradientValuesLabels.forEach((label, index) => {
                 const value = index % 2 === 0 ? 100 - tempValues[index/2] : tempValues[Math.floor(index/2)];
-                csvContent += `"${gradient.label}",${value}\n`;
+                csvContent += `"${label}",${value}\n`;
             });
 
             const encodedUri = encodeURI(csvContent);
@@ -289,8 +302,8 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (format === 'json') {
             const jsonContent = {
                 changeTitle,
-                results: gradients.map((gradient, index) => ({
-                    gradient: gradient.label,
+                results: gradientValuesLabels.map((label, index) => ({
+                    gradient: label,
                     value: index % 2 === 0 ? 100 - tempValues[index/2] : tempValues[Math.floor(index/2)]
                 }))
             };
@@ -320,13 +333,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const aiAnalysisResult = document.getElementById('aiAnalysisResult');
         aiAnalysisResult.innerHTML = `
             <div class="loading-message">
-                <p><span class="loading-spinner"></span>Generating AI analysis using gpt-4o-mini model… Please wait.</p>
-                <div class="loading-steps">
-                    <div class="step step-1">Establishing baseline analysis...</div>
-                    <div class="step step-2">Comparing with user input...</div>
-                    <div class="step step-3">Identifying significant deviations...</div>
-                    <div class="step step-4">Generating insights and alternate scenarios...</div>
-                </div>
+                <p><span class="loading-spinner"></span>Generating AI analysis… Please wait.</p>
             </div>`;
 
         scrollToAIAnalysis();

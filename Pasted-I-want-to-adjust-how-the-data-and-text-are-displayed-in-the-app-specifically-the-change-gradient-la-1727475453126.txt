@@ -1,0 +1,49 @@
+I want to adjust how the data and text are displayed in the app, specifically the change gradient labels.
+
+Within the Change Gradients window I would like the change gradient labels to all stay exactly how they are.
+
+However, specifically within the Change Pattern Visualization window, I’d like to adjust how the change gradient labels are represented around the radar chart. I specifically want:
+
+Endogenous will now be represented as EN (P1).
+Exogenous will now be represented as EX (P2).
+Stable will now be represented as ST (P3).
+Transformational will now be represented as TR (P4).
+Transactional will now be represented as TX (P5).
+Continuing will now be represented as CN (P6).
+Individual will now be represented as IN (P7).
+Community will now be represented as CO (P8).
+Passive will now be represented as PA (P9).
+Violent will now be represented as VI( P10).
+Top Down swill now be represented as TD (P11).
+Bottom Up will now be represented as BU (P12).
+Dominant will now be represented as DO (P13).
+Partnership will now be represented as PT (P14).
+Trend will now be represented as TN (P15).
+Vision will now be represented as VI (P16).
+Accidental will now be represented as AC (P17).
+Deliberate will now be represented aa DE (P18).
+
+Additionally, in the Gradient Values window I’d like to adjust how the change gradient labels are represented around the radar chart. I specifically want:
+
+Endogenous will now be represented as Endogenous (P1).
+Exogenous will now be represented as Exogenous (P2).
+Stable will now be represented as Stable (P3).
+Transformational will now be represented as Transformational (P4).
+Transactional will now be represented as Transactional (P5).
+Continuing will now be represented as Continuing (P6).
+Individual will now be represented as Individual (P7).
+Community will now be represented as Community (P8).
+Passive will now be represented as Passive (P9).
+Violent will now be represented as Violent ( P10).
+Top Down swill now be represented as Top Down (P11).
+Bottom Up will now be represented as Bottom Up (P12).
+Dominant will now be represented as Dominant (P13).
+Partnership will now be represented as Partnership (P14).
+Trend will now be represented as Trend (P15).
+Vision will now be represented as Vision (P16).
+Accidental will now be represented as Accidental (P17).
+Deliberate will now be represented aa Deliberate (P18).
+
+Within the AI Analysis window I would like the change gradient labels via the AI model output to all stay exactly how they are now.
+
+VERY IMPORTANT: The current logic, order, and correlations within the app must all remain the same. We’re only changing how the change gradients labels are represented in different window, but the core logic and associations remain the same.
