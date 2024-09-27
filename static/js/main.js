@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
     ];
 
     function getTextColor() {
-        return document.body.classList.contains('dark-mode') ? '#ffffff' : '#333333';
+        return getComputedStyle(document.documentElement).getPropertyValue('--chart-text-color').trim();
     }
 
     function getGridColor() {
@@ -49,6 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (chart) {
             chart.data = data;
+            chart.options.scales.r.grid.color = getGridColor();
             chart.options.scales.r.ticks.color = getTextColor();
             chart.options.scales.r.pointLabels.color = getTextColor();
             chart.options.plugins.title.color = getTextColor();
