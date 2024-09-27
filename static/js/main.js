@@ -94,13 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    updateChartButton.addEventListener('click', function() {
-        updateChart();
-        updateAnalysisSummary();
-        chartProcessed = true;
-        analyzeScenarioButton.disabled = false;
-        updateChartButton.classList.remove('needs-update');
-    });
+    updateChartButton.addEventListener('click', updateChart);
 
     analyzeScenarioButton.addEventListener('click', function() {
         if (chartProcessed) {
@@ -141,12 +135,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 data: tempValues.flatMap(v => [100 - v, v]),
                 fill: true,
                 backgroundColor: 'rgba(74, 144, 226, 0.2)',
-                borderColor: 'transparent',
-                pointBackgroundColor: 'transparent',
-                pointBorderColor: 'transparent',
-                borderWidth: 0,
-                pointRadius: 0,
-                pointHoverRadius: 0,
+                borderColor: 'rgba(74, 144, 226, 1)',
+                pointBackgroundColor: 'rgba(74, 144, 226, 1)',
+                borderWidth: 2,
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: 'rgba(74, 144, 226, 1)'
             }]
         };
 
@@ -208,6 +202,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 options: chartOptions
             });
         }
+
+        updateAnalysisSummary();
+        chartProcessed = true;
+        updateChartButton.classList.remove('needs-update');
+        analyzeScenarioButton.disabled = false;
     }
 
     function updateAnalysisSummary() {
@@ -375,9 +374,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Initialize the chart as empty
     updateChart();
-    
-    // Disable the AI Analysis button initially
     analyzeScenarioButton.disabled = true;
 });
