@@ -420,7 +420,7 @@ body.dark-mode .experimental-tag {
         display: flex;
         justify-content: space-between;
         width: 100%;
-        padding: 0 20px;
+        padding: 0;
         margin: 20px 0;
     }
 
@@ -432,7 +432,11 @@ body.dark-mode .experimental-tag {
     }
 
     #resetButton {
-        max-width: none;
+        margin-left: 0;
+    }
+
+    #analyzeScenarioButton {
+        margin-right: 0;
     }
 }
 
