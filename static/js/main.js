@@ -40,13 +40,11 @@ document.addEventListener('DOMContentLoaded', function() {
     analyzeScenarioButton.title = "Process gradients first to enable AI Analysis";
 
     const buttonGroup = document.querySelector('.button-group');
-    const aiButtonHint = document.createElement('small');
+    const aiButtonHint = document.createElement('div');
+    aiButtonHint.id = 'aiButtonHint';
     aiButtonHint.textContent = "Process gradients to enable AI Analysis";
     aiButtonHint.style.display = "block";
-    aiButtonHint.style.marginTop = "5px";
-    aiButtonHint.style.color = "var(--text-color)";
-    aiButtonHint.style.opacity = "0.7";
-    buttonGroup.appendChild(aiButtonHint);
+    buttonGroup.insertAdjacentElement('afterend', aiButtonHint);
 
     for (let i = 0; i < gradients.length; i += 2) {
         const sliderContainer = document.createElement('div');
@@ -382,6 +380,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateChartButton.classList.add('needs-update');
         chartProcessed = false;
         analyzeScenarioButton.disabled = true;
+        aiButtonHint.style.display = "block";
     }
 
     function showPopup(message) {

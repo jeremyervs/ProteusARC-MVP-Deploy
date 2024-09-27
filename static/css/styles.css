@@ -571,3 +571,23 @@ body.dark-mode .error-message {
 .close-popup-btn:hover {
     background-color: var(--gradient-end);
 }
+
+#aiButtonHint {
+    text-align: center;
+    margin-top: 10px;
+    padding: 5px;
+    background-color: var(--secondary-color);
+    border-radius: 5px;
+    font-size: 14px;
+    color: var(--text-color);
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+#aiButtonHint:hover {
+    opacity: 1;
+}
+
+body.dark-mode #aiButtonHint {
+    background-color: var(--border-color);
+}
