@@ -97,9 +97,12 @@ document.addEventListener('DOMContentLoaded', function() {
     updateChartButton.addEventListener('click', updateChart);
 
     analyzeScenarioButton.addEventListener('click', function() {
+        console.log('AI Analysis button clicked');
+        console.log('chartProcessed:', chartProcessed);
         if (chartProcessed) {
             analyzeScenario();
         } else {
+            console.log('Showing popup');
             showPopup('Please process the gradients first by clicking the "Process Gradients" button.');
         }
     });
@@ -206,6 +209,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         updateAnalysisSummary();
         chartProcessed = true;
+        console.log('Chart processed:', chartProcessed);
         updateChartButton.classList.remove('needs-update');
         analyzeScenarioButton.disabled = false;
     }
@@ -356,6 +360,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         tempValues = Array(gradients.length / 2).fill(50);
         chartProcessed = false;
+        console.log('Sliders reset, chartProcessed:', chartProcessed);
         analyzeScenarioButton.disabled = true;
         indicateChartNeedsUpdate();
     }
@@ -363,10 +368,12 @@ document.addEventListener('DOMContentLoaded', function() {
     function indicateChartNeedsUpdate() {
         updateChartButton.classList.add('needs-update');
         chartProcessed = false;
+        console.log('Chart needs update, chartProcessed:', chartProcessed);
         analyzeScenarioButton.disabled = true;
     }
 
     function showPopup(message) {
+        console.log('Showing popup with message:', message);
         const popup = document.createElement('div');
         popup.className = 'popup';
         popup.innerHTML = `
