@@ -134,13 +134,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 label: changeTitle,
                 data: tempValues.flatMap(v => [100 - v, v]),
                 fill: true,
-                backgroundColor: 'rgba(74, 144, 226, 0.2)',
-                borderColor: 'rgba(74, 144, 226, 1)',
-                pointBackgroundColor: 'rgba(74, 144, 226, 1)',
-                borderWidth: 2,
-                pointBorderColor: '#fff',
-                pointHoverBackgroundColor: '#fff',
-                pointHoverBorderColor: 'rgba(74, 144, 226, 1)'
+                backgroundColor: document.body.classList.contains('dark-mode') ? 'rgba(99, 179, 237, 0.4)' : 'rgba(74, 144, 226, 0.2)',
+                borderColor: 'transparent',
+                pointBackgroundColor: 'transparent',
+                pointBorderColor: 'transparent',
+                borderWidth: 0,
+                pointRadius: 0,
+                pointHoverRadius: 0,
             }]
         };
 
