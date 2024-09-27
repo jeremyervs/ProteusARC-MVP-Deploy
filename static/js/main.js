@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let chart = null;
     let tempValues = Array(gradients.length / 2).fill(50);
+    let chartProcessed = false;
 
     for (let i = 0; i < gradients.length; i += 2) {
         const sliderContainer = document.createElement('div');
@@ -69,6 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
         slider.addEventListener('input', function() {
             updatePercentages(this);
             tempValues[parseInt(this.id.split('-')[1])] = parseInt(this.value);
+            indicateChartNeedsUpdate();
         });
     }
 
@@ -94,10 +96,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     updateChartButton.addEventListener('click', function() {
         updateChart();
+        updateAnalysisSummary();
+        chartProcessed = true;
+        analyzeScenarioButton.disabled = false;
+        updateChartButton.classList.remove('needs-update');
     });
 
     analyzeScenarioButton.addEventListener('click', function() {
-        analyzeScenario();
+        if (chartProcessed) {
+            analyzeScenario();
+        } else {
+            alert('Please process the gradients first by clicking the "Process Gradients" button.');
+        }
     });
 
     exportButton.addEventListener('click', showExportOptions);
@@ -198,7 +208,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 options: chartOptions
             });
         }
+    }
 
+    function updateAnalysisSummary() {
+        const changeTitle = changeTitleInput.value || 'Untitled Change';
         const summary = document.getElementById('analysisSummary');
         summary.innerHTML = `<h3>Gradient Values for "${changeTitle}"</h3>`;
         gradients.forEach((gradient, index) => {
@@ -217,7 +230,9 @@ document.addEventListener('DOMContentLoaded', function() {
             chart.options.scales.r.grid.color = getGridColor();
             chart.update();
         }
-        updateChart();
+        if (chartProcessed) {
+            updateChart();
+        }
     });
 
     function showExportOptions() {
@@ -340,7 +355,15 @@ document.addEventListener('DOMContentLoaded', function() {
             updatePercentages(slider);
         });
         tempValues = Array(gradients.length / 2).fill(50);
-        updateChart();
+        chartProcessed = false;
+        analyzeScenarioButton.disabled = true;
+        indicateChartNeedsUpdate();
+    }
+
+    function indicateChartNeedsUpdate() {
+        updateChartButton.classList.add('needs-update');
+        chartProcessed = false;
+        analyzeScenarioButton.disabled = true;
     }
 
     window.addEventListener('resize', () => {
@@ -352,5 +375,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    setTimeout(updateChart, 0);
+    // Initialize the chart as empty
+    updateChart();
+    
+    // Disable the AI Analysis button initially
+    analyzeScenarioButton.disabled = true;
 });
