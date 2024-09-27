@@ -398,6 +398,7 @@ body.dark-mode .moon-icon {
     max-height: 400px;
     overflow-y: auto;
     margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .experimental-tag {
@@ -623,4 +624,10 @@ body.dark-mode #radarChart {
 body.dark-mode .chart-js-tooltip {
     color: var(--text-color);
     background-color: var(--card-bg);
+}
+
+#lineChart {
+    width: 100%;
+    height: 400px;
+    margin-top: 20px;
 }

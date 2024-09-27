@@ -323,6 +323,56 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.removeChild(link);
     }
 
+    function createLineChart(aiBaseline, userValues) {
+        const ctx = document.getElementById('lineChart').getContext('2d');
+        
+        if (window.lineChart instanceof Chart) {
+            window.lineChart.destroy();
+        }
+
+        window.lineChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: gradientValuesLabels,
+                datasets: [
+                    {
+                        label: 'AI Baseline',
+                        data: aiBaseline,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        tension: 0.1
+                    },
+                    {
+                        label: 'User Values',
+                        data: userValues,
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        tension: 0.1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'AI Baseline vs User Values',
+                        font: {
+                            size: 16
+                        }
+                    }
+                }
+            }
+        });
+    }
+
     function analyzeScenario() {
         const changeTitle = changeTitleInput.value || 'Untitled Change';
         const gradientValues = gradients.map((gradient, index) => ({
@@ -357,7 +407,20 @@ document.addEventListener('DOMContentLoaded', function() {
                     <h4>AI Analysis for "${changeTitle}"</h4>
                     <br>
                     <div class="analysis-content">${data.analysis.replace(/\n/g, '<br>')}</div>
+                    <canvas id="lineChart" style="width:100%;height:400px;"></canvas>
                 `;
+
+                const aiBaselineMatch = data.analysis.match(/BASELINE ANALYSIS:([\s\S]*?)(?:ALIGNMENT|$)/);
+                let aiBaselineValues = [];
+                if (aiBaselineMatch) {
+                    const baselineText = aiBaselineMatch[1];
+                    aiBaselineValues = gradientValuesLabels.map(label => {
+                        const match = baselineText.match(new RegExp(`${label.split(' ')[0]}.*?(\\d+)`));
+                        return match ? parseInt(match[1]) : 0;
+                    });
+                }
+
+                createLineChart(aiBaselineValues, gradientValues.map(g => g.value));
             }
         })
         .catch((error) => {
