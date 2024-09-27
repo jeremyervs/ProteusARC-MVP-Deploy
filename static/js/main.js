@@ -144,62 +144,63 @@ document.addEventListener('DOMContentLoaded', function() {
             }]
         };
 
-        const chartOptions = {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                r: {
-                    angleLines: {
-                        display: true,
-                        color: getGridColor
-                    },
-                    grid: {
-                        color: getGridColor
-                    },
-                    suggestedMin: 0,
-                    suggestedMax: 100,
-                    ticks: {
-                        stepSize: 25,
-                        color: getTextColor,
-                        backdropColor: 'transparent',
-                        font: {
-                            size: window.innerWidth < 768 ? 10 : 12
-                        },
-                        showLabelBackdrop: false
-                    },
-                    pointLabels: {
-                        font: {
-                            size: window.innerWidth < 768 ? 12 : 14
-                        },
-                        color: getTextColor
-                    }
-                }
-            },
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Change Pattern Visualization',
-                    font: {
-                        size: window.innerWidth < 768 ? 18 : 20
-                    },
-                    color: getTextColor
-                },
-                legend: {
-                    display: false
-                }
-            }
-        };
-
         if (chart) {
             chart.data = data;
-            chart.options = chartOptions;
+            chart.options.scales.r.grid.color = getGridColor();
+            chart.options.scales.r.ticks.color = getTextColor();
+            chart.options.scales.r.pointLabels.color = getTextColor();
+            chart.options.plugins.title.color = getTextColor();
             chart.update();
         } else {
             const ctx = document.getElementById('radarChart').getContext('2d');
             chart = new Chart(ctx, {
                 type: 'radar',
                 data: data,
-                options: chartOptions
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: true,
+                                color: getGridColor
+                            },
+                            grid: {
+                                color: getGridColor
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 100,
+                            ticks: {
+                                stepSize: 25,
+                                color: getTextColor,
+                                backdropColor: 'transparent',
+                                font: {
+                                    size: window.innerWidth < 768 ? 10 : 12
+                                },
+                                showLabelBackdrop: false
+                            },
+                            pointLabels: {
+                                font: {
+                                    size: window.innerWidth < 768 ? 12 : 14
+                                },
+                                color: getTextColor
+                            }
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Change Pattern Visualization',
+                            font: {
+                                size: window.innerWidth < 768 ? 18 : 20
+                            },
+                            color: getTextColor
+                        },
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
             });
         }
 
