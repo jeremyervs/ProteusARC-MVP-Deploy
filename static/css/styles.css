@@ -419,6 +419,9 @@ body.dark-mode .experimental-tag {
     .button-group {
         display: flex;
         justify-content: space-between;
+        width: 100%;
+        padding: 0 20px;
+        margin: 20px 0;
     }
 
     #resetButton,
@@ -600,20 +603,20 @@ body.dark-mode .chart-card {
     background-color: var(--card-bg);
 }
 
-body.dark-mode #radarChart {
-    color: var(--text-color);
-}
-
-body.dark-mode .chart-js-tooltip {
-    color: var(--text-color);
-    background-color: var(--card-bg);
-}
-
 #radarChart {
     color: var(--text-color);
 }
 
+body.dark-mode #radarChart {
+    color: var(--text-color);
+}
+
 .chart-js-tooltip {
+    color: var(--text-color);
+    background-color: var(--card-bg);
+}
+
+body.dark-mode .chart-js-tooltip {
     color: var(--text-color);
     background-color: var(--card-bg);
 }
