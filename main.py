@@ -60,27 +60,13 @@ def analyze_scenario():
     data: Dict[str, Any] = request.json or {}
     change_title: str = data.get('changeTitle', 'Untitled Change')
     gradient_values: List[Dict[str, Any]] = data.get('gradientValues', [])
-    change_type: str = data.get('changeType', 'current')  # Default to 'current' if not provided
-
-    # Input validation
-    if not gradient_values:
-        return jsonify({"error": "No gradient values provided."}), 400
-
-    for gradient in gradient_values:
-        value = gradient.get('value')
-        if value is None or not (0 <= value <= 100):
-            return jsonify({"error": f"Invalid value for {gradient['gradient']}. Please provide a number between 0 and 100."}), 400
 
     # Construct the prompt for OpenAI
-    prompt = f"You are analyzing a {change_type} change scenario titled '{change_title}'.\n\n"
+    prompt = f"You are analyzing a change scenario titled '{change_title}'.\n\n"
     prompt += "Definitions of Change Gradients:\n"
     for gradient in gradient_values:
         definition = gradient_definitions.get(gradient['gradient'], '')
         prompt += f"{gradient['gradient']}: {definition}\n"
-    
-    prompt += "\nUser's gradient values:\n"
-    for gradient in gradient_values:
-        prompt += f"{gradient['gradient']}: {gradient['value']}%\n"
 
     prompt += "\nImportant: The change gradients are organized into dependent pairs. Each pair represents opposite ends of a spectrum, and the total combined value for each pair must equal 100. The pairs are:\n"
     for pair in gradient_pairs:
@@ -88,14 +74,11 @@ def analyze_scenario():
 
     prompt += "\nPlease perform the following steps:\n"
     prompt += "1. Establish your own baseline analysis of the change being examined by assigning a score (0-100) to each gradient based on widely accepted current knowledge. Ensure that for each pair, the sum of the two values equals 100. Be sure to label this section as BASELINE ANALYSIS.\n"
-    prompt += "2. Compare your baseline scores with the user's scores and assess the alignment. Be sure to label this section as ALIGNMENT and present the output in paragraph form.\n"
-    prompt += "3. Explain any significant deviations in a clear and understandable manner. Be sure to label this section as DEVIATIONS.\n"
-    prompt += "4. Craft a potential alternate scenario based on these deviations. Be sure to label this section as ALTERNATE SCENARIO.\n"
-    prompt += "5. Provide an overall summary of your findings, ensuring to address key insights and recommendations. Be sure to label this section as OVERALL SUMMARY and present the output in paragraph form.\n"
-    prompt += "6. Present your response efficiently yet sufficiently in plain text. Do not use any Markdown formatting.\n"
-    prompt += "7. Use proper spacing between paragraphs and sections for readability.\n"
-    prompt += "8. Use clear headings (in plain text) for each section of your analysis, ensuring to follow each heading with a colon.\n"
-    prompt += "9. Ensure there are blank lines between paragraphs and sections.\n"
+    prompt += "2. Provide an overall summary of your findings, ensuring to address key insights. Be sure to label this section as OVERALL SUMMARY and present the output in paragraph form.\n"
+    prompt += "3. Present your response efficiently yet sufficiently in plain text. Do not use any Markdown formatting.\n"
+    prompt += "4. Use proper spacing between paragraphs and sections for readability.\n"
+    prompt += "5. Use clear headings (in plain text) for each section of your analysis, ensuring to follow each heading with a colon.\n"
+    prompt += "6. Ensure there are blank lines between paragraphs and sections.\n"
 
     try:
         # Make API call to OpenAI
@@ -109,7 +92,7 @@ def analyze_scenario():
             messages=messages,
             max_tokens=1000,
             n=1,
-            temperature=0.7,
+            temperature=0.2,
         )
 
         # Extract the generated text from the API response
