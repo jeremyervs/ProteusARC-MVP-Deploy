@@ -631,3 +631,9 @@ body.dark-mode .chart-js-tooltip {
     height: 400px;
     margin-top: 20px;
 }
+
+@media (max-width: 768px) {
+    .gradient-title {
+        font-size: 2em;
+    }
+}
