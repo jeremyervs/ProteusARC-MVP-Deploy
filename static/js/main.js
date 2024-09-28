@@ -368,10 +368,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         ticks: {
                             autoSkip: false,
                             maxRotation: 90,
-                            minRotation: 90,
-                            font: {
-                                size: 10
-                            }
+                            minRotation: 90
                         }
                     }
                 },
@@ -381,13 +378,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         text: 'AI Baseline vs User Values',
                         font: {
                             size: 16
-                        }
-                    },
-                    legend: {
-                        labels: {
-                            font: {
-                                size: 12
-                            }
                         }
                     },
                     tooltip: {
