@@ -330,21 +330,32 @@ document.addEventListener('DOMContentLoaded', function() {
             window.lineChart.destroy();
         }
 
+        // Prepare data for the chart
+        const labels = [];
+        const aiData = [];
+        const userData = [];
+
+        for (let i = 0; i < gradientValuesLabels.length; i += 2) {
+            labels.push(gradientValuesLabels[i]);
+            aiData.push(aiBaseline[i]);
+            userData.push(userValues[i]);
+        }
+
         window.lineChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: gradientValuesLabels,
+                labels: labels,
                 datasets: [
                     {
                         label: 'AI Baseline',
-                        data: aiBaseline,
+                        data: aiData,
                         borderColor: 'rgba(75, 192, 192, 1)',
                         backgroundColor: 'rgba(75, 192, 192, 0.2)',
                         tension: 0.1
                     },
                     {
                         label: 'User Values',
-                        data: userValues,
+                        data: userData,
                         borderColor: 'rgba(255, 99, 132, 1)',
                         backgroundColor: 'rgba(255, 99, 132, 0.2)',
                         tension: 0.1
@@ -366,6 +377,17 @@ document.addEventListener('DOMContentLoaded', function() {
                         text: 'AI Baseline vs User Values',
                         font: {
                             size: 16
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            afterBody: function(context) {
+                                const index = context[0].dataIndex * 2;
+                                const oppositeLabel = gradientValuesLabels[index + 1];
+                                const aiValue = aiBaseline[index];
+                                const userValue = userValues[index];
+                                return `${oppositeLabel}: AI ${100 - aiValue}%, User ${100 - userValue}%`;
+                            }
                         }
                     }
                 }

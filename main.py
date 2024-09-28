@@ -36,6 +36,18 @@ gradient_definitions = {
     'Deliberate': 'Change that is carefully planned and executed, based on extensive research, strategy, and intentional actions.'
 }
 
+gradient_pairs = [
+    ('Endogenous', 'Exogenous'),
+    ('Stable', 'Transformational'),
+    ('Transactional', 'Continuing'),
+    ('Individual', 'Community'),
+    ('Passive', 'Violent'),
+    ('Top Down', 'Bottom Up'),
+    ('Dominant', 'Partnership'),
+    ('Trend', 'Vision'),
+    ('Accidental', 'Deliberate')
+]
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -70,8 +82,12 @@ def analyze_scenario():
     for gradient in gradient_values:
         prompt += f"{gradient['gradient']}: {gradient['value']}%\n"
 
+    prompt += "\nImportant: The change gradients are organized into dependent pairs. Each pair represents opposite ends of a spectrum, and the total combined value for each pair must equal 100. The pairs are:\n"
+    for pair in gradient_pairs:
+        prompt += f"- {pair[0]} / {pair[1]}\n"
+
     prompt += "\nPlease perform the following steps:\n"
-    prompt += "1. Establish your own baseline analysis of the change being examined by assigning a score (0-100) to each gradient based on widely accepted current knowledge. Be sure to label this section as BASELINE ANALYSIS.\n"
+    prompt += "1. Establish your own baseline analysis of the change being examined by assigning a score (0-100) to each gradient based on widely accepted current knowledge. Ensure that for each pair, the sum of the two values equals 100. Be sure to label this section as BASELINE ANALYSIS.\n"
     prompt += "2. Compare your baseline scores with the user's scores and assess the alignment. Be sure to label this section as ALIGNMENT and present the output in paragraph form.\n"
     prompt += "3. Explain any significant deviations in a clear and understandable manner. Be sure to label this section as DEVIATIONS.\n"
     prompt += "4. Craft a potential alternate scenario based on these deviations. Be sure to label this section as ALTERNATE SCENARIO.\n"
