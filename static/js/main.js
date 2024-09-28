@@ -347,7 +347,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         tension: 0.1
                     },
                     {
-                        label: 'User Values',
+                        label: 'User',
                         data: userData,
                         borderColor: 'rgba(255, 99, 132, 1)',
                         backgroundColor: 'rgba(255, 99, 132, 0.2)',
