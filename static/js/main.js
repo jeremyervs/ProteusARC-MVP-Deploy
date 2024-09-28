@@ -330,7 +330,6 @@ document.addEventListener('DOMContentLoaded', function() {
             window.lineChart.destroy();
         }
 
-        // Prepare data for the chart
         const labels = gradientValuesLabels;
         const aiData = aiBaseline;
         const userData = userValues;
@@ -370,7 +369,10 @@ document.addEventListener('DOMContentLoaded', function() {
                             maxRotation: 90,
                             minRotation: 90,
                             font: {
-                                size: 10
+                                size: 8
+                            },
+                            callback: function(value, index) {
+                                return this.getLabelForValue(value).split(' ')[0];
                             }
                         }
                     }
