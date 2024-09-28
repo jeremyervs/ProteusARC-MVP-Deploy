@@ -1,0 +1,29 @@
+Summary of AI Model Functionality Changes
+
+1. Removal of User Input Comparison:
+   - The previous version included user's gradient values in the prompt and asked for a comparison.
+   - In the new implementation, we've removed all references to user input in the prompt.
+   - The AI model now focuses solely on developing its own baseline analysis without considering user values.
+
+2. Prompt Modification:
+   - Updated the prompt to emphasize the creation of a baseline analysis.
+   - Added instructions for the AI to assign scores (0-100) to each gradient based on widely accepted current knowledge.
+   - Included information about gradient pairs and the requirement that each pair's values should sum to 100.
+   - Removed instructions related to comparing with user input, explaining deviations, and crafting alternate scenarios.
+   - Added specific formatting instructions for the AI's response, including the use of clear headings and proper spacing.
+
+3. API Call Adjustments:
+   - Updated the model to "gpt-4o-mini" as requested.
+   - Reduced the temperature parameter from 0.7 to 0.2 for more consistent outputs.
+   - Kept the max_tokens parameter at 1000 to allow for detailed analysis.
+
+4. Post-processing of AI Response:
+   - Implemented more robust post-processing of the AI's response:
+     a. Removing any potential Markdown formatting.
+     b. Ensuring proper spacing between paragraphs.
+     c. Making sure headings are followed by a blank line.
+
+5. Error Handling:
+   - Improved error handling to provide more informative error messages in case of API failures.
+
+These changes collectively shift the focus of the AI analysis to providing a standalone baseline assessment of the change scenario, without considering or comparing to user input. The modifications aim to produce a more consistent and clearly formatted output, enhancing readability and usefulness of the AI's analysis.
