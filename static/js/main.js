@@ -340,6 +340,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         scrollToAIAnalysis();
 
+        console.log('Sending request to /analyze_scenario with data:', JSON.stringify({
+            changeTitle: changeTitle,
+            gradientValues: gradientValues
+        }));
+
         fetch('/analyze_scenario', {
             method: 'POST',
             headers: {
@@ -350,8 +355,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 gradientValues: gradientValues
             }),
         })
-        .then(response => response.json())
+        .then(response => {
+            console.log('Response status:', response.status);
+            return response.json();
+        })
         .then(data => {
+            console.log('Received data from server:', data);
             if (data.error) {
                 aiAnalysisResult.innerHTML = `<p class="error-message">Error: ${data.error}</p>`;
             } else {
