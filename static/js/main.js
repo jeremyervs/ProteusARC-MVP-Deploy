@@ -323,72 +323,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.removeChild(link);
     }
 
-    function analyzeScenario() {
-        const changeTitle = changeTitleInput.value || 'Untitled Change';
-        const gradientValues = gradients.map((gradient, index) => ({
-            gradient: gradient.label,
-            value: index % 2 === 0 ? 100 - tempValues[index/2] : tempValues[Math.floor(index/2)]
-        }));
-
-        const aiAnalysisResult = document.getElementById('aiAnalysisResult');
-        const lineChartContainer = document.getElementById('lineChartContainer');
-        aiAnalysisResult.innerHTML = `
-            <div class="loading-message">
-                <p><span class="loading-spinner"></span>Generating AI analysis… Please wait.</p>
-            </div>`;
-        lineChartContainer.innerHTML = '';
-
-        scrollToAIAnalysis();
-
-        console.log('Sending request to /analyze_scenario with data:', JSON.stringify({
-            changeTitle: changeTitle,
-            gradientValues: gradientValues
-        }));
-
-        fetch('/analyze_scenario', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                changeTitle: changeTitle,
-                gradientValues: gradientValues
-            }),
-        })
-        .then(response => {
-            console.log('Response status:', response.status);
-            return response.json();
-        })
-        .then(data => {
-            console.log('Received data from server:', data);
-            if (data.error) {
-                aiAnalysisResult.innerHTML = `<p class="error-message">Error: ${data.error}</p>`;
-            } else {
-                aiAnalysisResult.innerHTML = `
-                    <h4>AI Analysis for "${changeTitle}"</h4>
-                    <br>
-                    <div class="analysis-content">${data.analysis.replace(/\n/g, '<br>')}</div>
-                `;
-
-                const aiBaselineMatch = data.analysis.match(/BASELINE ANALYSIS:([\s\S]*?)(?:ALIGNMENT|$)/);
-                let aiBaselineValues = [];
-                if (aiBaselineMatch) {
-                    const baselineText = aiBaselineMatch[1];
-                    aiBaselineValues = gradientValuesLabels.map(label => {
-                        const match = baselineText.match(new RegExp(`${label.split(' ')[0]}.*?(\\d+)`));
-                        return match ? parseInt(match[1]) : 0;
-                    });
-                }
-
-                createLineChart(aiBaselineValues, gradientValues.map(g => g.value));
-            }
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            aiAnalysisResult.innerHTML = '<p class="error-message">An error occurred while analyzing the scenario. Please try again.</p>';
-        });
-    }
-
     function createLineChart(aiBaseline, userValues) {
         const ctx = document.getElementById('lineChart').getContext('2d');
         
@@ -423,17 +357,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 scales: {
                     y: {
                         beginAtZero: true,
-                        max: 100,
-                        ticks: {
-                            color: getTextColor()
-                        }
-                    },
-                    x: {
-                        ticks: {
-                            color: getTextColor(),
-                            maxRotation: 45,
-                            minRotation: 45
-                        }
+                        max: 100
                     }
                 },
                 plugins: {
@@ -442,22 +366,67 @@ document.addEventListener('DOMContentLoaded', function() {
                         text: 'AI Baseline vs User Values',
                         font: {
                             size: 16
-                        },
-                        color: getTextColor()
-                    },
-                    legend: {
-                        labels: {
-                            color: getTextColor()
                         }
                     }
                 }
             }
         });
+    }
 
-        const lineChartContainer = document.getElementById('lineChartContainer');
-        lineChartContainer.style.display = 'block';
-        lineChartContainer.style.height = '400px';
-        lineChartContainer.style.width = '100%';
+    function analyzeScenario() {
+        const changeTitle = changeTitleInput.value || 'Untitled Change';
+        const gradientValues = gradients.map((gradient, index) => ({
+            gradient: gradient.label,
+            value: index % 2 === 0 ? 100 - tempValues[index/2] : tempValues[Math.floor(index/2)]
+        }));
+
+        const aiAnalysisResult = document.getElementById('aiAnalysisResult');
+        aiAnalysisResult.innerHTML = `
+            <div class="loading-message">
+                <p><span class="loading-spinner"></span>Generating AI analysis… Please wait.</p>
+            </div>`;
+
+        scrollToAIAnalysis();
+
+        fetch('/analyze_scenario', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                changeTitle: changeTitle,
+                gradientValues: gradientValues
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                aiAnalysisResult.innerHTML = `<p class="error-message">Error: ${data.error}</p>`;
+            } else {
+                aiAnalysisResult.innerHTML = `
+                    <h4>AI Analysis for "${changeTitle}"</h4>
+                    <br>
+                    <div class="analysis-content">${data.analysis.replace(/\n/g, '<br>')}</div>
+                    <canvas id="lineChart" style="width:100%;height:400px;"></canvas>
+                `;
+
+                const aiBaselineMatch = data.analysis.match(/BASELINE ANALYSIS:([\s\S]*?)(?:ALIGNMENT|$)/);
+                let aiBaselineValues = [];
+                if (aiBaselineMatch) {
+                    const baselineText = aiBaselineMatch[1];
+                    aiBaselineValues = gradientValuesLabels.map(label => {
+                        const match = baselineText.match(new RegExp(`${label.split(' ')[0]}.*?(\\d+)`));
+                        return match ? parseInt(match[1]) : 0;
+                    });
+                }
+
+                createLineChart(aiBaselineValues, gradientValues.map(g => g.value));
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            aiAnalysisResult.innerHTML = '<p class="error-message">An error occurred while analyzing the scenario. Please try again.</p>';
+        });
     }
 
     function scrollToAIAnalysis() {

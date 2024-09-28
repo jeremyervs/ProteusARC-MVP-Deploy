@@ -626,30 +626,8 @@ body.dark-mode .chart-js-tooltip {
     background-color: var(--card-bg);
 }
 
-#lineChartContainer {
-    margin-top: 20px;
-    width: 100%;
-    height: 400px;
-}
-
 #lineChart {
     width: 100%;
-    height: 100%;
-}
-
-.ai-analysis-card {
-    display: flex;
-    flex-direction: column;
-}
-
-#aiAnalysisResult {
-    flex: 1;
-    overflow-y: auto;
-    margin-bottom: 20px;
-}
-
-@media (max-width: 768px) {
-    #lineChartContainer {
-        height: 300px;
-    }
+    height: 400px;
+    margin-top: 20px;
 }
