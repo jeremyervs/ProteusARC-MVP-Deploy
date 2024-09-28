@@ -636,4 +636,8 @@ body.dark-mode .chart-js-tooltip {
     .gradient-title {
         font-size: 2em;
     }
+
+    .gradients-header h2 {
+        font-size: 1.5em;
+    }
 }

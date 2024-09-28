@@ -368,7 +368,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         ticks: {
                             autoSkip: false,
                             maxRotation: 90,
-                            minRotation: 90
+                            minRotation: 90,
+                            font: {
+                                size: 10
+                            }
                         }
                     }
                 },
@@ -389,6 +392,14 @@ document.addEventListener('DOMContentLoaded', function() {
                                 const datasetLabel = context.dataset.label;
                                 const value = context.parsed.y;
                                 return `${datasetLabel}: ${value}%`;
+                            }
+                        }
+                    },
+                    legend: {
+                        labels: {
+                            boxWidth: 12,
+                            font: {
+                                size: 12
                             }
                         }
                     }
