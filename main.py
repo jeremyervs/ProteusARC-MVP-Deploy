@@ -71,6 +71,24 @@ def analyze_scenario():
         if value is None or not (0 <= value <= 100):
             return jsonify({"error": f"Invalid value for {gradient['gradient']}. Please provide a number between 0 and 100."}), 400
 
+    # Determine baseline context based on change_type
+    if change_type == 'historical':
+        baseline_context = (
+            "Use historical data, empirical evidence, and established historical frameworks to inform your scores."
+        )
+    elif change_type in ['present', 'current']:
+        baseline_context = (
+            "Utilize current data, industry standards, and contemporary theories to determine your scores."
+        )
+    elif change_type in ['future', 'futuristic']:
+        baseline_context = (
+            "Incorporate known trends, predictive models, and creative foresight methodologies to assign your scores."
+        )
+    else:
+        baseline_context = (
+            "Base your scores on the provided gradient definitions and relevant contextual information."
+        )
+
     # Construct the prompt for OpenAI
     prompt = f"You are analyzing a {change_type} change scenario titled '{change_title}'.\n\n"
     prompt += "Definitions of Change Gradients:\n"
@@ -87,20 +105,31 @@ def analyze_scenario():
         prompt += f"- {pair[0]} / {pair[1]}\n"
 
     prompt += "\nPlease perform the following steps:\n"
-    prompt += "1. Establish your own baseline analysis of the change being examined by assigning a score (0-100) to each gradient based on widely accepted current knowledge. Ensure that for each pair, the sum of the two values equals 100. Be sure to label this section as BASELINE ANALYSIS.\n"
-    prompt += "2. Compare your baseline scores with the user's scores and assess the alignment. Be sure to label this section as ALIGNMENT and present the output in paragraph form.\n"
-    prompt += "3. Explain any significant deviations in a clear and understandable manner. Be sure to label this section as DEVIATIONS.\n"
-    prompt += "4. Craft a potential alternate scenario based on these deviations. Be sure to label this section as ALTERNATE SCENARIO.\n"
-    prompt += "5. Provide an overall summary of your findings, ensuring to address key insights and recommendations. Be sure to label this section as OVERALL SUMMARY and present the output in paragraph form.\n"
-    prompt += "6. Present your response efficiently yet sufficiently in plain text. Do not use any Markdown formatting.\n"
-    prompt += "7. Use proper spacing between paragraphs and sections for readability.\n"
-    prompt += "8. Use clear headings (in plain text) for each section of your analysis, ensuring to follow each heading with a colon.\n"
-    prompt += "9. Ensure there are blank lines between paragraphs and sections.\n"
+    prompt += (
+        "1. BASELINE ANALYSIS: Analyze the change scenario titled '{change_title}' based on its type—**{change_type}**. "
+        "Assign a score between 0 and 100 to each gradient, ensuring that for each paired gradient, the sum of their scores equals 100. "
+        f"Base your scores on the provided gradient definitions and the relevant context:\n"
+        f"- **{change_type.capitalize()} Change:** {baseline_context}\n"
+        "Present this section with the heading \"BASELINE ANALYSIS\" followed by a neatly formatted list of gradients and their respective scores.\n"
+    )
+    prompt += (
+        "2. ALIGNMENT: Compare your baseline scores with the user's scores and assess the alignment. Present this in paragraph form under the heading \"ALIGNMENT\".\n"
+        "3. DEVIATIONS: Explain any significant deviations between your baseline and the user's scores under the heading \"DEVIATIONS\".\n"
+        "4. ALTERNATIVE SCENARIO: Craft a potential alternative scenario based on these deviations under the heading \"ALTERNATIVE SCENARIO\".\n"
+        "5. OVERALL SUMMARY: Provide an overall summary of your findings, addressing key insights and recommendations under the heading \"OVERALL SUMMARY\".\n"
+        "6. Present your response in plain text without using any Markdown formatting.\n"
+        "7. Use proper spacing between paragraphs and sections for readability.\n"
+        "8. Use clear headings for each section of your analysis, followed by a colon.\n"
+        "9. Ensure there are blank lines between paragraphs and sections.\n"
+    )
 
     try:
         # Make API call to OpenAI
         messages = [
-            {"role": "system", "content": "You are an AI assistant analyzing change scenarios. Provide your analysis in plain text format without any Markdown. Use proper spacing and clear headings."},
+            {"role": "system", "content": "You are an expert analyst specializing in various change scenarios, including historical, present, and future changes. "
+            "Your task is to provide comprehensive and structured analyses based on the provided gradient values and change type. "
+            "Ensure accuracy and consistency in your assessments. Respond in plain text without using any Markdown or special formatting. "
+            "Use clear, structured headings for each section and maintain proper spacing for readability."},
             {"role": "user", "content": prompt}
         ]
 
@@ -109,7 +138,7 @@ def analyze_scenario():
             messages=messages,
             max_tokens=1000,
             n=1,
-            temperature=0.7,
+            temperature=0.2,
         )
 
         # Extract the generated text from the API response
