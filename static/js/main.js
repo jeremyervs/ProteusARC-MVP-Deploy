@@ -372,7 +372,10 @@ document.addEventListener('DOMContentLoaded', function() {
                                 size: 8
                             },
                             callback: function(value, index) {
-                                return this.getLabelForValue(value).split(' ')[0];
+                                const label = this.getLabelForValue(value).split(' ')[0];
+                                if (label === 'Top') return 'Top Down';
+                                if (label === 'Bottom') return 'Bottom Up';
+                                return label;
                             }
                         }
                     }
