@@ -331,15 +331,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Prepare data for the chart
-        const labels = [];
-        const aiData = [];
-        const userData = [];
-
-        for (let i = 0; i < gradientValuesLabels.length; i += 2) {
-            labels.push(gradientValuesLabels[i]);
-            aiData.push(aiBaseline[i]);
-            userData.push(userValues[i]);
-        }
+        const labels = gradientValuesLabels;
+        const aiData = aiBaseline;
+        const userData = userValues;
 
         window.lineChart = new Chart(ctx, {
             type: 'line',
@@ -369,6 +363,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     y: {
                         beginAtZero: true,
                         max: 100
+                    },
+                    x: {
+                        ticks: {
+                            autoSkip: false,
+                            maxRotation: 90,
+                            minRotation: 90
+                        }
                     }
                 },
                 plugins: {
@@ -381,12 +382,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     },
                     tooltip: {
                         callbacks: {
-                            afterBody: function(context) {
-                                const index = context[0].dataIndex * 2;
-                                const oppositeLabel = gradientValuesLabels[index + 1];
-                                const aiValue = aiBaseline[index];
-                                const userValue = userValues[index];
-                                return `${oppositeLabel}: AI ${100 - aiValue}%, User ${100 - userValue}%`;
+                            title: function(context) {
+                                return context[0].label;
+                            },
+                            label: function(context) {
+                                const datasetLabel = context.dataset.label;
+                                const value = context.parsed.y;
+                                return `${datasetLabel}: ${value}%`;
                             }
                         }
                     }
