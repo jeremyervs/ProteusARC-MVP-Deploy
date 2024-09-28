@@ -124,6 +124,7 @@ button:hover {
     cursor: pointer;
     font-size: 14px;
     text-decoration: underline;
+    margin-left: auto;
 }
 
 .slider-container {
