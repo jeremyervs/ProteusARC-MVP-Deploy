@@ -52,26 +52,7 @@ gradient_pairs = [
 def index():
     return render_template('index.html')
 
-@app.route('/analyze_scenario', methods=['POST'])
-def analyze_scenario():
-    if not client:
-        return jsonify({"error": "OpenAI API key is not set. Unable to analyze scenario."}), 500
-
-    data: Dict[str, Any] = request.json or {}
-    change_title: str = data.get('changeTitle', 'Untitled Change')
-    gradient_values: List[Dict[str, Any]] = data.get('gradientValues', [])
-    change_type: str = data.get('changeType', 'current')  # Default to 'current' if not provided
-
-    # Input validation
-    if not gradient_values:
-        return jsonify({"error": "No gradient values provided."}), 400
-
-    for gradient in gradient_values:
-        value = gradient.get('value')
-        if value is None or not (0 <= value <= 100):
-            return jsonify({"error": f"Invalid value for {gradient['gradient']}. Please provide a number between 0 and 100."}), 400
-
-    # Construct the prompt for OpenAI
+def construct_prompt(change_title: str, gradient_values: List[Dict[str, Any]], change_type: str = 'current') -> str:
     prompt = f"You are analyzing a {change_type} change scenario titled '{change_title}'.\n\n"
     prompt += "Definitions of Change Gradients:\n"
     for gradient in gradient_values:
@@ -97,32 +78,52 @@ def analyze_scenario():
     prompt += "8. Use clear headings (in plain text) for each section of your analysis, ensuring to follow each heading with a colon.\n"
     prompt += "9. Ensure there are blank lines between paragraphs and sections.\n"
 
+    return prompt
+
+def process_ai_response(response: str) -> str:
+    processed_response = response.strip()
+    processed_response = re.sub(r'[*#_`~]', '', processed_response)
+    processed_response = re.sub(r'\n{3,}', '\n\n', processed_response)
+    processed_response = re.sub(r'(^|\n)([A-Z][^:\n]+:)(\n)(?!\n)', r'\1\2\n\n', processed_response, flags=re.MULTILINE)
+    return processed_response
+
+@app.route('/analyze_scenario', methods=['POST'])
+def analyze_scenario():
+    if not client:
+        return jsonify({"error": "OpenAI API key is not set. Unable to analyze scenario."}), 500
+
+    data: Dict[str, Any] = request.json or {}
+    change_title: str = data.get('changeTitle', 'Untitled Change')
+    gradient_values: List[Dict[str, Any]] = data.get('gradientValues', [])
+    change_type: str = data.get('changeType', 'current')
+
+    if not gradient_values:
+        return jsonify({"error": "No gradient values provided."}), 400
+
+    for gradient in gradient_values:
+        value = gradient.get('value')
+        if value is None or not (0 <= value <= 100):
+            return jsonify({"error": f"Invalid value for {gradient['gradient']}. Please provide a number between 0 and 100."}), 400
+
+    prompt = construct_prompt(change_title, gradient_values, change_type)
+
     try:
-        # Make API call to OpenAI
         messages = [
             {"role": "system", "content": "You are an AI assistant analyzing change scenarios. Provide your analysis in plain text format without any Markdown. Use proper spacing and clear headings."},
             {"role": "user", "content": prompt}
         ]
 
         response = client.chat.completions.create(
-            model="gpt-4o-mini",  # Updated to use gpt-4o-mini as requested
+            model="gpt-4o-mini",
             messages=messages,
             max_tokens=1000,
             n=1,
             temperature=0.7,
         )
 
-        # Extract the generated text from the API response
         analysis = response.choices[0].message.content
         if analysis is not None:
-            # Post-processing to ensure proper formatting
-            analysis = analysis.strip()
-            # Remove any potential Markdown formatting
-            analysis = re.sub(r'[*#_`~]', '', analysis)
-            # Ensure proper spacing between paragraphs
-            analysis = re.sub(r'\n{3,}', '\n\n', analysis)
-            # Ensure headings are followed by a blank line
-            analysis = re.sub(r'(^|\n)([A-Z][^:\n]+:)(\n)(?!\n)', r'\1\2\n\n', analysis, flags=re.MULTILINE)
+            analysis = process_ai_response(analysis)
         else:
             analysis = "No analysis generated."
 
