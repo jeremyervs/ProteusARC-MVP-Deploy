@@ -87,7 +87,7 @@ def analyze_scenario():
         prompt += f"- {pair[0]} / {pair[1]}\n"
 
     prompt += "\nPlease perform the following steps:\n"
-    prompt += "1. Establish your own baseline analysis of the change being examined by assigning a score (0-100) to each gradient based on widely accepted current knowledge. Ensure that for each pair, the sum of the two values equals 100. Be sure to label this section as BASELINE ANALYSIS.\n"
+    prompt += "1. Establish your own baseline analysis of the {change_type} change being examined by assigning a score (0-100) to each gradient based on widely accepted current knowledge regarding {change_type}, ensuring precision and accuracy. This analysis should reflect your independent evaluation of the relative significance of each gradient definition and not the user's scores. Ensure that for each pair, the sum of the two values equals 100. Be sure to label this section as BASELINE ANALYSIS.\n"
     prompt += "2. Compare your baseline scores with the user's scores and assess the alignment. Be sure to label this section as ALIGNMENT and present the output in paragraph form.\n"
     prompt += "3. Explain any significant deviations in a clear and understandable manner. Be sure to label this section as DEVIATIONS.\n"
     prompt += "4. Craft a potential alternate scenario based on these deviations. Be sure to label this section as ALTERNATE SCENARIO.\n"
@@ -95,7 +95,7 @@ def analyze_scenario():
     prompt += "6. Present your response efficiently yet sufficiently in plain text. Do not use any Markdown formatting.\n"
     prompt += "7. Use proper spacing between paragraphs and sections for readability.\n"
     prompt += "8. Use clear headings (in plain text) for each section of your analysis, ensuring to follow each heading with a colon.\n"
-    prompt += "9. Ensure there are blank lines between paragraphs and sections.\n"
+    prompt += "9. Ensure there is one blank line between paragraphs and sections.\n"
 
     try:
         # Make API call to OpenAI
@@ -109,7 +109,7 @@ def analyze_scenario():
             messages=messages,
             max_tokens=1000,
             n=1,
-            temperature=0.7,
+            temperature=0.2,
         )
 
         # Extract the generated text from the API response
