@@ -441,7 +441,28 @@ body.dark-mode .experimental-tag {
     }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
+    .gradient-title {
+        font-size: 2em;
+    }
+
+    .dark-mode-toggle {
+        transform: scale(0.8);
+    }
+
+    .gradients-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .gradients-header h2 {
+        margin-bottom: 10px;
+    }
+
+    .view-directions {
+        margin-top: 5px;
+    }
+
     .results-section {
         flex-direction: column;
     }

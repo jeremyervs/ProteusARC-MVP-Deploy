@@ -368,7 +368,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         ticks: {
                             autoSkip: false,
                             maxRotation: 90,
-                            minRotation: 90
+                            minRotation: 90,
+                            font: {
+                                size: 10
+                            }
                         }
                     }
                 },
