@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, jsonify
 from openai import OpenAI
 from typing import List, Dict, Any
 import re
+from docx import Document
 
 app = Flask(__name__)
 
@@ -52,6 +53,22 @@ gradient_pairs = [
 def index():
     return render_template('index.html')
 
+@app.route('/user-guide')
+def user_guide():
+    guide_content = read_user_guide()
+    return render_template('user_guide.html', content=guide_content)
+
+def read_user_guide():
+    try:
+        doc = Document('GradiShape User Guide.docx')
+        full_text = []
+        for para in doc.paragraphs:
+            full_text.append(para.text)
+        return '\n'.join(full_text)
+    except Exception as e:
+        print(f"Error reading User Guide: {str(e)}")
+        return "Unable to load User Guide content. Please try again later."
+
 @app.route('/analyze_scenario', methods=['POST'])
 def analyze_scenario():
     if not client:
@@ -77,7 +94,7 @@ def analyze_scenario():
     prompt += "2. Provide an overall summary of your findings, ensuring to address key insights. Be sure to label this section as OVERALL SUMMARY and present the output in paragraph form.\n"
     prompt += "3. Present your response efficiently yet sufficiently in plain text. Do not use any Markdown formatting.\n"
     prompt += "4. Use proper spacing between paragraphs and sections for readability.\n"
-    prompt += "5. Use clear headings (in plain text) for each section of your analysis, ensuring to follow each heading with a colon.\n"
+    prompt += "5. Use clear headings (in plain text) for each section of your analysis, ensuring to follow each heading with a colon:\n"
     prompt += "6. Ensure there are blank lines between paragraphs and sections.\n"
 
     try:
