@@ -9,15 +9,20 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="navbar-container">
-            <a href="/" class="navbar-logo">GradiShape</a>
-            <ul class="navbar-menu">
-                <li><a href="/user-guide">User Guide</a></li>
-            </ul>
-        </div>
-    </nav>
     <div class="app-container">
+        <header>
+            <h1 class="gradient-title">GradiShape</h1>
+            <div class="dark-mode-toggle">
+                <span class="toggle-icon sun-icon">☀</span>
+                <input type="checkbox" id="darkModeToggle" class="toggle-checkbox">
+                <label for="darkModeToggle" class="toggle-label">
+                    <span class="toggle-inner"></span>
+                    <span class="toggle-switch"></span>
+                </label>
+                <span class="toggle-icon moon-icon">☾</span>
+            </div>
+        </header>
+        
         <main>
             <div class="card input-card">
                 <input type="text" id="changeTitle" placeholder="Enter title of change being examined">

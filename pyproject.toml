@@ -9,7 +9,6 @@ readme = "README.md"
 python = "^3.11"
 flask = "^3.0.3"
 openai = "^1.47.0"
-docx2txt = "^0.8"
 
 
 [build-system]
