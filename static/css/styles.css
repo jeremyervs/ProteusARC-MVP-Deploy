@@ -644,3 +644,19 @@ body.dark-mode .chart-js-tooltip {
         text-overflow: ellipsis;
     }
 }
+
+footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
