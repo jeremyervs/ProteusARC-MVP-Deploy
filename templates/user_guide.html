@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GradiShape - User Guide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="navbar-logo">GradiShape</a>
+            <ul class="navbar-menu">
+                <li><a href="/user-guide">User Guide</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="app-container">
+        <main>
+            <div class="card user-guide-card">
+                <h1>GradiShape User Guide</h1>
+                <div class="user-guide-content">
+                    <!-- User guide content will be inserted here -->
+                    {{ user_guide_content | safe }}
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
