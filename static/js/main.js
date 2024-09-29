@@ -231,6 +231,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         },
                         legend: {
                             display: false
+                        },
+                        tooltip: {
+                            enabled: false
                         }
                     }
                 }
