@@ -655,6 +655,15 @@ footer {
 footer a {
     color: var(--primary-color);
     text-decoration: none;
+    margin: 0 10px;
+}
+
+footer a:first-child {
+    margin-left: 0;
+}
+
+footer a:last-child {
+    margin-right: 0;
 }
 
 footer a:hover {
