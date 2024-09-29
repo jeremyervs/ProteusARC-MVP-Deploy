@@ -11,11 +11,6 @@
 <body>
     <div class="app-container">
         <header>
-            <div class="hamburger-menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
             <h1 class="gradient-title">GradiShape</h1>
             <div class="dark-mode-toggle">
                 <span class="toggle-icon sun-icon">☀</span>
@@ -28,21 +23,12 @@
             </div>
         </header>
         
-        <nav class="side-menu">
-            <ul>
-                <li><a href="#change-gradients">Change Gradients</a></li>
-                <li><a href="#chart">Chart</a></li>
-                <li><a href="#analysis">Analysis</a></li>
-                <li><a href="#ai-analysis">AI Analysis</a></li>
-            </ul>
-        </nav>
-        
         <main>
             <div class="card input-card">
                 <input type="text" id="changeTitle" placeholder="Enter title of change being examined">
             </div>
             
-            <div id="change-gradients" class="card sliders-card">
+            <div class="card sliders-card">
                 <div class="gradients-header">
                     <h2>Change Gradients</h2>
                     <span id="viewDirections" class="view-directions">View Definitions</span>
@@ -56,16 +42,16 @@
             </div>
             
             <div class="results-section">
-                <div id="chart" class="card chart-card">
+                <div class="card chart-card">
                     <canvas id="radarChart"></canvas>
                 </div>
-                <div id="analysis" class="card analysis-card">
+                <div class="card analysis-card">
                     <div id="analysisSummary"></div>
                     <button id="exportButton">Export Values</button>
                 </div>
             </div>
             
-            <div id="ai-analysis" class="card ai-analysis-card">
+            <div class="card ai-analysis-card">
                 <h3>✨ AI Analysis <span class="experimental-tag">(Experimental: results may vary)</span></h3>
                 <div id="aiAnalysisResult">
                     <!-- AI-generated analysis will be displayed here -->
