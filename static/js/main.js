@@ -482,6 +482,10 @@ document.addEventListener('DOMContentLoaded', function() {
             updatePercentages(slider);
         });
         tempValues = Array(gradients.length / 2).fill(50);
+        if (chart) {
+            chart.data.datasets[0].data = tempValues.flatMap(v => [100 - v, v]);
+            chart.update();
+        }
         chartProcessed = false;
         analyzeScenarioButton.disabled = true;
         analyzeScenarioButton.title = "Process gradients first to enable AI Analysis";
