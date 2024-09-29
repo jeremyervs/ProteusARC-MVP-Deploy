@@ -59,12 +59,14 @@ def analyze_scenario():
 
     data: Dict[str, Any] = request.json or {}
     change_title: str = data.get('changeTitle', 'Untitled Change')
+    gradient_values: List[Dict[str, Any]] = data.get('gradientValues', [])
 
     # Construct the prompt for OpenAI
     prompt = f"You are analyzing a change scenario titled '{change_title}'.\n\n"
     prompt += "Definitions of Change Gradients:\n"
-    for gradient, definition in gradient_definitions.items():
-        prompt += f"{gradient}: {definition}\n"
+    for gradient in gradient_values:
+        definition = gradient_definitions.get(gradient['gradient'], '')
+        prompt += f"{gradient['gradient']}: {definition}\n"
 
     prompt += "\nImportant: The change gradients are organized into dependent pairs. Each pair represents opposite ends of a spectrum, and the total combined value for each pair must equal 100. The pairs are:\n"
     for pair in gradient_pairs:
@@ -86,7 +88,7 @@ def analyze_scenario():
         ]
 
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-4o-mini",  # Using gpt-4o-mini as requested
             messages=messages,
             max_tokens=1000,
             n=1,
@@ -110,12 +112,6 @@ def analyze_scenario():
         return jsonify({"analysis": analysis})
     except Exception as e:
         return jsonify({"error": f"An error occurred while analyzing the scenario: {str(e)}"}), 500
-
-@app.route('/user_guide')
-def user_guide():
-    with open('user_guide.txt', 'r') as file:
-        content = file.read()
-    return render_template('user_guide.html', content=content)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
