@@ -489,6 +489,9 @@ document.addEventListener('DOMContentLoaded', function() {
             chart.data.datasets[0].data = tempValues.flatMap(v => [100 - v, v]);
             chart.update();
         }
+        updateAnalysisSummary();
+        document.getElementById('aiAnalysisResult').innerHTML = '';
+        document.getElementById('lineChart').style.display = 'none';
         chartProcessed = false;
         analyzeScenarioButton.disabled = true;
         analyzeScenarioButton.title = "Process gradients first to enable AI Analysis";
