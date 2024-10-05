@@ -345,7 +345,7 @@ document.addEventListener('DOMContentLoaded', function() {
             window.lineChart.destroy();
         }
 
-        const labels = gradientValuesLabels.map(label => label.split(' ')[0]);
+        const labels = gradientValuesLabels.map(label => label.split(' (')[0]);
         const aiData = aiBaseline;
         const userData = userValues;
 
@@ -504,14 +504,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 let aiBaselineValues = [];
                 if (aiBaselineMatch) {
                     const baselineText = aiBaselineMatch[1];
+                    console.log("Baseline Text:", baselineText); // Debug log
+
                     aiBaselineValues = gradientValuesLabels.map(label => {
-                        const gradientName = label.split(' ')[0];
-                        const match = baselineText.match(new RegExp(`${gradientName}:\\s*(\\d+)`));
-                        return match ? parseInt(match[1]) : 0;
+                        const gradientName = label.split(' (')[0]; // Extract gradient name without the (Px) part
+                        const regexPattern = new RegExp(`${gradientName}:\\s*(\\d+)`);
+                        const match = baselineText.match(regexPattern);
+                        const value = match ? parseInt(match[1]) : 0;
+                        console.log(`${gradientName}: ${value}`); // Debug log
+                        return value;
                     });
                 }
 
                 console.log("AI Baseline Values:", aiBaselineValues);
+                console.log("User Values:", gradientValues.map(g => g.value));
 
                 createLineChart(aiBaselineValues, gradientValues.map(g => g.value));
             }
