@@ -58,10 +58,33 @@ def analyze_scenario():
         return jsonify({"error": "OpenAI API key is not set. Unable to analyze scenario."}), 500
 
     data: Dict[str, Any] = request.json or {}
-    change_title: str = data.get('changeTitle', 'Untitled Change')
+    change_title: str = data.get('changeTitle')
+    description: str = data.get('description', '')
+    knowledge_type: str = data.get('knowledge_type', '')
+    timeline: str = data.get('timeline', '')
+
+    # Input validation
+    if not change_title:
+        return jsonify({"error": "Title of Change is required."}), 400
+    if knowledge_type and knowledge_type not in ['internal', 'public']:
+        return jsonify({"error": "Invalid knowledge type. Must be 'internal' or 'public'."}), 400
+    if timeline and timeline not in ['past', 'present', 'future']:
+        return jsonify({"error": "Invalid timeline. Must be 'past', 'present', or 'future'."}), 400
 
     # Construct the prompt for OpenAI
     prompt = f"You are analyzing a change scenario titled '{change_title}'.\n\n"
+    
+    if description:
+        prompt += f"Additional context: {description}\n\n"
+    
+    if knowledge_type == 'internal':
+        prompt += "Note: This change is unique to the user's context and not publicly known. Rely primarily on the provided information.\n\n"
+    elif knowledge_type == 'public':
+        prompt += "Note: This change is generally known in the public sphere. Use accurate, publicly available information in your analysis.\n\n"
+    
+    if timeline:
+        prompt += f"Timeline: This change is in the {timeline}.\n\n"
+
     prompt += "Definitions of Change Gradients:\n"
     for gradient, definition in gradient_definitions.items():
         prompt += f"{gradient}: {definition}\n"
