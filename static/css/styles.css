@@ -207,6 +207,8 @@ button:hover {
     width: 100%;
     max-width: 600px;
     margin: 0 auto;
+    background-color: var(--card-bg);
+    font-family: 'Poppins', sans-serif;
 }
 
 .analysis-card {
@@ -621,6 +623,7 @@ body.dark-mode #aiButtonHint {
 
 .chart-card {
     background-color: var(--card-bg);
+    font-family: 'Poppins', sans-serif;
 }
 
 body.dark-mode .chart-card {
@@ -629,6 +632,7 @@ body.dark-mode .chart-card {
 
 #radarChart {
     color: var(--text-color);
+    font-family: 'Poppins', sans-serif;
 }
 
 body.dark-mode #radarChart {

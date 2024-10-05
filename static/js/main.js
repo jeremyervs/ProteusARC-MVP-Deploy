@@ -220,12 +220,14 @@ document.addEventListener('DOMContentLoaded', function() {
                                 color: getTextColor,
                                 backdropColor: 'transparent',
                                 font: {
+                                    family: "'Poppins', sans-serif",
                                     size: window.innerWidth < 768 ? 10 : 12
                                 },
                                 showLabelBackdrop: false
                             },
                             pointLabels: {
                                 font: {
+                                    family: "'Poppins', sans-serif",
                                     size: window.innerWidth < 768 ? 12 : 14
                                 },
                                 color: getTextColor
@@ -237,6 +239,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             display: true,
                             text: 'Change Pattern Visualization',
                             font: {
+                                family: "'Poppins', sans-serif",
                                 size: window.innerWidth < 768 ? 18 : 20
                             },
                             color: getTextColor
