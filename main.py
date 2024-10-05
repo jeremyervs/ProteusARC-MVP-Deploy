@@ -1,6 +1,6 @@
 import os
 from flask import Flask, render_template, request, jsonify
-import openai  # Changed from 'from openai import OpenAI' to 'import openai'
+from openai import OpenAI
 from typing import List, Dict, Any
 import re
 
@@ -10,9 +10,9 @@ app = Flask(__name__)
 OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
 if not OPENAI_API_KEY:
     print("Warning: OPENAI_API_KEY is not set. Some features may not work.")
-    openai.api_key = None  # Changed 'client = None' to 'openai.api_key = None'
+    client = None
 else:
-    openai.api_key = OPENAI_API_KEY  # Set the API key for 'openai'
+    client = OpenAI(api_key=OPENAI_API_KEY)
 
 # Gradient definitions
 gradient_definitions = {
@@ -36,38 +36,6 @@ gradient_definitions = {
     'Deliberate': 'Change that is carefully planned and executed, based on extensive research, strategy, and intentional actions.'
 }
 
-# Advanced Elements definitions
-advanced_elements_definitions = {
-    'Description': {
-        'definition': 'A larger text box where users can provide additional details and nuances about the change.',
-        'purpose': 'Offers the AI model more context to enhance its baseline analysis and summary.'
-    },
-    'Knowledge': {
-        'Internal': {
-            'definition': "Indicates the change is unique to the user's context and not publicly known.",
-            'behavior': 'The AI must rely primarily on the Title of Change and Description provided by the user, using general world knowledge only to better understand the unique information.'
-        },
-        'Public': {
-            'definition': 'Indicates the change is generally known in the public sphere.',
-            'behavior': 'The AI should rely primarily on accurate, publicly available information about the change.'
-        }
-    },
-    'Timeline': {
-        'Past': {
-            'definition': 'The change occurred in the past.',
-            'behavior': 'The AI should analyze the change as a historical event.'
-        },
-        'Present': {
-            'definition': 'The change is currently happening.',
-            'behavior': 'The AI should analyze the change as an ongoing current event.'
-        },
-        'Future': {
-            'definition': 'The change is a projected or imagined future scenario.',
-            'behavior': 'The AI should analyze the change as a projected or imagined future scenario.'
-        }
-    }
-}
-
 gradient_pairs = [
     ('Endogenous', 'Exogenous'),
     ('Stable', 'Transformational'),
@@ -86,89 +54,43 @@ def index():
 
 @app.route('/analyze_scenario', methods=['POST'])
 def analyze_scenario():
-    if not openai.api_key:
+    if not client:
         return jsonify({"error": "OpenAI API key is not set. Unable to analyze scenario."}), 500
 
     data: Dict[str, Any] = request.json or {}
     change_title: str = data.get('changeTitle', 'Untitled Change')
     gradient_values: List[Dict[str, Any]] = data.get('gradientValues', [])
-    change_description: str = data.get('changeDescription', '')
-    knowledge_type: str = data.get('knowledgeType', '')
-    timeline: str = data.get('timeline', '')
 
     # Construct the prompt for OpenAI
-    prompt = f"Title of Change: {change_title}\n"
-
-    if change_description:
-        prompt += f"\nDescription:\n{change_description}\n"
-
-    if knowledge_type:
-        knowledge_def = advanced_elements_definitions['Knowledge'][knowledge_type]['definition']
-        knowledge_behavior = advanced_elements_definitions['Knowledge'][knowledge_type]['behavior']
-        prompt += f"\nKnowledge Type: {knowledge_type}\nDefinition: {knowledge_def}\nAI Behavior: {knowledge_behavior}\n"
-
-    if timeline:
-        timeline_def = advanced_elements_definitions['Timeline'][timeline]['definition']
-        timeline_behavior = advanced_elements_definitions['Timeline'][timeline]['behavior']
-        prompt += f"\nTimeline: {timeline}\nDefinition: {timeline_def}\nAI Behavior: {timeline_behavior}\n"
-
-    prompt += "\nDefinitions of Change Gradients:\n"
+    prompt = f"You are analyzing a change scenario titled '{change_title}'.\n\n"
+    prompt += "Definitions of Change Gradients:\n"
     for gradient in gradient_values:
         definition = gradient_definitions.get(gradient['gradient'], '')
         prompt += f"{gradient['gradient']}: {definition}\n"
 
-    prompt += "\nImportant Notes:\n"
-    prompt += "- The change gradients are organized into dependent pairs. Each pair represents opposite ends of a spectrum, and the total combined value for each pair must equal 100.\n"
-    prompt += "Gradient Pairs:\n"
+    prompt += "\nImportant: The change gradients are organized into dependent pairs. Each pair represents opposite ends of a spectrum, and the total combined value for each pair must equal 100. The pairs are:\n"
     for pair in gradient_pairs:
         prompt += f"- {pair[0]} / {pair[1]}\n"
 
-    # Enhanced instructions to the AI
-    prompt += (
-        "\nPlease perform the following steps:\n"
-        "1. **Baseline Analysis**:\n"
-        "- Assign a score (0-100) to each gradient based on the provided information.\n"
-        "- **You must consider the Title of Change, Description, Knowledge Type, and Timeline in your analysis.**\n"
-        "- For each gradient pair, ensure the sum of the two values equals 100.\n"
-        "- Present this section with clear labels and scores for each gradient.\n\n"
-        "2. **Overall Summary**:\n"
-        "- Provide an overall summary of your findings, addressing key insights.\n"
-        "- **Explicitly reference how the Description, Knowledge Type, and Timeline influenced your analysis.**\n"
-        "- Present this section in paragraph form.\n\n"
-        "3. **Context Influence**:\n"
-        "- Explain in detail how the additional context from the Description, Knowledge Type, and Timeline influenced your baseline analysis and overall summary.\n"
-        "- **Ensure that you directly tie specific aspects of the advanced options to your analysis decisions.**\n\n"
-        "Formatting Guidelines:\n"
-        "- Present your response efficiently yet sufficiently in plain text.\n"
-        "- Do not use any Markdown formatting.\n"
-        "- Use proper spacing between paragraphs and sections for readability.\n"
-        "- Use clear headings (in plain text) for each section, followed by a colon.\n"
-        "- Ensure there are blank lines between paragraphs and sections.\n"
-    )
+    prompt += "\nPlease perform the following steps:\n"
+    prompt += "1. Establish your own baseline analysis of the change being examined by assigning a score (0-100) to each gradient based on widely accepted current knowledge. Ensure that for each pair, the sum of the two values equals 100. Be sure to label this section as BASELINE ANALYSIS.\n"
+    prompt += "2. Provide an overall summary of your findings, ensuring to address key insights. Be sure to label this section as OVERALL SUMMARY and present the output in paragraph form.\n"
+    prompt += "3. Present your response efficiently yet sufficiently in plain text. Do not use any Markdown formatting.\n"
+    prompt += "4. Use proper spacing between paragraphs and sections for readability.\n"
+    prompt += "5. Use clear headings (in plain text) for each section of your analysis, ensuring to follow each heading with a colon.\n"
+    prompt += "6. Ensure there are blank lines between paragraphs and sections.\n"
 
     try:
         # Make API call to OpenAI
         messages = [
-            {
-                "role": "system",
-                "content": (
-                    "You are an AI assistant analyzing change scenarios. "
-                    "You must thoroughly incorporate the provided Title of Change, Description, Knowledge Type, and Timeline into your analysis. "
-                    "Adhere strictly to the context provided and do not introduce external information unless Knowledge Type is 'Public'. "
-                    "Provide your analysis in plain text format without any Markdown. "
-                    "Use proper spacing and clear headings."
-                )
-            },
-            {
-                "role": "user",
-                "content": prompt
-            }
+            {"role": "system", "content": "You are an AI assistant analyzing change scenarios. Provide your analysis in plain text format without any Markdown. Use proper spacing and clear headings."},
+            {"role": "user", "content": prompt}
         ]
 
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",  # Use 'gpt-3.5-turbo' or 'gpt-4' if available
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",  # Using gpt-4o-mini as requested
             messages=messages,
-            max_tokens=1500,
+            max_tokens=1000,
             n=1,
             temperature=0.2,
         )
