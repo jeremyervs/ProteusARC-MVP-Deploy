@@ -60,10 +60,23 @@ def analyze_scenario():
     data: Dict[str, Any] = request.json or {}
     change_title: str = data.get('changeTitle', 'Untitled Change')
     gradient_values: List[Dict[str, Any]] = data.get('gradientValues', [])
+    description: str = data.get('description', '')
+    knowledge: str = data.get('knowledge', '')
+    timeline: str = data.get('timeline', '')
 
     # Construct the prompt for OpenAI
     prompt = f"You are analyzing a change scenario titled '{change_title}'.\n\n"
-    prompt += "Definitions of Change Gradients:\n"
+    
+    if description:
+        prompt += f"Description: {description}\n\n"
+    
+    if knowledge:
+        prompt += f"Knowledge: {knowledge.capitalize()}\n"
+    
+    if timeline:
+        prompt += f"Timeline: {timeline.capitalize()}\n"
+    
+    prompt += "\nDefinitions of Change Gradients:\n"
     for gradient in gradient_values:
         definition = gradient_definitions.get(gradient['gradient'], '')
         prompt += f"{gradient['gradient']}: {definition}\n"
@@ -80,6 +93,18 @@ def analyze_scenario():
     prompt += "5. Use clear headings (in plain text) for each section of your analysis, ensuring to follow each heading with a colon.\n"
     prompt += "6. Ensure there are blank lines between paragraphs and sections.\n"
 
+    if knowledge == 'internal':
+        prompt += "7. Focus primarily on the information provided in the title and description, using general knowledge only to interpret this information.\n"
+    elif knowledge == 'public':
+        prompt += "7. Incorporate accurate, publicly available information related to the change, balancing it with the provided description.\n"
+
+    if timeline == 'past':
+        prompt += "8. Analyze the historical impacts, outcomes, and significance of this change.\n"
+    elif timeline == 'present':
+        prompt += "8. Focus on current developments, ongoing impacts, and real-time analysis of this change.\n"
+    elif timeline == 'future':
+        prompt += "8. Emphasize potential outcomes, predictions, and hypothetical scenarios for this change.\n"
+
     try:
         # Make API call to OpenAI
         messages = [
@@ -88,7 +113,7 @@ def analyze_scenario():
         ]
 
         response = client.chat.completions.create(
-            model="gpt-4o-mini",  # Using gpt-4o-mini as requested
+            model="gpt-4o-mini",
             messages=messages,
             max_tokens=1000,
             n=1,

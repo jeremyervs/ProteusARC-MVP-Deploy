@@ -44,6 +44,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const closePopup = document.querySelector('.close-popup');
     const gradientDefinitions = document.getElementById('gradientDefinitions');
     const resetButton = document.getElementById('resetButton');
+    const advancedHeader = document.querySelector('.advanced-header');
+    const advancedContent = document.querySelector('.advanced-content');
+    const changeDescriptionInput = document.getElementById('changeDescription');
+    const knowledgeRadios = document.getElementsByName('knowledge');
+    const timelineRadios = document.getElementsByName('timeline');
 
     let chart = null;
     let tempValues = Array(gradients.length / 2).fill(50);
@@ -118,11 +123,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     updateChartButton.addEventListener('click', function() {
-        updateChart();
-        chartProcessed = true;
-        analyzeScenarioButton.disabled = false;
-        analyzeScenarioButton.title = "Analyze the current scenario";
-        aiButtonHint.style.display = "none";
+        if (validateInputs()) {
+            updateChart();
+            chartProcessed = true;
+            analyzeScenarioButton.disabled = false;
+            analyzeScenarioButton.title = "Analyze the current scenario";
+            aiButtonHint.style.display = "none";
+        }
     });
 
     analyzeScenarioButton.addEventListener('click', function() {
@@ -134,6 +141,11 @@ document.addEventListener('DOMContentLoaded', function() {
     exportButton.addEventListener('click', showExportOptions);
 
     resetButton.addEventListener('click', resetSliders);
+
+    advancedHeader.addEventListener('click', function() {
+        advancedContent.style.display = advancedContent.style.display === 'none' ? 'block' : 'none';
+        this.classList.toggle('open');
+    });
 
     function updatePercentages(slider) {
         const value = slider.value;
@@ -416,12 +428,46 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    function getAdvancedOptions() {
+        const description = changeDescriptionInput.value.trim();
+        let knowledge = '';
+        let timeline = '';
+
+        for (const radio of knowledgeRadios) {
+            if (radio.checked) {
+                knowledge = radio.value;
+                break;
+            }
+        }
+
+        for (const radio of timelineRadios) {
+            if (radio.checked) {
+                timeline = radio.value;
+                break;
+            }
+        }
+
+        return { description, knowledge, timeline };
+    }
+
+    function validateInputs() {
+        if (!changeTitleInput.value.trim()) {
+            showPopup('Please enter a title for the change.');
+            return false;
+        }
+        return true;
+    }
+
     function analyzeScenario() {
-        const changeTitle = changeTitleInput.value || 'Untitled Change';
+        if (!validateInputs()) return;
+
+        const changeTitle = changeTitleInput.value.trim();
         const gradientValues = gradients.map((gradient, index) => ({
             gradient: gradient.label,
             value: index % 2 === 0 ? 100 - tempValues[index/2] : tempValues[Math.floor(index/2)]
         }));
+
+        const advancedOptions = getAdvancedOptions();
 
         const aiAnalysisResult = document.getElementById('aiAnalysisResult');
         aiAnalysisResult.innerHTML = `
@@ -438,7 +484,10 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             body: JSON.stringify({
                 changeTitle: changeTitle,
-                gradientValues: gradientValues
+                gradientValues: gradientValues,
+                description: advancedOptions.description,
+                knowledge: advancedOptions.knowledge,
+                timeline: advancedOptions.timeline
             }),
         })
         .then(response => response.json())

@@ -1,0 +1,234 @@
+Introduce new features to enhance the application's ability to analyze changes based on additional user-provided context. These features include an "Advanced" options section with additional input fields and settings that influence the AI model's analysis and summary generation.
+
+User Interface Updates
+1. Advanced Options Dropdown
+   * Placement: Directly beneath the existing Title of Change text box.
+   * Element: An "Advanced" label accompanied by a dropdown arrow (▼).
+   * Behavior: Clicking the dropdown arrow expands or collapses the advanced options section.
+   * Styling: The dropdown and its contents must match the existing style of the application, including colors, fonts, and component styles.
+2. Advanced Options Contents
+Upon expansion, the advanced options section reveals the following elements, styled consistently with the existing application design:
+a. Description Text Box
+   * Label: Description
+   * Type: Multi-line text area (larger than the Title of Change text box).
+   * Purpose: Allows users to provide additional details and nuances for the AI model to consider.
+   * Optional: Users may leave this field empty if they choose.
+   3. b. Knowledge Section
+   * Label: Knowledge
+   * Options: Two mutually exclusive choices (use radio buttons to enforce single selection).
+   * Internal
+   * Definition: Indicates that the change is unique to the user's context and not publicly known.
+   * AI Behavior: The AI model should primarily rely on the Title of Change and Description provided by the user. It may use general world knowledge to better understand the unique information.
+   * Public
+   * Definition: Indicates that the change is generally known in the public sphere (e.g., the Civil Rights Movement).
+   * AI Behavior: The AI model should primarily rely on accurate, publicly available information about the change.
+   * Selection Constraint: Only one option can be selected at any time.
+   * Styling: Radio buttons and labels should match the application's existing styles.
+   4. c. Timeline Section
+   * Label: Timeline
+   * Options: Three mutually exclusive choices (use radio buttons).
+   * Past
+   * Definition: The change occurred in the past.
+   * Present
+   * Definition: The change is currently happening.
+   * Future
+   * Definition: The change is a projected or imagined future scenario.
+   * AI Behavior: The selected timeline should influence the AI model's analysis and summary.
+   * Selection Constraint: Only one option can be selected at any time.
+   * Styling: Radio buttons and labels should be styled consistently with the rest of the application.
+
+Functional Requirements
+   1. Title of Change Text Box
+   * Status: This field is now required.
+   * Validation: Implement form validation to ensure the user cannot proceed without entering a title.
+   * Styling: Any validation messages or indicators should match the application's existing style guides.
+   2. Advanced Options Behavior
+   * Default State: The advanced options section is collapsed upon initial view.
+   * Expansion: Clicking the dropdown arrow expands the section to display additional fields.
+   * Optional Fields: All fields within the advanced options are optional; users may choose to fill in any, all, or none.
+   3. Input Controls
+   * Mutual Exclusivity: Use radio buttons for the Knowledge and Timeline sections to enforce single-option selection within each.
+   * Default Selections: No default option is pre-selected in the Knowledge and Timeline sections.
+   4. AI Model Integration
+   * Context Utilization:
+   * If provided, the Description adds depth to the AI's context understanding.
+   * The Knowledge selection guides the AI on how much to rely on user-provided information versus public knowledge.
+   * The Timeline selection informs the AI about the temporal context, affecting its analysis.
+   * Fallback Behavior: If advanced options are not used, the AI model continues to rely solely on the Title of Change.
+   5. User Experience Enhancements
+   * Error Messages: Provide clear error messages if the required Title of Change field is left empty upon submission.
+   * Accessibility: Ensure all new elements are accessible and comply with standard accessibility guidelines.
+   * Styling: Error messages and accessibility features should align with the application's existing design patterns.
+
+Styling and Design
+   * Consistency: All new UI elements must match the existing style of the application, including colors, fonts, input boxes, buttons, and other stylistic elements.
+   * Responsive Design: Ensure the advanced options section and its components adapt well to different screen sizes and devices.
+   * User Interface Harmony: The expanded advanced options should integrate seamlessly with the current layout, maintaining a cohesive user experience.
+
+Summary of Changes
+   * Required Field: Title of Change text box is now mandatory.
+   * Advanced Options: Introduced an expandable section containing:
+   * An optional Description text box for additional context.
+   * A Knowledge section with Internal and Public options to indicate the nature of the change.
+   * A Timeline section with Past, Present, and Future options to specify the temporal context.
+   * AI Model Adjustments: Modify the AI model to incorporate new inputs when available, adjusting its analysis and summary generation accordingly.
+   * Validation and Constraints: Implement input validation and enforce mutual exclusivity where necessary.
+   * Styling Requirements: All new elements must match the existing application's styling.
+
+Technical Notes
+   * Front-End Implementation:
+   * Use appropriate UI components (e.g., collapsible panels, radio buttons) that match the existing design language to enhance usability.
+   * Ensure the design is responsive and maintains consistency with the existing application style.
+   * Back-End Integration:
+   * Update data models to include new fields from the advanced options.
+   * Adjust API endpoints and request handling to pass additional context to the AI model.
+
+Update the AI Model alignment in the following way:
+
+Overview
+This document provides detailed instructions on how the AI model should incorporate user-provided inputs from the application's new "Advanced" options. The goal is to ensure that the AI model accurately interprets and utilizes the additional context to generate precise and relevant baseline analyses and summaries.
+
+Key Components for AI Contextualization
+The AI model must consider the following user inputs when generating analyses and summaries:
+1. Title of Change (Required)
+2. Description (Optional)
+3. Knowledge Selection (Optional)
+   * Internal
+   * Public
+4. Timeline Selection (Optional)
+   * Past
+   * Present
+   * Future
+
+Detailed Instructions
+1. Title of Change
+* Primary Context: The Title of Change is the fundamental input and must always be considered by the AI model.
+* Usage: The AI should use this title as the primary topic for analysis and summary.
+* Importance: This field is mandatory and serves as the anchor for all subsequent context.
+2. Description
+* Additional Context: If provided, the Description offers deeper insights and nuances related to the Title of Change.
+* Usage:
+   * The AI model must incorporate details from the Description to enhance its understanding.
+   * The AI should extract key themes, specific details, and any explicit points mentioned.
+* Priority: When available, the Description should be considered with high priority alongside the Title of Change.
+3. Knowledge Selection
+* Purpose: Guides the AI on the nature of the information and how much it should rely on external knowledge versus user-provided context.
+* Options:
+   * Internal:
+      * Definition: The change is unique to the user's context and not publicly known.
+      * AI Behavior:
+         * Primary Reliance: The AI must primarily rely on the Title of Change and Description.
+         * External Knowledge: The AI may use its general understanding of the world only to better comprehend the user-provided information, not to introduce external data.
+         * Avoid Assumptions: Do not assume or infer details not present in the user's inputs.
+   * Public:
+      * Definition: The change is known in the public domain (e.g., historical events, well-known movements).
+      * AI Behavior:
+         * Primary Reliance: The AI should primarily rely on accurate, publicly available information related to the Title of Change.
+         * User Inputs: The Description should be used to understand the user's perspective but should be balanced with public knowledge.
+         * Accuracy: Ensure that all referenced information is correct and verifiable.
+4. Timeline Selection
+* Purpose: Informs the AI about the temporal context of the change, affecting analysis and predictions.
+* Options:
+   * Past:
+      * Definition: The change occurred in the past.
+      * AI Behavior:
+         * Analyze historical impacts, outcomes, and significance.
+         * Reference past data and events accurately.
+   * Present:
+      * Definition: The change is currently happening.
+      * AI Behavior:
+         * Focus on current developments, ongoing impacts, and real-time analysis.
+         * Use present-tense language and consider the immediacy of effects.
+   * Future:
+      * Definition: The change is a projected or imagined future scenario.
+      * AI Behavior:
+         * Emphasize potential outcomes, predictions, and hypothetical scenarios.
+         * Use future-tense language and consider trends that may influence the change.
+
+AI Model Processing Workflow
+1. Input Reception:
+   * Receive the Title of Change (required).
+   * Check for additional inputs:
+      * Description
+      * Knowledge selection
+      * Timeline selection
+2. Contextual Understanding:
+   * Title of Change:
+      * Establish the main subject for analysis.
+   * Description (if provided):
+      * Extract key points and details.
+      * Understand the nuances and specific aspects highlighted by the user.
+3. Knowledge Interpretation:
+   * Internal:
+      * Treat the information as unique and user-specific.
+      * Do Not introduce external facts not provided by the user.
+      * Use general world knowledge only to interpret the user's inputs more effectively.
+   * Public:
+      * Integrate accurate public information relevant to the Title of Change.
+      * Cross-reference with reliable data sources to ensure correctness.
+4. Temporal Context Application:
+   * Adjust the analysis based on the selected Timeline:
+      * Past: Historical analysis.
+      * Present: Current state assessment.
+      * Future: Predictive modeling and forecasting.
+5. Analysis Generation:
+   * Combine all inputs to produce a coherent and comprehensive analysis.
+   * Ensure that the output aligns with the user's context and expectations.
+6. Summary Creation:
+   * Provide a concise summary that encapsulates the key points from the analysis.
+   * Reflect the emphasis placed by the user through their inputs.
+
+Emphasized Guidelines
+* User-Centric Focus: The AI model must prioritize the user's inputs above all else, especially when the Knowledge selection is Internal.
+* Accuracy and Reliability:
+   * When the Knowledge selection is Public, the AI must ensure all public information is accurate and up-to-date.
+   * Avoid spreading misinformation or unverified data.
+* Context Sensitivity:
+   * Always consider the Timeline to frame the analysis appropriately.
+   * Be sensitive to the implications of discussing past, present, or future events.
+* Avoid Overgeneralization:
+   * Do not make broad assumptions beyond the provided context.
+   * Stay specific to the details given by the user.
+* Language and Tone:
+   * Use language appropriate to the Timeline (past, present, future).
+   * Maintain a professional and analytical tone throughout the output.
+
+Examples for Clarity
+Example 1: Internal Knowledge with Description
+* Title of Change: "Implementation of XYZ Software in Our Company"
+* Description: "We are transitioning from manual processes to an automated system using XYZ software. This change affects our operations team and requires training."
+* Knowledge: Internal
+* Timeline: Present
+* AI Behavior:
+   * Focus analysis on the internal impact of adopting XYZ software within the company.
+   * Discuss challenges and benefits specific to the user's organization.
+   * Do not introduce external information about XYZ software unless it helps interpret the user's context.
+Example 2: Public Knowledge without Description
+* Title of Change: "The Civil Rights Movement"
+* Knowledge: Public
+* Timeline: Past
+* AI Behavior:
+   * Provide an analysis based on historical data about the Civil Rights Movement.
+   * Reference key events, figures, and outcomes.
+   * Ensure all information is accurate and reflective of public records.
+Example 3: Future Scenario with Description
+* Title of Change: "Adoption of AI in Healthcare by 2030"
+* Description: "Potential impacts on patient care, data management, and ethical considerations."
+* Knowledge: Public
+* Timeline: Future
+* AI Behavior:
+   * Analyze possible future developments in AI within the healthcare sector.
+   * Discuss predictions, trends, and hypothetical outcomes.
+   * Incorporate public knowledge about current AI advancements to inform future projections.
+
+Error Handling and Edge Cases
+* Missing Inputs:
+   * If optional fields are not provided, the AI should proceed using the available information.
+* Conflicting Inputs:
+   * If inconsistencies are detected (e.g., Title of Change suggests a public event, but Knowledge is set to Internal), the AI should prioritize the user's selections and interpret accordingly.
+* Unclear Descriptions:
+   * If the Description is ambiguous, the AI should avoid making unfounded assumptions and stick closely to the information provided.
+
+Final Notes
+* Developer Implementation:
+   * Ensure that the AI model's algorithms and data processing pipelines are updated to accommodate these instructions.
