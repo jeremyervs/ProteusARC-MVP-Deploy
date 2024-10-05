@@ -59,7 +59,6 @@ def analyze_scenario():
 
     data: Dict[str, Any] = request.json or {}
     change_title: str = data.get('changeTitle', 'Untitled Change')
-    gradient_values: List[Dict[str, Any]] = data.get('gradientValues', [])
     change_description: str = data.get('changeDescription', '')
     knowledge_type: str = data.get('knowledgeType', '')
     timeline: str = data.get('timeline', '')
@@ -74,12 +73,11 @@ def analyze_scenario():
         prompt += f"Knowledge type: {knowledge_type}\n"
     
     if timeline:
-        prompt += f"Timeline: {timeline}\n"
+        prompt += f"Timeline: {timeline}\n\n"
     
     prompt += "Definitions of Change Gradients:\n"
-    for gradient in gradient_values:
-        definition = gradient_definitions.get(gradient['gradient'], '')
-        prompt += f"{gradient['gradient']}: {definition}\n"
+    for gradient, definition in gradient_definitions.items():
+        prompt += f"{gradient}: {definition}\n"
 
     prompt += "\nImportant: The change gradients are organized into dependent pairs. Each pair represents opposite ends of a spectrum, and the total combined value for each pair must equal 100. The pairs are:\n"
     for pair in gradient_pairs:
