@@ -44,11 +44,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const closePopup = document.querySelector('.close-popup');
     const gradientDefinitions = document.getElementById('gradientDefinitions');
     const resetButton = document.getElementById('resetButton');
-    const advancedToggle = document.querySelector('.advanced-toggle');
-    const advancedContent = document.querySelector('.advanced-content');
-    const changeDescription = document.getElementById('changeDescription');
-    const knowledgeRadios = document.querySelectorAll('input[name="knowledge"]');
-    const timelineRadios = document.querySelectorAll('input[name="timeline"]');
 
     let chart = null;
     let tempValues = Array(gradients.length / 2).fill(50);
@@ -123,13 +118,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     updateChartButton.addEventListener('click', function() {
-        if (validateForm()) {
-            updateChart();
-            chartProcessed = true;
-            analyzeScenarioButton.disabled = false;
-            analyzeScenarioButton.title = "Analyze the current scenario";
-            aiButtonHint.style.display = "none";
-        }
+        updateChart();
+        chartProcessed = true;
+        analyzeScenarioButton.disabled = false;
+        analyzeScenarioButton.title = "Analyze the current scenario";
+        aiButtonHint.style.display = "none";
     });
 
     analyzeScenarioButton.addEventListener('click', function() {
@@ -141,11 +134,6 @@ document.addEventListener('DOMContentLoaded', function() {
     exportButton.addEventListener('click', showExportOptions);
 
     resetButton.addEventListener('click', resetSliders);
-
-    advancedToggle.addEventListener('click', function() {
-        this.classList.toggle('active');
-        advancedContent.style.display = advancedContent.style.display === 'none' ? 'block' : 'none';
-    });
 
     function updatePercentages(slider) {
         const value = slider.value;
@@ -428,33 +416,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    function getAdvancedOptions() {
-        const description = changeDescription.value.trim();
-        const knowledge = Array.from(knowledgeRadios).find(radio => radio.checked)?.value || null;
-        const timeline = Array.from(timelineRadios).find(radio => radio.checked)?.value || null;
-
-        return { description, knowledge, timeline };
-    }
-
-    function validateForm() {
-        const changeTitle = changeTitleInput.value.trim();
-        if (!changeTitle) {
-            showPopup('Please enter a title for the change.');
-            return false;
-        }
-        return true;
-    }
-
     function analyzeScenario() {
-        if (!validateForm()) return;
-
-        const changeTitle = changeTitleInput.value.trim();
+        const changeTitle = changeTitleInput.value || 'Untitled Change';
         const gradientValues = gradients.map((gradient, index) => ({
             gradient: gradient.label,
             value: index % 2 === 0 ? 100 - tempValues[index/2] : tempValues[Math.floor(index/2)]
         }));
-
-        const advancedOptions = getAdvancedOptions();
 
         const aiAnalysisResult = document.getElementById('aiAnalysisResult');
         aiAnalysisResult.innerHTML = `
@@ -471,8 +438,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             body: JSON.stringify({
                 changeTitle: changeTitle,
-                gradientValues: gradientValues,
-                advancedOptions: advancedOptions
+                gradientValues: gradientValues
             }),
         })
         .then(response => response.json())
