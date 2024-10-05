@@ -240,7 +240,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             text: 'Change Pattern Visualization',
                             font: {
                                 family: "'Poppins', sans-serif",
-                                size: window.innerWidth < 768 ? 18 : 20
+                                size: window.innerWidth < 768 ? 18 : 20,
+                                weight: 'bold'
                             },
                             color: getTextColor
                         },
