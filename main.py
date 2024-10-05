@@ -91,7 +91,7 @@ def analyze_scenario():
     prompt += "3. Provide an overall summary of your findings, ensuring to address key insights and considering the provided context (description, knowledge, and timeline if available). Discuss any significant differences between your baseline analysis and the user's input. Be sure to label this section as OVERALL SUMMARY and present the output in paragraph form.\n"
     prompt += "4. Present your response efficiently yet sufficiently in plain text. Do not use any Markdown formatting.\n"
     prompt += "5. Use proper spacing between paragraphs and sections for readability.\n"
-    prompt += "6. Use clear headings (in plain text) for each section of your analysis, ensuring to follow each heading with a colon.\n"
+    prompt += "6. Use clear headings (in plain text) for each section of your analysis, ensuring to follow each heading with a colon:\n"
     prompt += "7. Ensure there are blank lines between paragraphs and sections.\n"
 
     try:
