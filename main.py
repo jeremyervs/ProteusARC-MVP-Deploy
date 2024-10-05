@@ -58,10 +58,14 @@ def analyze_scenario():
         return jsonify({"error": "OpenAI API key is not set. Unable to analyze scenario."}), 500
 
     data: Dict[str, Any] = request.json or {}
-    change_title: str = data.get('changeTitle', 'Untitled Change')
+    change_title: str = data.get('changeTitle', '')
     change_description: str = data.get('changeDescription', '')
     knowledge_type: str = data.get('knowledgeType', '')
     timeline: str = data.get('timeline', '')
+    gradient_values: List[Dict[str, Any]] = data.get('gradientValues', [])
+
+    if not change_title:
+        return jsonify({"error": "Title of Change is required."}), 400
 
     # Construct the prompt for OpenAI
     prompt = f"You are analyzing a change scenario titled '{change_title}'.\n\n"
@@ -71,11 +75,21 @@ def analyze_scenario():
     
     if knowledge_type:
         prompt += f"Knowledge type: {knowledge_type}\n"
+        if knowledge_type == 'Internal':
+            prompt += "Note: Focus primarily on the provided information and avoid introducing external facts.\n"
+        elif knowledge_type == 'Public':
+            prompt += "Note: Integrate accurate public information relevant to the Title of Change.\n"
     
     if timeline:
-        prompt += f"Timeline: {timeline}\n\n"
+        prompt += f"Timeline: {timeline}\n"
+        if timeline == 'Past':
+            prompt += "Note: Focus on historical analysis and outcomes.\n"
+        elif timeline == 'Present':
+            prompt += "Note: Assess the current state and ongoing impacts.\n"
+        elif timeline == 'Future':
+            prompt += "Note: Provide predictive modeling and forecasting.\n"
     
-    prompt += "Definitions of Change Gradients:\n"
+    prompt += "\nDefinitions of Change Gradients:\n"
     for gradient, definition in gradient_definitions.items():
         prompt += f"{gradient}: {definition}\n"
 
@@ -84,8 +98,8 @@ def analyze_scenario():
         prompt += f"- {pair[0]} / {pair[1]}\n"
 
     prompt += "\nPlease perform the following steps:\n"
-    prompt += "1. Establish your own baseline analysis of the change being examined by assigning a score (0-100) to each gradient based on widely accepted current knowledge. Ensure that for each pair, the sum of the two values equals 100. Be sure to label this section as BASELINE ANALYSIS.\n"
-    prompt += "2. Provide an overall summary of your findings, ensuring to address key insights. Be sure to label this section as OVERALL SUMMARY and present the output in paragraph form.\n"
+    prompt += "1. Establish your own baseline analysis of the change being examined by assigning a score (0-100) to each gradient based on the provided context and your understanding. Ensure that for each pair, the sum of the two values equals 100. Be sure to label this section as BASELINE ANALYSIS.\n"
+    prompt += "2. Provide an overall summary of your findings, ensuring to address key insights based on the provided context. Be sure to label this section as OVERALL SUMMARY and present the output in paragraph form.\n"
     prompt += "3. Present your response efficiently yet sufficiently in plain text. Do not use any Markdown formatting.\n"
     prompt += "4. Use proper spacing between paragraphs and sections for readability.\n"
     prompt += "5. Use clear headings (in plain text) for each section of your analysis, ensuring to follow each heading with a colon.\n"
