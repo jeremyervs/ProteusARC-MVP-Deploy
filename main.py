@@ -65,16 +65,16 @@ def analyze_scenario():
     timeline: str = data.get('timeline', '')
 
     # Construct the prompt for OpenAI
-    prompt = f"You are analyzing a change scenario titled '{change_title}'.\n\n"
+    prompt = f"You are analyzing a change scenario titled '{change_title}'. This title is crucial for understanding the context of the change.\n\n"
     
     if description:
-        prompt += f"Description: {description}\n\n"
+        prompt += f"Description: {description}\nThis description provides essential context for the change scenario. Use it to inform your baseline analysis.\n\n"
     
     if knowledge:
-        prompt += f"Knowledge: {knowledge.capitalize()}\n"
+        prompt += f"Knowledge: {knowledge.capitalize()}\nThis indicates the scope of information to consider in your analysis.\n"
     
     if timeline:
-        prompt += f"Timeline: {timeline.capitalize()}\n"
+        prompt += f"Timeline: {timeline.capitalize()}\nThis specifies the temporal context of the change. Adjust your analysis accordingly.\n"
     
     prompt += "\nDefinitions of Change Gradients:\n"
     for gradient in gradient_values:
@@ -85,8 +85,18 @@ def analyze_scenario():
     for pair in gradient_pairs:
         prompt += f"- {pair[0]} / {pair[1]}\n"
 
+    prompt += "\nGuidelines for generating baseline values:\n"
+    prompt += "1. Consider the context provided by the title, description, knowledge type, and timeline when assigning values.\n"
+    prompt += "2. For pairs like Passive/Violent, consider the nature of the change. Most changes should lean heavily towards Passive unless the context strongly suggests otherwise.\n"
+    prompt += "3. Ensure that your baseline values reflect a realistic and nuanced understanding of the change scenario.\n"
+
+    prompt += "\nExample scenarios to guide your analysis:\n"
+    prompt += "1. 'Implementation of a new HR policy': This would likely be more Endogenous, Stable, Deliberate, and entirely Passive.\n"
+    prompt += "2. 'Global climate change initiatives': This would be more Exogenous, Transformational, Continuing, and largely Passive, but with some potential for conflict.\n"
+    prompt += "3. 'Technological disruption in traditional industries': This could be balanced between Endogenous and Exogenous, highly Transformational, and a mix of Trend and Vision.\n"
+
     prompt += "\nPlease perform the following steps:\n"
-    prompt += "1. Establish your own baseline analysis of the change being examined by assigning a score (0-100) to each gradient based on widely accepted current knowledge. Ensure that for each pair, the sum of the two values equals 100. Be sure to label this section as BASELINE ANALYSIS.\n"
+    prompt += "1. Establish your own baseline analysis of the change being examined by assigning a score (0-100) to each gradient based on the provided context and guidelines. Ensure that for each pair, the sum of the two values equals 100. Be sure to label this section as BASELINE ANALYSIS.\n"
     prompt += "2. Provide an overall summary of your findings, ensuring to address key insights. Be sure to label this section as OVERALL SUMMARY and present the output in paragraph form.\n"
     prompt += "3. Present your response efficiently yet sufficiently in plain text. Do not use any Markdown formatting.\n"
     prompt += "4. Use proper spacing between paragraphs and sections for readability.\n"
@@ -117,7 +127,7 @@ def analyze_scenario():
             messages=messages,
             max_tokens=1000,
             n=1,
-            temperature=0.2,
+            temperature=0.05,
         )
 
         # Extract the generated text from the API response
@@ -131,12 +141,33 @@ def analyze_scenario():
             analysis = re.sub(r'\n{3,}', '\n\n', analysis)
             # Ensure headings are followed by a blank line
             analysis = re.sub(r'(^|\n)([A-Z][^:\n]+:)(\n)(?!\n)', r'\1\2\n\n', analysis, flags=re.MULTILINE)
+
+            # Post-processing to adjust baseline values
+            baseline_match = re.search(r'BASELINE ANALYSIS:(.*?)(?:OVERALL SUMMARY|\Z)', analysis, re.DOTALL)
+            if baseline_match:
+                baseline_text = baseline_match.group(1)
+                adjusted_baseline = adjust_baseline_values(baseline_text, change_title, description, knowledge, timeline)
+                analysis = analysis.replace(baseline_text, adjusted_baseline)
         else:
             analysis = "No analysis generated."
 
         return jsonify({"analysis": analysis})
     except Exception as e:
         return jsonify({"error": f"An error occurred while analyzing the scenario: {str(e)}"}), 500
+
+def adjust_baseline_values(baseline_text, change_title, description, knowledge, timeline):
+    # Implement logic to adjust baseline values based on context
+    # This is a placeholder function - you should implement the actual logic
+    adjusted_text = baseline_text
+
+    # Example adjustment: If the change is about peace or cooperation, ensure Passive is high
+    if any(word in change_title.lower() + description.lower() for word in ['peace', 'cooperation', 'agreement']):
+        adjusted_text = re.sub(r'Passive: (\d+)', 'Passive: 90', adjusted_text)
+        adjusted_text = re.sub(r'Violent: (\d+)', 'Violent: 10', adjusted_text)
+
+    # Add more adjustments based on the context, knowledge, and timeline
+
+    return adjusted_text
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
