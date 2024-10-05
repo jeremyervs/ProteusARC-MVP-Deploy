@@ -345,9 +345,13 @@ document.addEventListener('DOMContentLoaded', function() {
             window.lineChart.destroy();
         }
 
-        const labels = gradientValuesLabels;
+        const labels = gradientValuesLabels.map(label => label.split(' ')[0]);
         const aiData = aiBaseline;
         const userData = userValues;
+
+        console.log("Labels:", labels);
+        console.log("AI Data:", aiData);
+        console.log("User Data:", userData);
 
         window.lineChart = new Chart(ctx, {
             type: 'line',
@@ -385,12 +389,6 @@ document.addEventListener('DOMContentLoaded', function() {
                             minRotation: 90,
                             font: {
                                 size: 8
-                            },
-                            callback: function(value, index) {
-                                const label = this.getLabelForValue(value).split(' ')[0];
-                                if (label === 'Top') return 'Top Down';
-                                if (label === 'Bottom') return 'Bottom Up';
-                                return label;
                             }
                         }
                     }
@@ -406,7 +404,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     tooltip: {
                         callbacks: {
                             title: function(context) {
-                                return context[0].label;
+                                return gradientValuesLabels[context[0].dataIndex];
                             },
                             label: function(context) {
                                 const datasetLabel = context.dataset.label;
@@ -502,15 +500,18 @@ document.addEventListener('DOMContentLoaded', function() {
                     <canvas id="lineChart" style="width:100%;height:400px;"></canvas>
                 `;
 
-                const aiBaselineMatch = data.analysis.match(/BASELINE ANALYSIS:([\s\S]*?)(?:ALIGNMENT|$)/);
+                const aiBaselineMatch = data.analysis.match(/BASELINE ANALYSIS:([\s\S]*?)(?:OVERALL SUMMARY|$)/);
                 let aiBaselineValues = [];
                 if (aiBaselineMatch) {
                     const baselineText = aiBaselineMatch[1];
                     aiBaselineValues = gradientValuesLabels.map(label => {
-                        const match = baselineText.match(new RegExp(`${label.split(' ')[0]}.*?(\\d+)`));
+                        const gradientName = label.split(' ')[0];
+                        const match = baselineText.match(new RegExp(`${gradientName}:\\s*(\\d+)`));
                         return match ? parseInt(match[1]) : 0;
                     });
                 }
+
+                console.log("AI Baseline Values:", aiBaselineValues);
 
                 createLineChart(aiBaselineValues, gradientValues.map(g => g.value));
             }
