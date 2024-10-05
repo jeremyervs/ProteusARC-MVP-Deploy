@@ -59,7 +59,6 @@ def analyze_scenario():
 
     data: Dict[str, Any] = request.json or {}
     change_title: str = data.get('changeTitle', 'Untitled Change')
-    gradient_values: List[Dict[str, Any]] = data.get('gradientValues', [])
     advanced_options: Dict[str, Any] = data.get('advancedOptions', {})
 
     # Construct the prompt for OpenAI
@@ -75,9 +74,8 @@ def analyze_scenario():
         prompt += f"Timeline: {advanced_options['timeline']}\n"
     
     prompt += "\nDefinitions of Change Gradients:\n"
-    for gradient in gradient_values:
-        definition = gradient_definitions.get(gradient['gradient'], '')
-        prompt += f"{gradient['gradient']}: {definition}\n"
+    for gradient, definition in gradient_definitions.items():
+        prompt += f"{gradient}: {definition}\n"
 
     prompt += "\nImportant: The change gradients are organized into dependent pairs. Each pair represents opposite ends of a spectrum, and the total combined value for each pair must equal 100. The pairs are:\n"
     for pair in gradient_pairs:
@@ -85,7 +83,7 @@ def analyze_scenario():
 
     prompt += "\nPlease perform the following steps:\n"
     prompt += "1. Establish your own baseline analysis of the change being examined by assigning a score (0-100) to each gradient based on widely accepted current knowledge and the provided context. Ensure that for each pair, the sum of the two values equals 100. Be sure to label this section as BASELINE ANALYSIS.\n"
-    prompt += "2. Provide an overall summary of your findings, ensuring to address key insights and considering the provided context (description, knowledge, and timeline if available). Discuss any significant differences between your baseline analysis and the user's input. Be sure to label this section as OVERALL SUMMARY and present the output in paragraph form.\n"
+    prompt += "2. Provide an overall summary of your findings, ensuring to address key insights and considering the provided context (description, knowledge, and timeline if available). Be sure to label this section as OVERALL SUMMARY and present the output in paragraph form.\n"
     prompt += "3. Present your response efficiently yet sufficiently in plain text. Do not use any Markdown formatting.\n"
     prompt += "4. Use proper spacing between paragraphs and sections for readability.\n"
     prompt += "5. Use clear headings (in plain text) for each section of your analysis, ensuring to follow each heading with a colon:\n"
