@@ -135,6 +135,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     resetButton.addEventListener('click', resetSliders);
 
+    // Advanced Options Toggle
+    const advancedHeader = document.querySelector('.advanced-header');
+    const advancedContent = document.querySelector('.advanced-content');
+
+    advancedHeader.addEventListener('click', function() {
+        advancedContent.style.display = advancedContent.style.display === 'none' ? 'block' : 'none';
+        advancedHeader.classList.toggle('open');
+    });
+
     function updatePercentages(slider) {
         const value = slider.value;
         const leftPercent = 100 - value;

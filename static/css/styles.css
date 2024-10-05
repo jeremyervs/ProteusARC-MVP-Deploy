@@ -669,3 +669,60 @@ footer a:last-child {
 footer a:hover {
     text-decoration: underline;
 }
+
+.advanced-options {
+    margin-top: 20px;
+}
+
+.advanced-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px;
+    background-color: var(--secondary-color);
+    border-radius: 5px;
+}
+
+.advanced-header span {
+    font-weight: 600;
+}
+
+.dropdown-arrow {
+    transition: transform 0.3s ease;
+}
+
+.advanced-header.open .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.advanced-content {
+    padding: 20px 0;
+}
+
+#changeDescription {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    resize: vertical;
+    font-family: 'Poppins', sans-serif;
+}
+
+.knowledge-section,
+.timeline-section {
+    margin-bottom: 20px;
+}
+
+.knowledge-section h4,
+.timeline-section h4 {
+    margin-bottom: 10px;
+}
+
+.knowledge-section label,
+.timeline-section label {
+    display: inline-block;
+    margin-right: 20px;
+}

@@ -25,7 +25,27 @@
         
         <main>
             <div class="card input-card">
-                <input type="text" id="changeTitle" placeholder="Enter title of change being examined">
+                <input type="text" id="changeTitle" placeholder="Enter title of change being examined" required>
+                <div class="advanced-options">
+                    <div class="advanced-header">
+                        <span>Advanced</span>
+                        <span class="dropdown-arrow">▼</span>
+                    </div>
+                    <div class="advanced-content" style="display: none;">
+                        <textarea id="changeDescription" placeholder="Enter additional details about the change (optional)"></textarea>
+                        <div class="knowledge-section">
+                            <h4>Knowledge</h4>
+                            <label><input type="radio" name="knowledge" value="internal"> Internal</label>
+                            <label><input type="radio" name="knowledge" value="public"> Public</label>
+                        </div>
+                        <div class="timeline-section">
+                            <h4>Timeline</h4>
+                            <label><input type="radio" name="timeline" value="past"> Past</label>
+                            <label><input type="radio" name="timeline" value="present"> Present</label>
+                            <label><input type="radio" name="timeline" value="future"> Future</label>
+                        </div>
+                    </div>
+                </div>
             </div>
             
             <div class="card sliders-card">
