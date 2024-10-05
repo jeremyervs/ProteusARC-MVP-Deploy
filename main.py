@@ -60,9 +60,22 @@ def analyze_scenario():
     data: Dict[str, Any] = request.json or {}
     change_title: str = data.get('changeTitle', 'Untitled Change')
     gradient_values: List[Dict[str, Any]] = data.get('gradientValues', [])
+    change_description: str = data.get('changeDescription', '')
+    knowledge_type: str = data.get('knowledgeType', '')
+    timeline: str = data.get('timeline', '')
 
     # Construct the prompt for OpenAI
     prompt = f"You are analyzing a change scenario titled '{change_title}'.\n\n"
+    
+    if change_description:
+        prompt += f"Additional context: {change_description}\n\n"
+    
+    if knowledge_type:
+        prompt += f"Knowledge type: {knowledge_type}\n"
+    
+    if timeline:
+        prompt += f"Timeline: {timeline}\n"
+    
     prompt += "Definitions of Change Gradients:\n"
     for gradient in gradient_values:
         definition = gradient_definitions.get(gradient['gradient'], '')

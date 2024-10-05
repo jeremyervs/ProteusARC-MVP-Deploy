@@ -135,7 +135,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     resetButton.addEventListener('click', resetSliders);
 
-    // Advanced Options Toggle
     const advancedHeader = document.querySelector('.advanced-header');
     const advancedContent = document.querySelector('.advanced-content');
 
@@ -217,12 +216,14 @@ document.addEventListener('DOMContentLoaded', function() {
                                 color: getTextColor,
                                 backdropColor: 'transparent',
                                 font: {
+                                    family: "'Poppins', sans-serif",
                                     size: window.innerWidth < 768 ? 10 : 12
                                 },
                                 showLabelBackdrop: false
                             },
                             pointLabels: {
                                 font: {
+                                    family: "'Poppins', sans-serif",
                                     size: window.innerWidth < 768 ? 12 : 14
                                 },
                                 color: getTextColor
@@ -234,6 +235,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             display: true,
                             text: 'Change Pattern Visualization',
                             font: {
+                                family: "'Poppins', sans-serif",
                                 size: window.innerWidth < 768 ? 18 : 20
                             },
                             color: getTextColor
@@ -534,9 +536,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     window.addEventListener('resize', () => {
         if (chart) {
-            chart.options.scales.r.ticks.font.size = window.innerWidth < 768 ? 10 : 12;
-            chart.options.scales.r.pointLabels.font.size = window.innerWidth < 768 ? 12 : 14;
-            chart.options.plugins.title.font.size = window.innerWidth < 768 ? 18 : 20;
+            chart.options.scales.r.ticks.font = {
+                family: "'Poppins', sans-serif",
+                size: window.innerWidth < 768 ? 10 : 12
+            };
+            chart.options.scales.r.pointLabels.font = {
+                family: "'Poppins', sans-serif",
+                size: window.innerWidth < 768 ? 12 : 14
+            };
+            chart.options.plugins.title.font = {
+                family: "'Poppins', sans-serif",
+                size: window.innerWidth < 768 ? 18 : 20
+            };
             chart.update();
         }
     });
