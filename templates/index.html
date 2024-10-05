@@ -25,7 +25,37 @@
         
         <main>
             <div class="card input-card">
-                <input type="text" id="changeTitle" placeholder="Enter title of change being examined">
+                <input type="text" id="changeTitle" placeholder="Enter title of change being examined" required>
+                <div class="advanced-options">
+                    <button id="advancedToggle" aria-expanded="false">
+                        Advanced Options <span class="dropdown-arrow">▼</span>
+                    </button>
+                    <div id="advancedContent" class="hidden">
+                        <textarea id="changeDescription" placeholder="Enter a detailed description of the change (optional)"></textarea>
+                        <div class="option-section">
+                            <label>Knowledge:</label>
+                            <div class="tooltip" data-tooltip="Select whether the change is unique to your context or publicly known">ⓘ</div>
+                            <div class="radio-group">
+                                <input type="radio" id="knowledgeInternal" name="knowledge" value="internal">
+                                <label for="knowledgeInternal">Internal</label>
+                                <input type="radio" id="knowledgePublic" name="knowledge" value="public">
+                                <label for="knowledgePublic">Public</label>
+                            </div>
+                        </div>
+                        <div class="option-section">
+                            <label>Timeline:</label>
+                            <div class="tooltip" data-tooltip="Select the temporal context of the change">ⓘ</div>
+                            <div class="radio-group">
+                                <input type="radio" id="timelinePast" name="timeline" value="past">
+                                <label for="timelinePast">Past</label>
+                                <input type="radio" id="timelinePresent" name="timeline" value="present">
+                                <label for="timelinePresent">Present</label>
+                                <input type="radio" id="timelineFuture" name="timeline" value="future">
+                                <label for="timelineFuture">Future</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             
             <div class="card sliders-card">
