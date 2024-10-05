@@ -90,17 +90,16 @@ def analyze_scenario():
     prompt += "2. For pairs like Passive/Violent, consider the nature of the change. Most changes should lean heavily towards Passive unless the context strongly suggests otherwise.\n"
     prompt += "3. Ensure that your baseline values reflect a realistic and nuanced understanding of the change scenario.\n"
 
-    prompt += "\nExample scenarios to guide your analysis:\n"
-    prompt += "1. 'Implementation of a new HR policy': This would likely be more Endogenous, Stable, Deliberate, and entirely Passive.\n"
-    prompt += "2. 'Global climate change initiatives': This would be more Exogenous, Transformational, Continuing, and largely Passive, but with some potential for conflict.\n"
-    prompt += "3. 'Technological disruption in traditional industries': This could be balanced between Endogenous and Exogenous, highly Transformational, and a mix of Trend and Vision.\n"
-
     prompt += "\nPlease perform the following steps:\n"
-    prompt += "1. Establish your own baseline analysis of the change being examined by assigning a score (0-100) to each gradient based on the provided context and guidelines. Ensure that for each pair, the sum of the two values equals 100. Be sure to label this section as BASELINE ANALYSIS.\n"
-    prompt += "2. Provide an overall summary of your findings, ensuring to address key insights. Be sure to label this section as OVERALL SUMMARY and present the output in paragraph form.\n"
-    prompt += "3. Present your response efficiently yet sufficiently in plain text. Do not use any Markdown formatting.\n"
-    prompt += "4. Use proper spacing between paragraphs and sections for readability.\n"
-    prompt += "5. Use clear headings (in plain text) for each section of your analysis, ensuring to follow each heading with a colon.\n"
+    prompt += "1. Establish your own baseline analysis of the change being examined by assigning a score (0-100) to each gradient based on the provided context and guidelines. Ensure that for each pair, the sum of the two values equals 100.\n"
+    prompt += "2. Present your baseline analysis in the following format:\n"
+    prompt += "BASELINE ANALYSIS:\n"
+    for gradient in gradient_values:
+        prompt += f"{gradient['gradient']}: [VALUE]\n"
+    prompt += "\n"
+    prompt += "3. Provide an overall summary of your findings, ensuring to address key insights. Label this section as OVERALL SUMMARY and present the output in paragraph form.\n"
+    prompt += "4. Present your response in plain text. Do not use any Markdown formatting.\n"
+    prompt += "5. Use proper spacing between paragraphs and sections for readability.\n"
     prompt += "6. Ensure there are blank lines between paragraphs and sections.\n"
 
     if knowledge == 'internal':

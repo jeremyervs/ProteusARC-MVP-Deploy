@@ -349,8 +349,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const aiData = aiBaseline;
         const userData = userValues;
 
-        console.log("Labels:", labels);
-        console.log("AI Data:", aiData);
+        console.log("Chart Labels:", labels);
+        console.log("AI Baseline Data:", aiData);
         console.log("User Data:", userData);
 
         window.lineChart = new Chart(ctx, {
@@ -493,6 +493,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.error) {
                 aiAnalysisResult.innerHTML = `<p class="error-message">Error: ${data.error}</p>`;
             } else {
+                console.log("Full AI Analysis Text:", data.analysis);
+
                 aiAnalysisResult.innerHTML = `
                     <h4>AI Analysis for "${changeTitle}"</h4>
                     <br>
@@ -504,19 +506,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 let aiBaselineValues = [];
                 if (aiBaselineMatch) {
                     const baselineText = aiBaselineMatch[1];
-                    console.log("Baseline Text:", baselineText); // Debug log
+                    console.log("Extracted Baseline Text:", baselineText);
 
                     aiBaselineValues = gradientValuesLabels.map(label => {
-                        const gradientName = label.split(' (')[0]; // Extract gradient name without the (Px) part
-                        const regexPattern = new RegExp(`${gradientName}:\\s*(\\d+)`);
+                        const gradientName = label.split(' (')[0];
+                        const regexPattern = new RegExp(`${gradientName}:\\s*(\\d+)`, 'i');
                         const match = baselineText.match(regexPattern);
                         const value = match ? parseInt(match[1]) : 0;
-                        console.log(`${gradientName}: ${value}`); // Debug log
+                        console.log(`Matched Gradient: ${gradientName}, Value: ${value}`);
                         return value;
                     });
                 }
 
-                console.log("AI Baseline Values:", aiBaselineValues);
+                console.log("Final AI Baseline Values:", aiBaselineValues);
                 console.log("User Values:", gradientValues.map(g => g.value));
 
                 createLineChart(aiBaselineValues, gradientValues.map(g => g.value));
