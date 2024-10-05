@@ -44,12 +44,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const closePopup = document.querySelector('.close-popup');
     const gradientDefinitions = document.getElementById('gradientDefinitions');
     const resetButton = document.getElementById('resetButton');
-    const advancedToggle = document.getElementById('advancedToggle');
-    const advancedContent = document.getElementById('advancedContent');
-    const changeTitle = document.getElementById('changeTitle');
-    const changeDescription = document.getElementById('changeDescription');
-    const knowledgeInputs = document.querySelectorAll('input[name="knowledge"]');
-    const timelineInputs = document.querySelectorAll('input[name="timeline"]');
 
     let chart = null;
     let tempValues = Array(gradients.length / 2).fill(50);
@@ -123,42 +117,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    advancedToggle.addEventListener('click', function() {
-        const isExpanded = this.getAttribute('aria-expanded') === 'true';
-        this.setAttribute('aria-expanded', !isExpanded);
-        advancedContent.classList.toggle('visible');
-    });
-
-    function validateForm() {
-        if (!changeTitle.value.trim()) {
-            showPopup('Please enter a title for the change.');
-            return false;
-        }
-        return true;
-    }
-
-    function getAdvancedOptions() {
-        const knowledge = Array.from(knowledgeInputs).find(input => input.checked)?.value || null;
-        const timeline = Array.from(timelineInputs).find(input => input.checked)?.value || null;
-        return {
-            description: changeDescription.value.trim(),
-            knowledge,
-            timeline
-        };
-    }
-
     updateChartButton.addEventListener('click', function() {
-        if (validateForm()) {
-            updateChart();
-            chartProcessed = true;
-            analyzeScenarioButton.disabled = false;
-            analyzeScenarioButton.title = "Analyze the current scenario";
-            aiButtonHint.style.display = "none";
-        }
+        updateChart();
+        chartProcessed = true;
+        analyzeScenarioButton.disabled = false;
+        analyzeScenarioButton.title = "Analyze the current scenario";
+        aiButtonHint.style.display = "none";
     });
 
     analyzeScenarioButton.addEventListener('click', function() {
-        if (validateForm() && chartProcessed) {
+        if (chartProcessed) {
             analyzeScenario();
         }
     });
@@ -240,14 +208,12 @@ document.addEventListener('DOMContentLoaded', function() {
                                 color: getTextColor,
                                 backdropColor: 'transparent',
                                 font: {
-                                    family: "'Poppins', sans-serif",
                                     size: window.innerWidth < 768 ? 10 : 12
                                 },
                                 showLabelBackdrop: false
                             },
                             pointLabels: {
                                 font: {
-                                    family: "'Poppins', sans-serif",
                                     size: window.innerWidth < 768 ? 12 : 14
                                 },
                                 color: getTextColor
@@ -259,7 +225,6 @@ document.addEventListener('DOMContentLoaded', function() {
                             display: true,
                             text: 'Change Pattern Visualization',
                             font: {
-                                family: "'Poppins', sans-serif",
                                 size: window.innerWidth < 768 ? 18 : 20
                             },
                             color: getTextColor
@@ -452,12 +417,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function analyzeScenario() {
-        const title = changeTitle.value.trim();
+        const changeTitle = changeTitleInput.value || 'Untitled Change';
         const gradientValues = gradients.map((gradient, index) => ({
             gradient: gradient.label,
             value: index % 2 === 0 ? 100 - tempValues[index/2] : tempValues[Math.floor(index/2)]
         }));
-        const advancedOptions = getAdvancedOptions();
 
         const aiAnalysisResult = document.getElementById('aiAnalysisResult');
         aiAnalysisResult.innerHTML = `
@@ -473,9 +437,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                changeTitle: title,
-                gradientValues: gradientValues,
-                advancedOptions: advancedOptions
+                changeTitle: changeTitle,
+                gradientValues: gradientValues
             }),
         })
         .then(response => response.json())
@@ -484,13 +447,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 aiAnalysisResult.innerHTML = `<p class="error-message">Error: ${data.error}</p>`;
             } else {
                 aiAnalysisResult.innerHTML = `
-                    <h4>AI Analysis for "${title}"</h4>
+                    <h4>AI Analysis for "${changeTitle}"</h4>
                     <br>
                     <div class="analysis-content">${data.analysis.replace(/\n/g, '<br>')}</div>
                     <canvas id="lineChart" style="width:100%;height:400px;"></canvas>
                 `;
 
-                const aiBaselineMatch = data.analysis.match(/BASELINE ANALYSIS:([\s\S]*?)(?:OVERALL SUMMARY|$)/);
+                const aiBaselineMatch = data.analysis.match(/BASELINE ANALYSIS:([\s\S]*?)(?:ALIGNMENT|$)/);
                 let aiBaselineValues = [];
                 if (aiBaselineMatch) {
                     const baselineText = aiBaselineMatch[1];
@@ -562,18 +525,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     window.addEventListener('resize', () => {
         if (chart) {
-            chart.options.scales.r.ticks.font = {
-                family: "'Poppins', sans-serif",
-                size: window.innerWidth < 768 ? 10 : 12
-            };
-            chart.options.scales.r.pointLabels.font = {
-                family: "'Poppins', sans-serif",
-                size: window.innerWidth < 768 ? 12 : 14
-            };
-            chart.options.plugins.title.font = {
-                family: "'Poppins', sans-serif",
-                size: window.innerWidth < 768 ? 18 : 20
-            };
+            chart.options.scales.r.ticks.font.size = window.innerWidth < 768 ? 10 : 12;
+            chart.options.scales.r.pointLabels.font.size = window.innerWidth < 768 ? 12 : 14;
+            chart.options.plugins.title.font.size = window.innerWidth < 768 ? 18 : 20;
             chart.update();
         }
     });
