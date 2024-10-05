@@ -88,28 +88,15 @@ def analyze_scenario():
     prompt += "\nPlease perform the following steps:\n"
     prompt += "1. Establish your own baseline analysis of the change being examined by assigning a score (0-100) to each gradient based on widely accepted current knowledge. Ensure that for each pair, the sum of the two values equals 100. Be sure to label this section as BASELINE ANALYSIS.\n"
     prompt += "2. Provide an overall summary of your findings, ensuring to address key insights. Be sure to label this section as OVERALL SUMMARY and present the output in paragraph form.\n"
-    
-    if knowledge_type == 'internal':
-        prompt += "3. Focus primarily on the user-provided information and avoid introducing external facts not provided by the user.\n"
-    elif knowledge_type == 'public':
-        prompt += "3. Incorporate accurate public information related to the change, ensuring all referenced information is correct and verifiable.\n"
-    
-    if timeline == 'past':
-        prompt += "4. Focus on historical impacts, outcomes, and significance of the change.\n"
-    elif timeline == 'present':
-        prompt += "4. Emphasize current developments, ongoing impacts, and provide a real-time analysis of the change.\n"
-    elif timeline == 'future':
-        prompt += "4. Focus on potential outcomes, predictions, and hypothetical scenarios related to the change.\n"
-    
-    prompt += "5. Present your response efficiently yet sufficiently in plain text. Do not use any Markdown formatting.\n"
-    prompt += "6. Use proper spacing between paragraphs and sections for readability.\n"
-    prompt += "7. Use clear headings (in plain text) for each section of your analysis, ensuring to follow each heading with a colon.\n"
-    prompt += "8. Ensure there are blank lines between paragraphs and sections.\n"
+    prompt += "3. Present your response efficiently yet sufficiently in plain text. Do not use any Markdown formatting.\n"
+    prompt += "4. Use proper spacing between paragraphs and sections for readability.\n"
+    prompt += "5. Use clear headings (in plain text) for each section of your analysis, ensuring to follow each heading with a colon.\n"
+    prompt += "6. Ensure there are blank lines between paragraphs and sections.\n"
 
     try:
         # Make API call to OpenAI
         messages = [
-            {"role": "system", "content": "You are an AI assistant analyzing change scenarios. Provide your analysis in plain text format without any Markdown. Use proper spacing and clear headings. Consider the provided knowledge type and timeline in your analysis."},
+            {"role": "system", "content": "You are an AI assistant analyzing change scenarios. Provide your analysis in plain text format without any Markdown. Use proper spacing and clear headings."},
             {"role": "user", "content": prompt}
         ]
 
