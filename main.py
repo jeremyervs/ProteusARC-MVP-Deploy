@@ -36,6 +36,38 @@ gradient_definitions = {
     'Deliberate': 'Change that is carefully planned and executed, based on extensive research, strategy, and intentional actions.'
 }
 
+# Advanced Elements definitions
+advanced_elements_definitions = {
+    'Description': {
+        'definition': 'A larger text box where users can provide additional details and nuances about the change.',
+        'purpose': 'Offers the AI model more context to enhance its baseline analysis and summary.'
+    },
+    'Knowledge': {
+        'Internal': {
+            'definition': "Indicates the change is unique to the user's context and not publicly known.",
+            'behavior': 'The AI relies primarily on the Title of Change and Description provided by the user, using general world knowledge only to better understand the unique information.'
+        },
+        'Public': {
+            'definition': 'Indicates the change is generally known in the public sphere.',
+            'behavior': 'The AI relies primarily on accurate, publicly available information about the change.'
+        }
+    },
+    'Timeline': {
+        'Past': {
+            'definition': 'The change occurred in the past.',
+            'behavior': 'The AI analyzes the change as a historical event.'
+        },
+        'Present': {
+            'definition': 'The change is currently happening.',
+            'behavior': 'The AI analyzes the change as an ongoing current event.'
+        },
+        'Future': {
+            'definition': 'The change is a projected or imagined future scenario.',
+            'behavior': 'The AI analyzes the change as a projected or imagined future scenario.'
+        }
+    }
+}
+
 gradient_pairs = [
     ('Endogenous', 'Exogenous'),
     ('Stable', 'Transformational'),
@@ -68,13 +100,18 @@ def analyze_scenario():
     prompt = f"You are analyzing a change scenario titled '{change_title}'.\n\n"
 
     if change_description:
-        prompt += f"Additional context: {change_description}\n\n"
+        prompt += f"Description: {change_description}\n"
+        prompt += f"Purpose of Description: {advanced_elements_definitions['Description']['purpose']}\n\n"
 
     if knowledge_type:
-        prompt += f"Knowledge type: {knowledge_type}\n"
+        prompt += f"Knowledge Type: {knowledge_type}\n"
+        prompt += f"Definition: {advanced_elements_definitions['Knowledge'][knowledge_type]['definition']}\n"
+        prompt += f"AI Behavior: {advanced_elements_definitions['Knowledge'][knowledge_type]['behavior']}\n\n"
 
     if timeline:
-        prompt += f"Timeline: {timeline}\n\n"
+        prompt += f"Timeline: {timeline}\n"
+        prompt += f"Definition: {advanced_elements_definitions['Timeline'][timeline]['definition']}\n"
+        prompt += f"AI Behavior: {advanced_elements_definitions['Timeline'][timeline]['behavior']}\n\n"
 
     prompt += "Definitions of Change Gradients:\n"
     for gradient in gradient_values:
@@ -87,7 +124,7 @@ def analyze_scenario():
 
     prompt += "\nPlease perform the following steps:\n"
     prompt += "1. Establish your own baseline analysis of the change being examined by assigning a score (0-100) to each gradient based on widely accepted current knowledge. Consider the provided change description, knowledge type, and timeline in your analysis. Ensure that for each pair, the sum of the two values equals 100. Be sure to label this section as BASELINE ANALYSIS.\n"
-    prompt += "2. Provide an overall summary of your findings, ensuring to address key insights. Be sure to label this section as OVERALL SUMMARY and present the output in paragraph form.\n"
+    prompt += "2. Provide an overall summary of your findings, ensuring to address key insights. Consider how the additional context from the Description, Knowledge Type, and Timeline influences your analysis. Be sure to label this section as OVERALL SUMMARY and present the output in paragraph form.\n"
     prompt += "3. Explain how the additional context, knowledge type, and timeline influenced your baseline analysis and overall summary. Label this section as CONTEXT INFLUENCE.\n"
     prompt += "4. Present your response efficiently yet sufficiently in plain text. Do not use any Markdown formatting.\n"
     prompt += "5. Use proper spacing between paragraphs and sections for readability.\n"
