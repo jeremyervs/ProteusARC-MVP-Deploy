@@ -83,6 +83,11 @@ document.addEventListener('DOMContentLoaded', function() {
         slider.className = 'slider';
         slider.id = `slider-${i/2}`;
 
+        // Add 'slider-rtl' class to every other slider
+        if (i % 4 === 2 || i % 4 === 3) {
+            slider.classList.add('slider-rtl');
+        }
+
         const percentDisplay = document.createElement('div');
         percentDisplay.className = 'percent-display';
         percentDisplay.innerHTML = `
