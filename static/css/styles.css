@@ -750,6 +750,10 @@ footer a:hover {
     font-family: 'Poppins', sans-serif;
 }
 
+.radio-group label {
+    font-family: 'Poppins', sans-serif;
+}
+
 .radio-group input[type="radio"] {
     margin-right: 5px;
 }

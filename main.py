@@ -85,14 +85,11 @@ def analyze_scenario():
 
     prompt += "\nPlease perform the following steps:\n"
     prompt += "1. Establish your own baseline analysis of the change being examined by assigning a score (0-100) to each gradient based on widely accepted current knowledge and the provided context. Ensure that for each pair, the sum of the two values equals 100. Be sure to label this section as BASELINE ANALYSIS.\n"
-    prompt += "2. Compare your baseline analysis with the user's input values. The user's values are:\n"
-    for gradient in gradient_values:
-        prompt += f"   {gradient['gradient']}: {gradient['value']}\n"
-    prompt += "3. Provide an overall summary of your findings, ensuring to address key insights and considering the provided context (description, knowledge, and timeline if available). Discuss any significant differences between your baseline analysis and the user's input. Be sure to label this section as OVERALL SUMMARY and present the output in paragraph form.\n"
-    prompt += "4. Present your response efficiently yet sufficiently in plain text. Do not use any Markdown formatting.\n"
-    prompt += "5. Use proper spacing between paragraphs and sections for readability.\n"
-    prompt += "6. Use clear headings (in plain text) for each section of your analysis, ensuring to follow each heading with a colon:\n"
-    prompt += "7. Ensure there are blank lines between paragraphs and sections.\n"
+    prompt += "2. Provide an overall summary of your findings, ensuring to address key insights and considering the provided context (description, knowledge, and timeline if available). Discuss any significant differences between your baseline analysis and the user's input. Be sure to label this section as OVERALL SUMMARY and present the output in paragraph form.\n"
+    prompt += "3. Present your response efficiently yet sufficiently in plain text. Do not use any Markdown formatting.\n"
+    prompt += "4. Use proper spacing between paragraphs and sections for readability.\n"
+    prompt += "5. Use clear headings (in plain text) for each section of your analysis, ensuring to follow each heading with a colon:\n"
+    prompt += "6. Ensure there are blank lines between paragraphs and sections.\n"
 
     try:
         # Make API call to OpenAI
