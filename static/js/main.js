@@ -153,16 +153,10 @@ document.addEventListener('DOMContentLoaded', function() {
         this.classList.toggle('open');
     });
 
-    changeTitleInput.addEventListener('input', handleTitleChange);
-
-    function handleTitleChange() {
-        if (gradientsProcessed) {
-            titleChanged = true;
-            analyzeScenarioButton.disabled = true;
-            aiButtonHint.style.display = "block";
-            gradientsProcessed = false;
-        }
-    }
+    changeTitleInput.addEventListener('input', function() {
+        updateChartButton.classList.add('needs-update');
+        indicateChartNeedsUpdate();
+    });
 
     function updatePercentages(slider) {
         const value = slider.value;
