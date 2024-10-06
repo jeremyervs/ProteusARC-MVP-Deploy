@@ -83,7 +83,6 @@ document.addEventListener('DOMContentLoaded', function() {
         slider.className = 'slider';
         slider.id = `slider-${i/2}`;
 
-        // Add 'slider-rtl' class to every other slider
         if (i % 4 === 2 || i % 4 === 3) {
             slider.classList.add('slider-rtl');
         }
@@ -467,6 +466,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function analyzeScenario() {
         if (!validateInputs()) return;
+
+        if (!chartProcessed) {
+            showPopup('Please process gradients first.');
+            return;
+        }
 
         const changeTitle = changeTitleInput.value.trim();
         const gradientValues = gradients.map((gradient, index) => ({
