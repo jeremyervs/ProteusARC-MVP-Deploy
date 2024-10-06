@@ -266,6 +266,8 @@ document.addEventListener('DOMContentLoaded', function() {
         gradientsProcessed = true;
         updateChartButton.classList.remove('needs-update');
         analyzeScenarioButton.disabled = false;
+        analyzeScenarioButton.title = "Analyze the current scenario";
+        aiButtonHint.style.display = "none";
     }
 
     function updateAnalysisSummary() {
@@ -470,7 +472,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!validateInputs()) return;
         
         if (!gradientsProcessed) {
-            showPopup('Please process gradients.');
+            showPopup('Please process gradients before running AI Analysis.');
             return;
         }
         
@@ -576,6 +578,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function indicateChartNeedsUpdate() {
         updateChartButton.classList.add('needs-update');
         chartProcessed = false;
+        gradientsProcessed = false;
         analyzeScenarioButton.disabled = true;
         aiButtonHint.style.display = "block";
     }
@@ -607,4 +610,5 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     updateChart();
+    resetSliders();
 });
