@@ -54,6 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let tempValues = Array(gradients.length / 2).fill(50);
     let chartProcessed = false;
     let gradientsProcessed = false;
+    let titleChanged = false;
 
     analyzeScenarioButton.disabled = true;
     analyzeScenarioButton.title = "Process gradients first to enable AI Analysis";
@@ -152,6 +153,17 @@ document.addEventListener('DOMContentLoaded', function() {
         this.classList.toggle('open');
     });
 
+    changeTitleInput.addEventListener('input', handleTitleChange);
+
+    function handleTitleChange() {
+        if (gradientsProcessed) {
+            titleChanged = true;
+            analyzeScenarioButton.disabled = true;
+            aiButtonHint.style.display = "block";
+            gradientsProcessed = false;
+        }
+    }
+
     function updatePercentages(slider) {
         const value = slider.value;
         const leftPercent = 100 - value;
@@ -226,14 +238,16 @@ document.addEventListener('DOMContentLoaded', function() {
                                 backdropColor: 'transparent',
                                 font: {
                                     family: "'Poppins', sans-serif",
-                                    size: window.innerWidth < 768 ? 10 : 12
+                                    size: window.innerWidth < 768 ? 10 : 12,
+                                    weight: 'normal'
                                 },
                                 showLabelBackdrop: false
                             },
                             pointLabels: {
                                 font: {
                                     family: "'Poppins', sans-serif",
-                                    size: window.innerWidth < 768 ? 12 : 14
+                                    size: window.innerWidth < 768 ? 12 : 14,
+                                    weight: 'normal'
                                 },
                                 color: getTextColor
                             }
@@ -264,6 +278,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateAnalysisSummary();
         chartProcessed = true;
         gradientsProcessed = true;
+        titleChanged = false;
         updateChartButton.classList.remove('needs-update');
         analyzeScenarioButton.disabled = false;
         analyzeScenarioButton.title = "Analyze the current scenario";
@@ -471,7 +486,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function analyzeScenario() {
         if (!validateInputs()) return;
         
-        if (!gradientsProcessed) {
+        if (!gradientsProcessed || titleChanged) {
             showPopup('Please process gradients before running AI Analysis.');
             return;
         }
@@ -569,6 +584,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('lineChart').style.display = 'none';
         chartProcessed = false;
         gradientsProcessed = false;
+        titleChanged = false;
         analyzeScenarioButton.disabled = true;
         analyzeScenarioButton.title = "Process gradients first to enable AI Analysis";
         aiButtonHint.style.display = "block";
