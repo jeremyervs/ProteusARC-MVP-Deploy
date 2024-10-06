@@ -83,6 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
         slider.className = 'slider';
         slider.id = `slider-${i/2}`;
 
+        // Add 'slider-rtl' class to every other slider
         if (i % 4 === 2 || i % 4 === 3) {
             slider.classList.add('slider-rtl');
         }
@@ -129,6 +130,10 @@ document.addEventListener('DOMContentLoaded', function() {
     updateChartButton.addEventListener('click', function() {
         if (validateInputs()) {
             updateChart();
+            chartProcessed = true;
+            analyzeScenarioButton.disabled = false;
+            analyzeScenarioButton.title = "Analyze the current scenario";
+            aiButtonHint.style.display = "none";
         }
     });
 
@@ -221,16 +226,14 @@ document.addEventListener('DOMContentLoaded', function() {
                                 backdropColor: 'transparent',
                                 font: {
                                     family: "'Poppins', sans-serif",
-                                    size: window.innerWidth < 768 ? 10 : 12,
-                                    weight: 'normal'
+                                    size: window.innerWidth < 768 ? 10 : 12
                                 },
                                 showLabelBackdrop: false
                             },
                             pointLabels: {
                                 font: {
                                     family: "'Poppins', sans-serif",
-                                    size: window.innerWidth < 768 ? 12 : 14,
-                                    weight: 'normal'
+                                    size: window.innerWidth < 768 ? 12 : 14
                                 },
                                 color: getTextColor
                             }
@@ -262,8 +265,6 @@ document.addEventListener('DOMContentLoaded', function() {
         chartProcessed = true;
         updateChartButton.classList.remove('needs-update');
         analyzeScenarioButton.disabled = false;
-        analyzeScenarioButton.title = "Analyze the current scenario";
-        aiButtonHint.style.display = "none";
     }
 
     function updateAnalysisSummary() {
@@ -599,8 +600,4 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     updateChart();
-
-    analyzeScenarioButton.disabled = true;
-    analyzeScenarioButton.title = "Process gradients first to enable AI Analysis";
-    aiButtonHint.style.display = "block";
 });
