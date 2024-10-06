@@ -226,14 +226,16 @@ document.addEventListener('DOMContentLoaded', function() {
                                 backdropColor: 'transparent',
                                 font: {
                                     family: "'Poppins', sans-serif",
-                                    size: window.innerWidth < 768 ? 10 : 12
+                                    size: window.innerWidth < 768 ? 10 : 12,
+                                    weight: 'normal'
                                 },
                                 showLabelBackdrop: false
                             },
                             pointLabels: {
                                 font: {
                                     family: "'Poppins', sans-serif",
-                                    size: window.innerWidth < 768 ? 12 : 14
+                                    size: window.innerWidth < 768 ? 12 : 14,
+                                    weight: 'bold'
                                 },
                                 color: getTextColor
                             }
