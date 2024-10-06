@@ -53,6 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let chart = null;
     let tempValues = Array(gradients.length / 2).fill(50);
     let chartProcessed = false;
+    let gradientsProcessed = false;
 
     analyzeScenarioButton.disabled = true;
     analyzeScenarioButton.title = "Process gradients first to enable AI Analysis";
@@ -83,7 +84,6 @@ document.addEventListener('DOMContentLoaded', function() {
         slider.className = 'slider';
         slider.id = `slider-${i/2}`;
 
-        // Add 'slider-rtl' class to every other slider
         if (i % 4 === 2 || i % 4 === 3) {
             slider.classList.add('slider-rtl');
         }
@@ -244,7 +244,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             display: true,
                             text: 'Change Pattern Visualization',
                             font: {
-                                family: "'Poppins', sans-serif",
+                                family: "'Roboto', sans-serif",
                                 size: window.innerWidth < 768 ? 18 : 20,
                                 weight: 'bold'
                             },
@@ -263,8 +263,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         updateAnalysisSummary();
         chartProcessed = true;
+        gradientsProcessed = true;
         updateChartButton.classList.remove('needs-update');
         analyzeScenarioButton.disabled = false;
+        analyzeScenarioButton.title = "Analyze the current scenario";
+        aiButtonHint.style.display = "none";
     }
 
     function updateAnalysisSummary() {
@@ -467,6 +470,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function analyzeScenario() {
         if (!validateInputs()) return;
+        
+        if (!gradientsProcessed) {
+            showPopup('Please process gradients first.');
+            return;
+        }
 
         const changeTitle = changeTitleInput.value.trim();
         const gradientValues = gradients.map((gradient, index) => ({
@@ -560,6 +568,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('aiAnalysisResult').innerHTML = '';
         document.getElementById('lineChart').style.display = 'none';
         chartProcessed = false;
+        gradientsProcessed = false;
         analyzeScenarioButton.disabled = true;
         analyzeScenarioButton.title = "Process gradients first to enable AI Analysis";
         aiButtonHint.style.display = "block";
@@ -569,6 +578,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function indicateChartNeedsUpdate() {
         updateChartButton.classList.add('needs-update');
         chartProcessed = false;
+        gradientsProcessed = false;
         analyzeScenarioButton.disabled = true;
         aiButtonHint.style.display = "block";
     }
