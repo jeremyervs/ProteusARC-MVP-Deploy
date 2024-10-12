@@ -197,24 +197,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function showTooltip(event, chart) {
-        const tooltip = document.createElement('div');
-        tooltip.className = 'chart-tooltip';
-        tooltip.textContent = 'Right-click (or long press on mobile) to save image';
-        document.body.appendChild(tooltip);
-        
-        const rect = chart.getBoundingClientRect();
-        tooltip.style.left = `${event.clientX - rect.left}px`;
-        tooltip.style.top = `${event.clientY - rect.top}px`;
-    }
-
-    function hideTooltip() {
-        const tooltip = document.querySelector('.chart-tooltip');
-        if (tooltip) {
-            tooltip.remove();
-        }
-    }
-
     function updateChart() {
         const changeTitle = changeTitleInput.value || 'Untitled Change';
 
@@ -297,11 +279,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }
             });
-
-            ctx.canvas.addEventListener('mousemove', (e) => showTooltip(e, ctx.canvas));
-            ctx.canvas.addEventListener('mouseout', hideTooltip);
-            ctx.canvas.addEventListener('touchstart', (e) => showTooltip(e.touches[0], ctx.canvas));
-            ctx.canvas.addEventListener('touchend', hideTooltip);
         }
 
         updateAnalysisSummary();
@@ -488,11 +465,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         });
-
-        ctx.canvas.addEventListener('mousemove', (e) => showTooltip(e, ctx.canvas));
-        ctx.canvas.addEventListener('mouseout', hideTooltip);
-        ctx.canvas.addEventListener('touchstart', (e) => showTooltip(e.touches[0], ctx.canvas));
-        ctx.canvas.addEventListener('touchend', hideTooltip);
     }
 
     function getAdvancedOptions() {
