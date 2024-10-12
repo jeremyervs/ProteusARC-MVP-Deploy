@@ -274,7 +274,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             display: false
                         },
                         tooltip: {
-                            enabled: false
+                            enabled: false,
+                            external: customTooltip
                         }
                     }
                 }
@@ -297,6 +298,12 @@ document.addEventListener('DOMContentLoaded', function() {
         if (lineChart) {
             lineChart.style.display = 'none';
         }
+
+        // Add event listeners for image saving
+        const radarChartCanvas = document.getElementById('radarChart');
+        radarChartCanvas.addEventListener('contextmenu', handleRightClick);
+        radarChartCanvas.addEventListener('touchstart', handleLongPress);
+        radarChartCanvas.addEventListener('touchend', cancelLongPress);
     }
 
     function updateAnalysisSummary() {
@@ -443,16 +450,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                     },
                     tooltip: {
-                        callbacks: {
-                            title: function(context) {
-                                return gradientValuesLabels[context[0].dataIndex];
-                            },
-                            label: function(context) {
-                                const datasetLabel = context.dataset.label;
-                                const value = context.parsed.y;
-                                return `${datasetLabel}: ${value}%`;
-                            }
-                        }
+                        enabled: false,
+                        external: customTooltip
                     },
                     legend: {
                         labels: {
@@ -465,6 +464,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         });
+
+        // Add event listeners for image saving
+        const lineChartCanvas = document.getElementById('lineChart');
+        lineChartCanvas.addEventListener('contextmenu', handleRightClick);
+        lineChartCanvas.addEventListener('touchstart', handleLongPress);
+        lineChartCanvas.addEventListener('touchend', cancelLongPress);
     }
 
     function getAdvancedOptions() {
@@ -628,6 +633,86 @@ document.addEventListener('DOMContentLoaded', function() {
         closeBtn.addEventListener('click', () => {
             document.body.removeChild(popup);
         });
+    }
+
+    function customTooltip(context) {
+        let tooltipEl = document.getElementById('chartjs-tooltip');
+
+        if (!tooltipEl) {
+            tooltipEl = document.createElement('div');
+            tooltipEl.id = 'chartjs-tooltip';
+            tooltipEl.innerHTML = '<table></table>';
+            document.body.appendChild(tooltipEl);
+        }
+
+        const tooltipModel = context.tooltip;
+        if (tooltipModel.opacity === 0) {
+            tooltipEl.style.opacity = 0;
+            return;
+        }
+
+        tooltipEl.classList.remove('above', 'below', 'no-transform');
+        if (tooltipModel.yAlign) {
+            tooltipEl.classList.add(tooltipModel.yAlign);
+        } else {
+            tooltipEl.classList.add('no-transform');
+        }
+
+        if (tooltipModel.body) {
+            const titleLines = tooltipModel.title || [];
+            const bodyLines = tooltipModel.body.map(bodyItem => bodyItem.lines);
+
+            let innerHtml = '<thead>';
+
+            titleLines.forEach(function(title) {
+                innerHtml += '<tr><th>' + title + '</th></tr>';
+            });
+            innerHtml += '</thead><tbody>';
+
+            bodyLines.forEach(function(body, i) {
+                innerHtml += '<tr><td>' + body + '</td></tr>';
+            });
+            innerHtml += '</tbody>';
+
+            let tableRoot = tooltipEl.querySelector('table');
+            tableRoot.innerHTML = innerHtml;
+        }
+
+        const position = context.chart.canvas.getBoundingClientRect();
+        const bodyFont = Chart.helpers.toFont(tooltipModel.options.bodyFont);
+
+        tooltipEl.style.opacity = 1;
+        tooltipEl.style.position = 'absolute';
+        tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX + 'px';
+        tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY + 'px';
+        tooltipEl.style.font = bodyFont.string;
+        tooltipEl.style.padding = tooltipModel.padding + 'px ' + tooltipModel.padding + 'px';
+        tooltipEl.style.pointerEvents = 'none';
+    }
+
+    function handleRightClick(event) {
+        event.preventDefault();
+        saveChartAsImage(event.target);
+    }
+
+    let longPressTimer;
+    const longPressDuration = 500;
+
+    function handleLongPress(event) {
+        longPressTimer = setTimeout(() => {
+            saveChartAsImage(event.target);
+        }, longPressDuration);
+    }
+
+    function cancelLongPress() {
+        clearTimeout(longPressTimer);
+    }
+
+    function saveChartAsImage(canvas) {
+        const link = document.createElement('a');
+        link.download = 'chart.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
     }
 
     window.addEventListener('resize', () => {
