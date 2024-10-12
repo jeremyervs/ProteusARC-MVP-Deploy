@@ -216,73 +216,87 @@ document.addEventListener('DOMContentLoaded', function() {
             }]
         };
 
+        const options = {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                r: {
+                    angleLines: {
+                        display: true,
+                        color: getGridColor
+                    },
+                    grid: {
+                        color: getGridColor
+                    },
+                    suggestedMin: 0,
+                    suggestedMax: 100,
+                    ticks: {
+                        stepSize: 25,
+                        color: getTextColor,
+                        backdropColor: 'transparent',
+                        font: {
+                            family: "'Poppins', sans-serif",
+                            size: window.innerWidth < 768 ? 10 : 12,
+                            weight: 'normal'
+                        },
+                        showLabelBackdrop: false
+                    },
+                    pointLabels: {
+                        font: {
+                            family: "'Poppins', sans-serif",
+                            size: window.innerWidth < 768 ? 12 : 14,
+                            weight: 'normal'
+                        },
+                        color: getTextColor
+                    }
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Change Pattern Visualization',
+                    font: {
+                        family: "'Poppins', sans-serif",
+                        size: window.innerWidth < 768 ? 18 : 20,
+                        weight: 'bold'
+                    },
+                    color: getTextColor
+                },
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    enabled: true,
+                    titleFont: {
+                        family: "'Poppins', sans-serif"
+                    },
+                    bodyFont: {
+                        family: "'Poppins', sans-serif"
+                    },
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.label || '';
+                            const value = context.formattedValue;
+                            return `${label}: ${value}%`;
+                        },
+                        title: function(context) {
+                            return 'Right-click (or long press on mobile) to save image';
+                        }
+                    }
+                }
+            }
+        };
+
         if (chart) {
+            chart.options = options;
             chart.data = data;
-            updateChartColors();
+            chart.update();
         } else {
             const ctx = document.getElementById('radarChart').getContext('2d');
             chart = new Chart(ctx, {
                 type: 'radar',
                 data: data,
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        r: {
-                            angleLines: {
-                                display: true,
-                                color: getGridColor
-                            },
-                            grid: {
-                                color: getGridColor
-                            },
-                            suggestedMin: 0,
-                            suggestedMax: 100,
-                            ticks: {
-                                stepSize: 25,
-                                color: getTextColor,
-                                backdropColor: 'transparent',
-                                font: {
-                                    family: "'Poppins', sans-serif",
-                                    size: window.innerWidth < 768 ? 10 : 12,
-                                    weight: 'normal'
-                                },
-                                showLabelBackdrop: false
-                            },
-                            pointLabels: {
-                                font: {
-                                    family: "'Poppins', sans-serif",
-                                    size: window.innerWidth < 768 ? 12 : 14,
-                                    weight: 'normal'
-                                },
-                                color: getTextColor
-                            }
-                        }
-                    },
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Change Pattern Visualization',
-                            font: {
-                                family: "'Poppins', sans-serif",
-                                size: window.innerWidth < 768 ? 18 : 20,
-                                weight: 'bold'
-                            },
-                            color: getTextColor
-                        },
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            enabled: true,
-                            callbacks: {
-                                label: function(context) {
-                                    return 'Right-click (or long press on mobile) to save image';
-                                }
-                            }
-                        }
-                    }
-                }
+                options: options
             });
         }
 
@@ -426,7 +440,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 scales: {
                     y: {
                         beginAtZero: true,
-                        max: 100
+                        max: 100,
+                        ticks: {
+                            font: {
+                                family: "'Poppins', sans-serif"
+                            }
+                        }
                     },
                     x: {
                         ticks: {
@@ -434,6 +453,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             maxRotation: 90,
                             minRotation: 90,
                             font: {
+                                family: "'Poppins', sans-serif",
                                 size: 8
                             }
                         }
@@ -444,10 +464,17 @@ document.addEventListener('DOMContentLoaded', function() {
                         display: true,
                         text: 'AI Baseline vs User Values',
                         font: {
+                            family: "'Poppins', sans-serif",
                             size: 16
                         }
                     },
                     tooltip: {
+                        titleFont: {
+                            family: "'Poppins', sans-serif"
+                        },
+                        bodyFont: {
+                            family: "'Poppins', sans-serif"
+                        },
                         callbacks: {
                             title: function(context) {
                                 return 'Right-click (or long press on mobile) to save image';
@@ -463,6 +490,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         labels: {
                             boxWidth: 12,
                             font: {
+                                family: "'Poppins', sans-serif",
                                 size: 12
                             }
                         }
