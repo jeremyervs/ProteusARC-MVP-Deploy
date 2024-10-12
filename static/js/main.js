@@ -49,6 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const changeDescriptionInput = document.getElementById('changeDescription');
     const knowledgeRadios = document.getElementsByName('knowledge');
     const timelineRadios = document.getElementsByName('timeline');
+    const clearAdvancedButton = document.getElementById('clearAdvancedButton');
 
     let chart = null;
     let tempValues = Array(gradients.length / 2).fill(50);
@@ -157,6 +158,8 @@ document.addEventListener('DOMContentLoaded', function() {
         updateChartButton.classList.add('needs-update');
         indicateChartNeedsUpdate();
     });
+
+    clearAdvancedButton.addEventListener('click', clearAdvancedSettings);
 
     function updatePercentages(slider) {
         const value = slider.value;
@@ -616,6 +619,13 @@ document.addEventListener('DOMContentLoaded', function() {
         closeBtn.addEventListener('click', () => {
             document.body.removeChild(popup);
         });
+    }
+
+    function clearAdvancedSettings() {
+        changeDescriptionInput.value = '';
+        knowledgeRadios.forEach(radio => radio.checked = false);
+        timelineRadios.forEach(radio => radio.checked = false);
+        console.log('Advanced settings cleared');
     }
 
     window.addEventListener('resize', () => {
