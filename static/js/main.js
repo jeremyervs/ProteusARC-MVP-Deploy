@@ -274,23 +274,10 @@ document.addEventListener('DOMContentLoaded', function() {
                             display: false
                         },
                         tooltip: {
-                            enabled: true,
-                            callbacks: {
-                                label: function(context) {
-                                    return 'Right-click (or long press on mobile) to save this image';
-                                }
-                            }
+                            enabled: false
                         }
-                    },
-                    onHover: (event, chartElement) => {
-                        event.native.target.style.cursor = chartElement[0] ? 'pointer' : 'default';
                     }
                 }
-            });
-
-            ctx.canvas.addEventListener('contextmenu', function(e) {
-                e.preventDefault();
-                saveChartAsImage(chart, 'radar_chart.png');
             });
         }
 
@@ -464,9 +451,6 @@ document.addEventListener('DOMContentLoaded', function() {
                                 const datasetLabel = context.dataset.label;
                                 const value = context.parsed.y;
                                 return `${datasetLabel}: ${value}%`;
-                            },
-                            afterBody: function(context) {
-                                return 'Right-click (or long press on mobile) to save this image';
                             }
                         }
                     },
@@ -478,16 +462,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             }
                         }
                     }
-                },
-                onHover: (event, chartElement) => {
-                    event.native.target.style.cursor = chartElement[0] ? 'pointer' : 'default';
                 }
             }
-        });
-
-        ctx.canvas.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-            saveChartAsImage(window.lineChart, 'line_chart.png');
         });
     }
 
@@ -652,13 +628,6 @@ document.addEventListener('DOMContentLoaded', function() {
         closeBtn.addEventListener('click', () => {
             document.body.removeChild(popup);
         });
-    }
-
-    function saveChartAsImage(chart, fileName) {
-        const link = document.createElement('a');
-        link.download = fileName;
-        link.href = chart.toBase64Image();
-        link.click();
     }
 
     window.addEventListener('resize', () => {
