@@ -277,6 +277,14 @@ document.addEventListener('DOMContentLoaded', function() {
         analyzeScenarioButton.disabled = false;
         analyzeScenarioButton.title = "Analyze the current scenario";
         aiButtonHint.style.display = "none";
+
+        const aiAnalysisResult = document.getElementById('aiAnalysisResult');
+        aiAnalysisResult.innerHTML = '';
+
+        const lineChart = document.getElementById('lineChart');
+        if (lineChart) {
+            lineChart.style.display = 'none';
+        }
     }
 
     function updateAnalysisSummary() {
