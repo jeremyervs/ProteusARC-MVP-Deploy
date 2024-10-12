@@ -274,7 +274,12 @@ document.addEventListener('DOMContentLoaded', function() {
                             display: false
                         },
                         tooltip: {
-                            enabled: false
+                            enabled: true,
+                            callbacks: {
+                                label: function(context) {
+                                    return 'Right-click (or long press on mobile) to save image';
+                                }
+                            }
                         }
                     }
                 }
@@ -445,7 +450,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     tooltip: {
                         callbacks: {
                             title: function(context) {
-                                return gradientValuesLabels[context[0].dataIndex];
+                                return 'Right-click (or long press on mobile) to save image';
                             },
                             label: function(context) {
                                 const datasetLabel = context.dataset.label;
