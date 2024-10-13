@@ -420,11 +420,11 @@ body.dark-mode .moon-icon {
 
 #analyzeScenarioButton {
     flex: 2;
-    background: linear-gradient(to right, #4caf50, #45a049);
+    background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
 }
 
 #analyzeScenarioButton:hover {
-    background: linear-gradient(to right, #45a049, #4caf50);
+    background: linear-gradient(to right, var(--gradient-end), var(--gradient-start));
 }
 
 .ai-analysis-card {
