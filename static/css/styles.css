@@ -255,7 +255,7 @@ button:hover {
     cursor: pointer;
     width: 50px;
     height: 26px;
-    background: var(--secondary-color);
+    background: #d1d5db;
     border-radius: 100px;
     position: relative;
     transition: background-color 0.2s;
@@ -264,15 +264,19 @@ button:hover {
 .toggle-label .toggle-inner {
     width: 22px;
     height: 22px;
-    background: var(--card-bg);
+    background: #ffffff;
     border-radius: 50%;
     transition: 0.3s;
     box-shadow: 0 0 2px 0 rgba(10, 10, 10, 0.29);
 }
 
+.toggle-checkbox:checked + .toggle-label {
+    background: #4a90e2;
+}
+
 .toggle-checkbox:checked + .toggle-label .toggle-inner {
     transform: translateX(24px);
-    background: var(--primary-color);
+    background: #ffffff;
 }
 
 .toggle-icon {
