@@ -239,8 +239,16 @@ button:hover {
 }
 
 .dark-mode-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
     display: flex;
     align-items: center;
+    background-color: var(--card-bg);
+    padding: 5px 10px;
+    border-radius: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
 }
 
 .toggle-checkbox {
@@ -690,6 +698,11 @@ body.dark-mode .chart-js-tooltip {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+
+    .dark-mode-toggle {
+        bottom: 10px;
+        right: 10px;
     }
 }
 
