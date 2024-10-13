@@ -255,7 +255,7 @@ button:hover {
     cursor: pointer;
     width: 50px;
     height: 26px;
-    background: #d1d5db;
+    background: var(--secondary-color);
     border-radius: 100px;
     position: relative;
     transition: background-color 0.2s;
@@ -264,7 +264,7 @@ button:hover {
 .toggle-label .toggle-inner {
     width: 22px;
     height: 22px;
-    background: #fff;
+    background: var(--card-bg);
     border-radius: 50%;
     transition: 0.3s;
     box-shadow: 0 0 2px 0 rgba(10, 10, 10, 0.29);
@@ -698,26 +698,23 @@ footer {
     padding: 20px;
     margin-top: 20px;
     border-top: 1px solid var(--border-color);
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
-footer a {
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-links a {
     color: var(--primary-color);
     text-decoration: none;
     margin: 0 10px;
 }
 
-footer a:first-child {
-    margin-left: 0;
-}
-
-footer a:last-child {
-    margin-right: 0;
-}
-
-footer a:hover {
+.footer-links a:hover {
     text-decoration: underline;
 }
 
@@ -798,4 +795,11 @@ footer a:hover {
 #clearAdvancedButton:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+        gap: 15px;
+    }
 }

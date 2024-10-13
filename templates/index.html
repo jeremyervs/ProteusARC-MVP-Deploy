@@ -15,18 +15,10 @@
                 <img src="{{ url_for('static', filename='images/proteusARCatom.png') }}" alt="GradiShape Logo" class="logo">
                 <h1 class="gradient-title">GradiShape</h1>
             </div>
-            <div class="dark-mode-toggle">
-                <span class="toggle-icon sun-icon">☀</span>
-                <input type="checkbox" id="darkModeToggle" class="toggle-checkbox">
-                <label for="darkModeToggle" class="toggle-label">
-                    <span class="toggle-inner"></span>
-                    <span class="toggle-switch"></span>
-                </label>
-                <span class="toggle-icon moon-icon">☾</span>
-            </div>
         </header>
 
         <main>
+            <!-- Main content remains unchanged -->
             <div class="card input-card">
                 <input type="text" id="changeTitle" placeholder="Enter title of change being examined" required>
                 <div class="advanced-options">
@@ -103,8 +95,21 @@
     </div>
     
     <footer>
-        <a href='https://jeremyervs.gitbook.io/gradishape/'>User Guide</a> | 
-        <a href='mailto:jeremyervins@gmail.com'>Contact</a>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href='https://jeremyervs.gitbook.io/gradishape/'>User Guide</a> | 
+                <a href='mailto:jeremyervins@gmail.com'>Contact</a>
+            </div>
+            <div class="dark-mode-toggle">
+                <span class="toggle-icon sun-icon">☀</span>
+                <input type="checkbox" id="darkModeToggle" class="toggle-checkbox">
+                <label for="darkModeToggle" class="toggle-label">
+                    <span class="toggle-inner"></span>
+                    <span class="toggle-switch"></span>
+                </label>
+                <span class="toggle-icon moon-icon">☾</span>
+            </div>
+        </div>
     </footer>
     
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
