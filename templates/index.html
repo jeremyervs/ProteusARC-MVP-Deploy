@@ -25,12 +25,88 @@
                 <span class="toggle-icon moon-icon">☾</span>
             </div>
         </header>
-        
-        <!-- Rest of the content remains unchanged -->
-        
+
+        <main>
+            <div class="card input-card">
+                <input type="text" id="changeTitle" placeholder="Enter title of change being examined" required>
+                <div class="advanced-options">
+                    <div class="advanced-header">
+                        <span>Advanced</span>
+                        <span class="dropdown-arrow">▼</span>
+                    </div>
+                    <div class="advanced-content" style="display: none;">
+                        <textarea id="changeDescription" placeholder="Enter a description of the change (optional)"></textarea>
+                        <div class="option-section">
+                            <h4>Knowledge</h4>
+                            <div class="radio-group">
+                                <input type="radio" id="knowledgeInternal" name="knowledge" value="internal">
+                                <label for="knowledgeInternal">Internal</label>
+                                <input type="radio" id="knowledgePublic" name="knowledge" value="public">
+                                <label for="knowledgePublic">Public</label>
+                            </div>
+                        </div>
+                        <div class="option-section">
+                            <h4>Timeline</h4>
+                            <div class="radio-group">
+                                <input type="radio" id="timelinePast" name="timeline" value="past">
+                                <label for="timelinePast">Past</label>
+                                <input type="radio" id="timelinePresent" name="timeline" value="present">
+                                <label for="timelinePresent">Present</label>
+                                <input type="radio" id="timelineFuture" name="timeline" value="future">
+                                <label for="timelineFuture">Future</label>
+                            </div>
+                        </div>
+                        <button id="clearAdvancedButton">Clear All</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card sliders-card">
+                <div class="gradients-header">
+                    <h2>Change Gradients</h2>
+                    <span id="viewDirections" class="view-directions">View Definitions</span>
+                </div>
+                <div id="sliders"></div>
+                <div class="button-group">
+                    <button id="resetButton">Reset Sliders</button>
+                    <button id="updateChartButton">Process Gradients</button>
+                    <button id="analyzeScenarioButton">AI Analysis</button>
+                </div>
+            </div>
+            
+            <div class="results-section">
+                <div class="card chart-card">
+                    <canvas id="radarChart"></canvas>
+                </div>
+                <div class="card analysis-card">
+                    <div id="analysisSummary"></div>
+                    <button id="exportButton">Export Values</button>
+                </div>
+            </div>
+            
+            <div class="card ai-analysis-card">
+                <h3>✨ AI Analysis <span class="experimental-tag">(Experimental: results may vary)</span></h3>
+                <div id="aiAnalysisResult">
+                    <!-- AI-generated analysis will be displayed here -->
+                </div>
+                <canvas id="lineChart" style="width:100%;height:400px;display:none;"></canvas>
+            </div>
+        </main>
     </div>
     
-    <!-- Rest of the file remains unchanged -->
+    <div id="directionsPopup" class="directions-popup">
+        <div class="directions-content">
+            <span class="close-popup">&times;</span>
+            <h2>Gradient Definitions</h2>
+            <div id="gradientDefinitions"></div>
+        </div>
+    </div>
     
+    <footer>
+        <a href='https://jeremyervs.gitbook.io/gradishape/'>User Guide</a> | 
+        <a href='mailto:jeremyervins@gmail.com'>Contact</a>
+    </footer>
+    
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>
