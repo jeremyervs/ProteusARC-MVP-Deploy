@@ -197,14 +197,19 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function updateChart() {
-        const changeTitle = changeTitleInput.value || 'Untitled Change';
+    function generateSampleData() {
+        return Array(18).fill(0).map(() => Math.floor(Math.random() * 100));
+    }
 
-        const data = {
+    function updateChart(data = null) {
+        const changeTitle = changeTitleInput.value || 'Sample Change';
+        const chartData = data || tempValues.flatMap(v => [100 - v, v]);
+
+        const dataConfig = {
             labels: chartLabels,
             datasets: [{
                 label: changeTitle,
-                data: tempValues.flatMap(v => [100 - v, v]),
+                data: chartData,
                 fill: true,
                 backgroundColor: document.body.classList.contains('dark-mode') ? 'rgba(99, 179, 237, 0.4)' : 'rgba(74, 144, 226, 0.2)',
                 borderColor: 'transparent',
@@ -217,13 +222,13 @@ document.addEventListener('DOMContentLoaded', function() {
         };
 
         if (chart) {
-            chart.data = data;
+            chart.data = dataConfig;
             updateChartColors();
         } else {
             const ctx = document.getElementById('radarChart').getContext('2d');
             chart = new Chart(ctx, {
                 type: 'radar',
-                data: data,
+                data: dataConfig,
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
@@ -402,15 +407,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     {
                         label: 'AI Baseline',
                         data: aiData,
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'var(--primary-color)',
+                        backgroundColor: 'rgba(74, 144, 226, 0.2)',
                         tension: 0.1
                     },
                     {
                         label: 'User',
                         data: userData,
-                        borderColor: 'rgba(255, 99, 132, 1)',
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: '#ff6b6b',
+                        backgroundColor: 'rgba(255, 107, 107, 0.2)',
                         tension: 0.1
                     }
                 ]
@@ -421,7 +426,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 scales: {
                     y: {
                         beginAtZero: true,
-                        max: 100
+                        max: 100,
+                        ticks: {
+                            font: {
+                                family: "'Poppins', sans-serif",
+                                size: 12
+                            }
+                        }
                     },
                     x: {
                         ticks: {
@@ -429,7 +440,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             maxRotation: 90,
                             minRotation: 90,
                             font: {
-                                size: 8
+                                family: "'Poppins', sans-serif",
+                                size: 10
                             }
                         }
                     }
@@ -439,7 +451,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         display: true,
                         text: 'AI Baseline vs User Values',
                         font: {
-                            size: 16
+                            family: "'Poppins', sans-serif",
+                            size: 18,
+                            weight: 'bold'
                         }
                     },
                     tooltip: {
@@ -452,13 +466,22 @@ document.addEventListener('DOMContentLoaded', function() {
                                 const value = context.parsed.y;
                                 return `${datasetLabel}: ${value}%`;
                             }
+                        },
+                        titleFont: {
+                            family: "'Poppins', sans-serif",
+                            size: 14
+                        },
+                        bodyFont: {
+                            family: "'Poppins', sans-serif",
+                            size: 12
                         }
                     },
                     legend: {
                         labels: {
                             boxWidth: 12,
                             font: {
-                                size: 12
+                                family: "'Poppins', sans-serif",
+                                size: 14
                             }
                         }
                     }
@@ -639,6 +662,5 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    updateChart();
-    resetSliders();
+    updateChart(generateSampleData());
 });
