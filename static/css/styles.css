@@ -47,6 +47,18 @@ header {
     margin-bottom: 30px;
 }
 
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo {
+    height: 40px;
+    width: auto;
+    max-width: 100%;
+}
+
 .gradient-title {
     background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
     -webkit-background-clip: text;
@@ -665,6 +677,10 @@ body.dark-mode .chart-js-tooltip {
 }
 
 @media (max-width: 768px) {
+    .logo {
+        height: 30px;
+    }
+    
     .gradient-title {
         font-size: 2em;
     }
