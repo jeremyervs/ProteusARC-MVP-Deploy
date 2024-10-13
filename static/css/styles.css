@@ -707,12 +707,12 @@ body.dark-mode .chart-js-tooltip {
 }
 
 footer {
-    text-align: center;
+    text-align: left;
     padding: 20px;
     margin-top: 20px;
     border-top: 1px solid var(--border-color);
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
 }
 
