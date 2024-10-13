@@ -197,76 +197,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function createInitialChart() {
-        const ctx = document.getElementById('radarChart').getContext('2d');
-        chart = new Chart(ctx, {
-            type: 'radar',
-            data: {
-                labels: chartLabels,
-                datasets: [{
-                    label: 'Initial Data',
-                    data: Array(18).fill(50),
-                    fill: true,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    pointBackgroundColor: 'rgba(75, 192, 192, 1)',
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: 'rgba(75, 192, 192, 1)'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    r: {
-                        angleLines: {
-                            display: true,
-                            color: getGridColor()
-                        },
-                        grid: {
-                            color: getGridColor()
-                        },
-                        suggestedMin: 0,
-                        suggestedMax: 100,
-                        ticks: {
-                            stepSize: 25,
-                            color: getTextColor(),
-                            backdropColor: 'transparent',
-                            font: {
-                                family: "'Poppins', sans-serif",
-                                size: window.innerWidth < 768 ? 10 : 12
-                            },
-                            showLabelBackdrop: false
-                        },
-                        pointLabels: {
-                            font: {
-                                family: "'Poppins', sans-serif",
-                                size: window.innerWidth < 768 ? 12 : 14
-                            },
-                            color: getTextColor()
-                        }
-                    }
-                },
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Change Pattern Visualization',
-                        font: {
-                            family: "'Poppins', sans-serif",
-                            size: window.innerWidth < 768 ? 18 : 20,
-                            weight: 'bold'
-                        },
-                        color: getTextColor()
-                    },
-                    legend: {
-                        display: false
-                    }
-                }
-            }
-        });
-    }
-
     function updateChart() {
         const changeTitle = changeTitleInput.value || 'Untitled Change';
 
@@ -290,7 +220,65 @@ document.addEventListener('DOMContentLoaded', function() {
             chart.data = data;
             updateChartColors();
         } else {
-            createInitialChart();
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            chart = new Chart(ctx, {
+                type: 'radar',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: true,
+                                color: getGridColor
+                            },
+                            grid: {
+                                color: getGridColor
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 100,
+                            ticks: {
+                                stepSize: 25,
+                                color: getTextColor,
+                                backdropColor: 'transparent',
+                                font: {
+                                    family: "'Poppins', sans-serif",
+                                    size: window.innerWidth < 768 ? 10 : 12,
+                                    weight: 'normal'
+                                },
+                                showLabelBackdrop: false
+                            },
+                            pointLabels: {
+                                font: {
+                                    family: "'Poppins', sans-serif",
+                                    size: window.innerWidth < 768 ? 12 : 14,
+                                    weight: 'normal'
+                                },
+                                color: getTextColor
+                            }
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Change Pattern Visualization',
+                            font: {
+                                family: "'Poppins', sans-serif",
+                                size: window.innerWidth < 768 ? 18 : 20,
+                                weight: 'bold'
+                            },
+                            color: getTextColor
+                        },
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: false
+                        }
+                    }
+                }
+            });
         }
 
         updateAnalysisSummary();
@@ -651,6 +639,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    createInitialChart();
+    updateChart();
     resetSliders();
 });
