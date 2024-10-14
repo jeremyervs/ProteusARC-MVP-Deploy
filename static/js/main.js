@@ -324,7 +324,11 @@ document.addEventListener('DOMContentLoaded', function() {
                                 size: window.innerWidth < 768 ? 18 : 20,
                                 weight: 'bold'
                             },
-                            color: colors.textColor
+                            color: colors.textColor,
+                            padding: {
+                                top: 10,
+                                bottom: 30
+                            }
                         },
                         legend: {
                             display: false
