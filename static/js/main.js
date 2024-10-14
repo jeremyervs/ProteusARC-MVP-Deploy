@@ -184,9 +184,9 @@ document.addEventListener('DOMContentLoaded', function() {
     function getChartColors() {
         const isDarkMode = document.body.classList.contains('dark-mode');
         return {
-            backgroundColor: isDarkMode ? 'rgba(54, 162, 235, 0.3)' : 'rgba(54, 162, 235, 0.2)',
-            borderColor: isDarkMode ? 'rgba(54, 162, 235, 1)' : 'rgba(54, 162, 235, 0.8)',
-            gridColor: isDarkMode ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.2)',
+            backgroundColor: isDarkMode ? 'rgba(54, 162, 235, 0.1)' : 'rgba(54, 162, 235, 0.1)',
+            borderColor: isDarkMode ? 'rgba(54, 162, 235, 0.5)' : 'rgba(54, 162, 235, 0.5)',
+            gridColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
             textColor: isDarkMode ? '#ffffff' : '#666666'
         };
     }
@@ -230,7 +230,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 borderColor: colors.borderColor,
                 pointBackgroundColor: 'transparent',
                 pointBorderColor: 'transparent',
-                borderWidth: 3,
+                borderWidth: 0,
                 pointRadius: 0,
                 pointHoverRadius: 0,
             }]
@@ -252,11 +252,11 @@ document.addEventListener('DOMContentLoaded', function() {
                             angleLines: {
                                 display: true,
                                 color: colors.gridColor,
-                                lineWidth: 1.5
+                                lineWidth: 1
                             },
                             grid: {
                                 color: colors.gridColor,
-                                lineWidth: 1.5
+                                lineWidth: 1
                             },
                             suggestedMin: 0,
                             suggestedMax: 100,
