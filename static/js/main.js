@@ -184,9 +184,9 @@ document.addEventListener('DOMContentLoaded', function() {
     function getChartColors() {
         const isDarkMode = document.body.classList.contains('dark-mode');
         return {
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            gridColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+            backgroundColor: isDarkMode ? 'rgba(54, 162, 235, 0.3)' : 'rgba(54, 162, 235, 0.2)',
+            borderColor: isDarkMode ? 'rgba(54, 162, 235, 1)' : 'rgba(54, 162, 235, 0.8)',
+            gridColor: isDarkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)',
             textColor: isDarkMode ? '#ffffff' : '#666666'
         };
     }
@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 borderColor: colors.borderColor,
                 pointBackgroundColor: 'transparent',
                 pointBorderColor: 'transparent',
-                borderWidth: 2,
+                borderWidth: 3,
                 pointRadius: 0,
                 pointHoverRadius: 0,
             }]
