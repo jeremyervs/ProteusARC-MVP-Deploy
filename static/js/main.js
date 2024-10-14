@@ -686,34 +686,24 @@ document.addEventListener('DOMContentLoaded', function() {
             chart.update();
         }
         updateAnalysisSummary();
-        if (document.getElementById('aiAnalysisResult')) {
-            document.getElementById('aiAnalysisResult').innerHTML = '';
-        }
-        if (document.getElementById('lineChart')) {
-            document.getElementById('lineChart').style.display = 'none';
-        }
+        document.getElementById('aiAnalysisResult').innerHTML = '';
+        document.getElementById('lineChart').style.display = 'none';
         
-        if (!chartProcessed && analyzeScenarioButton && aiButtonHint) {
+        if (!chartProcessed) {
             analyzeScenarioButton.disabled = true;
             analyzeScenarioButton.title = "Process gradients first to enable AI Analysis";
             aiButtonHint.style.display = "block";
         }
         
-        if (updateChartButton) {
-            updateChartButton.classList.add('needs-update');
-        }
+        indicateChartNeedsUpdate();
     }
 
     function indicateChartNeedsUpdate() {
-        if (updateChartButton) {
-            updateChartButton.classList.add('needs-update');
-        }
+        updateChartButton.classList.add('needs-update');
         chartProcessed = false;
         gradientsProcessed = false;
-        if (analyzeScenarioButton && aiButtonHint) {
-            analyzeScenarioButton.disabled = true;
-            aiButtonHint.style.display = "block";
-        }
+        analyzeScenarioButton.disabled = true;
+        aiButtonHint.style.display = "block";
     }
 
     function showPopup(message) {
@@ -735,9 +725,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     window.addEventListener('resize', updateChartFont);
 
-    if (chart) {
-        updateChart();
-    }
+    updateChart();
     resetSliders();
     updateChartFont();
 });
