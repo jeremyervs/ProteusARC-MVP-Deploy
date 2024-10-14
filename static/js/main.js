@@ -117,13 +117,17 @@ document.addEventListener('DOMContentLoaded', function() {
         gradientDefinitions.appendChild(definitionP);
     });
 
-    viewDirections.addEventListener('click', function() {
-        directionsPopup.style.display = 'block';
-    });
+    if (viewDirections) {
+        viewDirections.addEventListener('click', function() {
+            directionsPopup.style.display = 'block';
+        });
+    }
 
-    closePopup.addEventListener('click', function() {
-        directionsPopup.style.display = 'none';
-    });
+    if (closePopup) {
+        closePopup.addEventListener('click', function() {
+            directionsPopup.style.display = 'none';
+        });
+    }
 
     window.addEventListener('click', function(event) {
         if (event.target == directionsPopup) {
@@ -131,46 +135,62 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    updateChartButton.addEventListener('click', function() {
-        if (validateInputs()) {
-            updateChart();
-            chartProcessed = true;
-            analyzeScenarioButton.disabled = false;
-            analyzeScenarioButton.title = "Analyze the current scenario";
-            aiButtonHint.style.display = "none";
-        }
-    });
-
-    analyzeScenarioButton.addEventListener('click', function() {
-        if (chartProcessed) {
-            analyzeScenario();
-        }
-    });
-
-    exportButton.addEventListener('click', showExportOptions);
-
-    resetButton.addEventListener('click', resetSliders);
-
-    advancedHeader.addEventListener('click', function() {
-        advancedContent.style.display = advancedContent.style.display === 'none' ? 'block' : 'none';
-        this.classList.toggle('open');
-    });
-
-    changeTitleInput.addEventListener('input', function() {
-        updateChartButton.classList.add('needs-update');
-        indicateChartNeedsUpdate();
-    });
-
-    clearAdvancedButton.addEventListener('click', function() {
-        changeDescriptionInput.value = '';
-        knowledgeRadios.forEach(radio => {
-            radio.checked = false;
+    if (updateChartButton) {
+        updateChartButton.addEventListener('click', function() {
+            if (validateInputs()) {
+                updateChart();
+                chartProcessed = true;
+                analyzeScenarioButton.disabled = false;
+                analyzeScenarioButton.title = "Analyze the current scenario";
+                aiButtonHint.style.display = "none";
+            }
         });
-        timelineRadios.forEach(radio => {
-            radio.checked = false;
+    }
+
+    if (analyzeScenarioButton) {
+        analyzeScenarioButton.addEventListener('click', function() {
+            if (chartProcessed) {
+                analyzeScenario();
+            }
         });
-        indicateChartNeedsUpdate();
-    });
+    }
+
+    if (exportButton) {
+        exportButton.addEventListener('click', showExportOptions);
+    }
+
+    if (resetButton) {
+        resetButton.addEventListener('click', resetSliders);
+    }
+
+    if (advancedHeader) {
+        advancedHeader.addEventListener('click', function() {
+            if (advancedContent) {
+                advancedContent.style.display = advancedContent.style.display === 'none' ? 'block' : 'none';
+                this.classList.toggle('open');
+            }
+        });
+    }
+
+    if (changeTitleInput) {
+        changeTitleInput.addEventListener('input', function() {
+            if (updateChartButton) updateChartButton.classList.add('needs-update');
+            indicateChartNeedsUpdate();
+        });
+    }
+
+    if (clearAdvancedButton) {
+        clearAdvancedButton.addEventListener('click', function() {
+            if (changeDescriptionInput) changeDescriptionInput.value = '';
+            knowledgeRadios.forEach(radio => {
+                radio.checked = false;
+            });
+            timelineRadios.forEach(radio => {
+                radio.checked = false;
+            });
+            indicateChartNeedsUpdate();
+        });
+    }
 
     function updatePercentages(slider) {
         const value = slider.value;
@@ -200,6 +220,14 @@ document.addEventListener('DOMContentLoaded', function() {
             chart.options.scales.r.pointLabels.color = colors.textColor;
             chart.options.plugins.title.color = colors.textColor;
             
+            updateChartFont();
+            
+            chart.update();
+        }
+    }
+
+    function updateChartFont() {
+        if (chart) {
             chart.options.plugins.title.font = {
                 family: "'Poppins', sans-serif",
                 size: window.innerWidth < 768 ? 18 : 20,
@@ -209,6 +237,12 @@ document.addEventListener('DOMContentLoaded', function() {
             chart.options.scales.r.pointLabels.font = {
                 family: "'Poppins', sans-serif",
                 size: window.innerWidth < 768 ? 12 : 14,
+                weight: 'normal'
+            };
+            
+            chart.options.scales.r.ticks.font = {
+                family: "'Poppins', sans-serif",
+                size: window.innerWidth < 768 ? 10 : 12,
                 weight: 'normal'
             };
             
@@ -319,6 +353,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (lineChart) {
             lineChart.style.display = 'none';
         }
+
+        updateChartFont();
     }
 
     function updateAnalysisSummary() {
@@ -335,31 +371,33 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    darkModeToggle.addEventListener('change', function() {
-        const aiAnalysisResult = document.getElementById('aiAnalysisResult');
-        
-        if (aiAnalysisResult) {
-            aiAnalysisContent = aiAnalysisResult.innerHTML;
-        }
-        
-        if (window.lineChart instanceof Chart) {
-            lineChartData = window.lineChart.data;
-        }
-        
-        document.body.classList.toggle('dark-mode', this.checked);
-        updateChartColors();
-        if (chartProcessed) {
-            updateChart();
-        }
-        
-        if (aiAnalysisResult && aiAnalysisContent) {
-            aiAnalysisResult.innerHTML = aiAnalysisContent;
-        }
+    if (darkModeToggle) {
+        darkModeToggle.addEventListener('change', function() {
+            const aiAnalysisResult = document.getElementById('aiAnalysisResult');
+            
+            if (aiAnalysisResult) {
+                aiAnalysisContent = aiAnalysisResult.innerHTML;
+            }
+            
+            if (window.lineChart instanceof Chart) {
+                lineChartData = window.lineChart.data;
+            }
+            
+            document.body.classList.toggle('dark-mode', this.checked);
+            updateChartColors();
+            if (chartProcessed) {
+                updateChart();
+            }
+            
+            if (aiAnalysisResult && aiAnalysisContent) {
+                aiAnalysisResult.innerHTML = aiAnalysisContent;
+            }
 
-        if (lineChartData) {
-            createLineChart(lineChartData.datasets[0].data, lineChartData.datasets[1].data);
-        }
-    });
+            if (lineChartData) {
+                createLineChart(lineChartData.datasets[0].data, lineChartData.datasets[1].data);
+            }
+        });
+    }
 
     function showExportOptions() {
         const exportOptions = document.createElement('div');
@@ -681,12 +719,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     window.addEventListener('resize', () => {
-        if (chart) {
-            chart.options.scales.r.ticks.font.size = window.innerWidth < 768 ? 10 : 12;
-            chart.options.scales.r.pointLabels.font.size = window.innerWidth < 768 ? 12 : 14;
-            chart.options.plugins.title.font.size = window.innerWidth < 768 ? 18 : 20;
-            chart.update();
-        }
+        updateChartFont();
     });
 
     updateChart();
