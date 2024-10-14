@@ -724,4 +724,5 @@ document.addEventListener('DOMContentLoaded', function() {
 
     updateChart();
     resetSliders();
+    updateChartFont();
 });
