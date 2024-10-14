@@ -57,6 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let gradientsProcessed = false;
     let titleChanged = false;
     let aiAnalysisContent = '';
+    let lineChartData = null;
 
     analyzeScenarioButton.disabled = true;
     analyzeScenarioButton.title = "Process gradients first to enable AI Analysis";
@@ -180,20 +181,23 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById(`${sliderId}-right-percent`).textContent = `${rightPercent}%`;
     }
 
-    function getTextColor() {
-        return document.body.classList.contains('dark-mode') ? '#ffffff' : '#333333';
-    }
-
-    function getGridColor() {
-        return document.body.classList.contains('dark-mode') ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)';
+    function getChartColors() {
+        const isDarkMode = document.body.classList.contains('dark-mode');
+        return {
+            backgroundColor: isDarkMode ? 'rgba(54, 162, 235, 0.2)' : 'rgba(75, 192, 192, 0.2)',
+            borderColor: isDarkMode ? 'rgba(54, 162, 235, 1)' : 'rgba(75, 192, 192, 1)',
+            gridColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+            textColor: isDarkMode ? '#ffffff' : '#666666'
+        };
     }
 
     function updateChartColors() {
         if (chart) {
-            chart.options.scales.r.grid.color = getGridColor();
-            chart.options.scales.r.ticks.color = getTextColor();
-            chart.options.scales.r.pointLabels.color = getTextColor();
-            chart.options.plugins.title.color = getTextColor();
+            const colors = getChartColors();
+            chart.options.scales.r.grid.color = colors.gridColor;
+            chart.options.scales.r.ticks.color = colors.textColor;
+            chart.options.scales.r.pointLabels.color = colors.textColor;
+            chart.options.plugins.title.color = colors.textColor;
             
             chart.options.plugins.title.font = {
                 family: "'Poppins', sans-serif",
@@ -213,6 +217,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updateChart() {
         const changeTitle = changeTitleInput.value || 'Untitled Change';
+        const colors = getChartColors();
 
         const data = {
             labels: chartLabels,
@@ -220,7 +225,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 label: changeTitle,
                 data: tempValues.flatMap(v => [100 - v, v]),
                 fill: true,
-                backgroundColor: document.body.classList.contains('dark-mode') ? 'rgba(99, 179, 237, 0.4)' : 'rgba(74, 144, 226, 0.2)',
+                backgroundColor: colors.backgroundColor,
                 borderColor: 'transparent',
                 pointBackgroundColor: 'transparent',
                 pointBorderColor: 'transparent',
@@ -245,16 +250,16 @@ document.addEventListener('DOMContentLoaded', function() {
                         r: {
                             angleLines: {
                                 display: true,
-                                color: getGridColor
+                                color: colors.gridColor
                             },
                             grid: {
-                                color: getGridColor
+                                color: colors.gridColor
                             },
                             suggestedMin: 0,
                             suggestedMax: 100,
                             ticks: {
                                 stepSize: 25,
-                                color: getTextColor,
+                                color: colors.textColor,
                                 backdropColor: 'transparent',
                                 font: {
                                     family: "'Poppins', sans-serif",
@@ -269,7 +274,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     size: window.innerWidth < 768 ? 12 : 14,
                                     weight: 'normal'
                                 },
-                                color: getTextColor
+                                color: colors.textColor
                             }
                         }
                     },
@@ -282,7 +287,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 size: window.innerWidth < 768 ? 18 : 20,
                                 weight: 'bold'
                             },
-                            color: getTextColor
+                            color: colors.textColor
                         },
                         legend: {
                             display: false
@@ -334,6 +339,10 @@ document.addEventListener('DOMContentLoaded', function() {
             aiAnalysisContent = aiAnalysisResult.innerHTML;
         }
         
+        if (window.lineChart instanceof Chart) {
+            lineChartData = window.lineChart.data;
+        }
+        
         document.body.classList.toggle('dark-mode', this.checked);
         updateChartColors();
         if (chartProcessed) {
@@ -342,6 +351,10 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (aiAnalysisResult && aiAnalysisContent) {
             aiAnalysisResult.innerHTML = aiAnalysisContent;
+        }
+
+        if (lineChartData) {
+            createLineChart(lineChartData.datasets[0].data, lineChartData.datasets[1].data);
         }
     });
 
@@ -414,9 +427,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const aiData = aiBaseline;
         const userData = userValues;
 
-        console.log("Chart Labels:", labels);
-        console.log("AI Baseline Data:", aiData);
-        console.log("User Data:", userData);
+        const colors = getChartColors();
 
         window.lineChart = new Chart(ctx, {
             type: 'line',
@@ -426,8 +437,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     {
                         label: 'AI Baseline',
                         data: aiData,
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: colors.borderColor,
+                        backgroundColor: colors.backgroundColor,
                         tension: 0.1
                     },
                     {
@@ -445,16 +456,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 scales: {
                     y: {
                         beginAtZero: true,
-                        max: 100
+                        max: 100,
+                        grid: {
+                            color: colors.gridColor
+                        },
+                        ticks: {
+                            color: colors.textColor
+                        }
                     },
                     x: {
                         ticks: {
                             autoSkip: false,
                             maxRotation: 90,
                             minRotation: 90,
+                            color: colors.textColor,
                             font: {
                                 size: 8
                             }
+                        },
+                        grid: {
+                            color: colors.gridColor
                         }
                     }
                 },
@@ -462,6 +483,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     title: {
                         display: true,
                         text: 'AI Baseline vs User Values',
+                        color: colors.textColor,
                         font: {
                             size: 16
                         }
@@ -480,6 +502,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     },
                     legend: {
                         labels: {
+                            color: colors.textColor,
                             boxWidth: 12,
                             font: {
                                 size: 12
