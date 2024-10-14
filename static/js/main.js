@@ -328,18 +328,19 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     darkModeToggle.addEventListener('change', function() {
+        const aiAnalysisResult = document.getElementById('aiAnalysisResult');
+        
+        if (aiAnalysisResult) {
+            aiAnalysisContent = aiAnalysisResult.innerHTML;
+        }
+        
         document.body.classList.toggle('dark-mode', this.checked);
         updateChartColors();
         if (chartProcessed) {
             updateChart();
         }
         
-        const aiAnalysisResult = document.getElementById('aiAnalysisResult');
-        if (aiAnalysisResult) {
-            aiAnalysisContent = aiAnalysisResult.innerHTML;
-        }
-        
-        if (aiAnalysisContent) {
+        if (aiAnalysisResult && aiAnalysisContent) {
             aiAnalysisResult.innerHTML = aiAnalysisContent;
         }
     });
