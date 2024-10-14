@@ -184,8 +184,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function getChartColors() {
         const isDarkMode = document.body.classList.contains('dark-mode');
         return {
-            backgroundColor: isDarkMode ? 'rgba(54, 162, 235, 0.1)' : 'rgba(54, 162, 235, 0.1)',
-            borderColor: isDarkMode ? 'rgba(54, 162, 235, 0.5)' : 'rgba(54, 162, 235, 0.5)',
+            backgroundColor: isDarkMode ? 'rgba(54, 162, 235, 0.3)' : 'rgba(54, 162, 235, 0.3)',
+            borderColor: isDarkMode ? 'rgba(54, 162, 235, 0.8)' : 'rgba(54, 162, 235, 0.8)',
             gridColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
             textColor: isDarkMode ? '#ffffff' : '#666666'
         };
