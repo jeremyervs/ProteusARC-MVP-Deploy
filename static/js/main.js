@@ -695,7 +695,7 @@ document.addEventListener('DOMContentLoaded', function() {
             aiButtonHint.style.display = "block";
         }
         
-        indicateChartNeedsUpdate();
+        updateChartButton.classList.add('needs-update');
     }
 
     function indicateChartNeedsUpdate() {
