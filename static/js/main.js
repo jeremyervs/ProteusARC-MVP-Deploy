@@ -232,21 +232,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updateChartFont() {
         if (chart) {
+            const fontFamily = "'Poppins', sans-serif";
+            const titleFontSize = window.innerWidth < 768 ? 18 : 20;
+            const labelFontSize = window.innerWidth < 768 ? 12 : 14;
+            const tickFontSize = window.innerWidth < 768 ? 10 : 12;
+
             chart.options.plugins.title.font = {
-                family: "'Poppins', sans-serif",
-                size: window.innerWidth < 768 ? 18 : 20,
+                family: fontFamily,
+                size: titleFontSize,
                 weight: 'bold'
             };
             
             chart.options.scales.r.pointLabels.font = {
-                family: "'Poppins', sans-serif",
-                size: window.innerWidth < 768 ? 12 : 14,
+                family: fontFamily,
+                size: labelFontSize,
                 weight: 'normal'
             };
             
             chart.options.scales.r.ticks.font = {
-                family: "'Poppins', sans-serif",
-                size: window.innerWidth < 768 ? 10 : 12,
+                family: fontFamily,
+                size: tickFontSize,
                 weight: 'normal'
             };
             
