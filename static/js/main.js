@@ -186,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return {
             backgroundColor: isDarkMode ? 'rgba(54, 162, 235, 0.3)' : 'rgba(54, 162, 235, 0.2)',
             borderColor: isDarkMode ? 'rgba(54, 162, 235, 1)' : 'rgba(54, 162, 235, 0.8)',
-            gridColor: isDarkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)',
+            gridColor: isDarkMode ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.2)',
             textColor: isDarkMode ? '#ffffff' : '#666666'
         };
     }
@@ -195,6 +195,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (chart) {
             const colors = getChartColors();
             chart.options.scales.r.grid.color = colors.gridColor;
+            chart.options.scales.r.angleLines.color = colors.gridColor;
             chart.options.scales.r.ticks.color = colors.textColor;
             chart.options.scales.r.pointLabels.color = colors.textColor;
             chart.options.plugins.title.color = colors.textColor;
@@ -250,10 +251,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         r: {
                             angleLines: {
                                 display: true,
-                                color: colors.gridColor
+                                color: colors.gridColor,
+                                lineWidth: 1.5
                             },
                             grid: {
-                                color: colors.gridColor
+                                color: colors.gridColor,
+                                lineWidth: 1.5
                             },
                             suggestedMin: 0,
                             suggestedMax: 100,
