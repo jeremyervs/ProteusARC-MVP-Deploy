@@ -686,24 +686,34 @@ document.addEventListener('DOMContentLoaded', function() {
             chart.update();
         }
         updateAnalysisSummary();
-        document.getElementById('aiAnalysisResult').innerHTML = '';
-        document.getElementById('lineChart').style.display = 'none';
+        if (document.getElementById('aiAnalysisResult')) {
+            document.getElementById('aiAnalysisResult').innerHTML = '';
+        }
+        if (document.getElementById('lineChart')) {
+            document.getElementById('lineChart').style.display = 'none';
+        }
         
-        if (!chartProcessed) {
+        if (!chartProcessed && analyzeScenarioButton && aiButtonHint) {
             analyzeScenarioButton.disabled = true;
             analyzeScenarioButton.title = "Process gradients first to enable AI Analysis";
             aiButtonHint.style.display = "block";
         }
         
-        updateChartButton.classList.add('needs-update');
+        if (updateChartButton) {
+            updateChartButton.classList.add('needs-update');
+        }
     }
 
     function indicateChartNeedsUpdate() {
-        updateChartButton.classList.add('needs-update');
+        if (updateChartButton) {
+            updateChartButton.classList.add('needs-update');
+        }
         chartProcessed = false;
         gradientsProcessed = false;
-        analyzeScenarioButton.disabled = true;
-        aiButtonHint.style.display = "block";
+        if (analyzeScenarioButton && aiButtonHint) {
+            analyzeScenarioButton.disabled = true;
+            aiButtonHint.style.display = "block";
+        }
     }
 
     function showPopup(message) {
@@ -725,7 +735,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     window.addEventListener('resize', updateChartFont);
 
-    updateChart();
+    if (chart) {
+        updateChart();
+    }
     resetSliders();
     updateChartFont();
 });
