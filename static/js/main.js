@@ -56,6 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let chartProcessed = false;
     let gradientsProcessed = false;
     let titleChanged = false;
+    let aiAnalysisContent = '';
 
     analyzeScenarioButton.disabled = true;
     analyzeScenarioButton.title = "Process gradients first to enable AI Analysis";
@@ -193,6 +194,19 @@ document.addEventListener('DOMContentLoaded', function() {
             chart.options.scales.r.ticks.color = getTextColor();
             chart.options.scales.r.pointLabels.color = getTextColor();
             chart.options.plugins.title.color = getTextColor();
+            
+            chart.options.plugins.title.font = {
+                family: "'Poppins', sans-serif",
+                size: window.innerWidth < 768 ? 18 : 20,
+                weight: 'bold'
+            };
+            
+            chart.options.scales.r.pointLabels.font = {
+                family: "'Poppins', sans-serif",
+                size: window.innerWidth < 768 ? 12 : 14,
+                weight: 'normal'
+            };
+            
             chart.update();
         }
     }
@@ -318,6 +332,15 @@ document.addEventListener('DOMContentLoaded', function() {
         updateChartColors();
         if (chartProcessed) {
             updateChart();
+        }
+        
+        const aiAnalysisResult = document.getElementById('aiAnalysisResult');
+        if (aiAnalysisResult) {
+            aiAnalysisContent = aiAnalysisResult.innerHTML;
+        }
+        
+        if (aiAnalysisContent) {
+            aiAnalysisResult.innerHTML = aiAnalysisContent;
         }
     });
 
