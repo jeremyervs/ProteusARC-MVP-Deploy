@@ -188,7 +188,11 @@ document.addEventListener('DOMContentLoaded', function() {
             timelineRadios.forEach(radio => {
                 radio.checked = false;
             });
-            indicateChartNeedsUpdate();
+            if (chartProcessed) {
+                updateChartButton.classList.add('needs-update');
+            } else {
+                indicateChartNeedsUpdate();
+            }
         });
     }
 
@@ -324,11 +328,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 size: window.innerWidth < 768 ? 18 : 20,
                                 weight: 'bold'
                             },
-                            color: colors.textColor,
-                            padding: {
-                                top: 10,
-                                bottom: 30
-                            }
+                            color: colors.textColor
                         },
                         legend: {
                             display: false

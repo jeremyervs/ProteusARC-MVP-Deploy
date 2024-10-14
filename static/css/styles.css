@@ -680,8 +680,6 @@ body.dark-mode #radarChart {
 .chart-js-tooltip {
     color: var(--text-color);
     background-color: var(--card-bg);
-    font-family: 'Poppins', sans-serif;
-    font-size: 14px;
 }
 
 body.dark-mode .chart-js-tooltip {
@@ -693,21 +691,6 @@ body.dark-mode .chart-js-tooltip {
     width: 100%;
     height: 400px;
     margin-top: 20px;
-    font-family: 'Poppins', sans-serif;
-}
-
-.chart-title {
-    font-family: 'Poppins', sans-serif;
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--text-color);
-}
-
-.chart-label {
-    font-family: 'Poppins', sans-serif;
-    font-size: 12px;
-    font-weight: 400;
-    color: var(--text-color);
 }
 
 @media (max-width: 768px) {
@@ -724,14 +707,6 @@ body.dark-mode .chart-js-tooltip {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-    }
-
-    .chart-title {
-        font-size: 18px;
-    }
-
-    .chart-label {
-        font-size: 10px;
     }
 }
 
