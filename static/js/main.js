@@ -188,7 +188,11 @@ document.addEventListener('DOMContentLoaded', function() {
             timelineRadios.forEach(radio => {
                 radio.checked = false;
             });
-            indicateChartNeedsUpdate();
+            if (chartProcessed) {
+                updateChartButton.classList.add('needs-update');
+            } else {
+                indicateChartNeedsUpdate();
+            }
         });
     }
 
@@ -684,12 +688,13 @@ document.addEventListener('DOMContentLoaded', function() {
         updateAnalysisSummary();
         document.getElementById('aiAnalysisResult').innerHTML = '';
         document.getElementById('lineChart').style.display = 'none';
-        chartProcessed = false;
-        gradientsProcessed = false;
-        titleChanged = false;
-        analyzeScenarioButton.disabled = true;
-        analyzeScenarioButton.title = "Process gradients first to enable AI Analysis";
-        aiButtonHint.style.display = "block";
+        
+        if (!chartProcessed) {
+            analyzeScenarioButton.disabled = true;
+            analyzeScenarioButton.title = "Process gradients first to enable AI Analysis";
+            aiButtonHint.style.display = "block";
+        }
+        
         indicateChartNeedsUpdate();
     }
 
@@ -718,9 +723,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    window.addEventListener('resize', () => {
-        updateChartFont();
-    });
+    window.addEventListener('resize', updateChartFont);
 
     updateChart();
     resetSliders();
