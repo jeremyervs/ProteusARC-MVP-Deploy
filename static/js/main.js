@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', function() {
             backgroundColor: isDarkMode ? 'rgba(54, 162, 235, 0.3)' : 'rgba(54, 162, 235, 0.3)',
             borderColor: isDarkMode ? 'rgba(54, 162, 235, 0.8)' : 'rgba(54, 162, 235, 0.8)',
             gridColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
-            textColor: isDarkMode ? 'var(--text-color)' : 'var(--text-color)'
+            textColor: isDarkMode ? '#f0f0f0' : '#333333'
         };
     }
 
