@@ -543,6 +543,9 @@ body.dark-mode .experimental-tag {
 }
 
 .loading-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     padding: 20px;
 }
