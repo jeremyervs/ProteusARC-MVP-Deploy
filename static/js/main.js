@@ -188,11 +188,6 @@ document.addEventListener('DOMContentLoaded', function() {
             timelineRadios.forEach(radio => {
                 radio.checked = false;
             });
-            if (chartProcessed) {
-                updateChartButton.classList.add('needs-update');
-            } else {
-                indicateChartNeedsUpdate();
-            }
         });
     }
 
@@ -211,7 +206,7 @@ document.addEventListener('DOMContentLoaded', function() {
             backgroundColor: isDarkMode ? 'rgba(54, 162, 235, 0.3)' : 'rgba(54, 162, 235, 0.3)',
             borderColor: isDarkMode ? 'rgba(54, 162, 235, 0.8)' : 'rgba(54, 162, 235, 0.8)',
             gridColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
-            textColor: isDarkMode ? 'rgba(255, 255, 255, 0.9)' : 'var(--text-color)'
+            textColor: isDarkMode ? 'var(--text-color)' : 'var(--text-color)'
         };
     }
 
@@ -232,6 +227,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updateChartFont() {
         if (chart) {
+            const colors = getChartColors();
             chart.options.plugins.title.font = {
                 family: "'Poppins', sans-serif",
                 size: window.innerWidth < 768 ? 18 : 20,
@@ -249,6 +245,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 size: window.innerWidth < 768 ? 10 : 12,
                 weight: 'normal'
             };
+            
+            chart.options.scales.r.pointLabels.color = colors.textColor;
+            chart.options.scales.r.ticks.color = colors.textColor;
+            chart.options.plugins.title.color = colors.textColor;
             
             chart.update();
         }
