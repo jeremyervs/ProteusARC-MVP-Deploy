@@ -188,7 +188,11 @@ document.addEventListener('DOMContentLoaded', function() {
             timelineRadios.forEach(radio => {
                 radio.checked = false;
             });
-            indicateChartNeedsUpdate();
+            if (chartProcessed) {
+                updateChartButton.classList.add('needs-update');
+            } else {
+                indicateChartNeedsUpdate();
+            }
         });
     }
 
