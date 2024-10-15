@@ -553,17 +553,22 @@ body.dark-mode .experimental-tag {
 
 .loading-spinner {
     display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 3px solid rgba(0, 0, 0, 0.3);
+    width: 30px;
+    height: 30px;
+    border: 3px solid rgba(74, 144, 226, 0.3);
     border-radius: 50%;
     border-top-color: var(--primary-color);
     animation: spin 1s ease-in-out infinite;
-    margin-right: 10px;
+    margin-right: 15px;
 }
 
 @keyframes spin {
     to { transform: rotate(360deg); }
+}
+
+body.dark-mode .loading-spinner {
+    border-color: rgba(255, 255, 255, 0.3);
+    border-top-color: var(--primary-color);
 }
 
 .loading-steps {

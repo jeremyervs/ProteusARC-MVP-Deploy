@@ -608,7 +608,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const aiAnalysisResult = document.getElementById('aiAnalysisResult');
         aiAnalysisResult.innerHTML = `
             <div class="loading-message">
-                <p><span class="loading-spinner"></span>Generating AI analysis… Please wait.</p>
+                <div class="loading-spinner"></div>
+                <p>Generating AI analysis… Please wait.</p>
             </div>`;
 
         scrollToAIAnalysis();
