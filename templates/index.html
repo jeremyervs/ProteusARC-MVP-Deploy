@@ -85,11 +85,21 @@
         </main>
     </div>
     
-    <div id="directionsPopup" class="directions-popup">
-        <div class="directions-content">
+    <!-- Common Overlay -->
+    <div id="overlay" class="overlay hidden">
+        <!-- View Directions Pop-up -->
+        <div id="directionsPopup" class="popup-content hidden">
             <span class="close-popup">&times;</span>
             <h2>Gradient Definitions</h2>
             <div id="gradientDefinitions"></div>
+        </div>
+
+        <!-- Export Options Pop-up -->
+        <div id="exportOptionsPopup" class="popup-content hidden">
+            <span class="close-popup">&times;</span>
+            <h3>Export Options</h3>
+            <button id="exportCSV">Export as CSV</button>
+            <button id="exportJSON">Export as JSON</button>
         </div>
     </div>
     

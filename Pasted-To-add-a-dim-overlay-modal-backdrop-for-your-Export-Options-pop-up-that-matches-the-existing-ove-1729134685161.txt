@@ -1,0 +1,732 @@
+To add a dim overlay (modal backdrop) for your "Export Options" pop-up that matches the existing overlay for the "View Directions" pop-up, you'll need to ensure both pop-ups share the same overlay mechanism. Given your existing CSS and JavaScript, here's a comprehensive guide to achieve this:
+
+### **1. Understanding the Current Setup**
+
+From your provided CSS and JavaScript, you have:
+
+- **Pop-ups:**
+  - **View Directions Pop-up:** Utilizes `.directions-popup` and `.directions-content` classes.
+  - **Export Options Pop-up:** Dynamically created with the `.export-options` class.
+  - **Generic Pop-up:** `.popup` and `.popup-content` classes are also defined, possibly for alert messages or other pop-ups.
+
+- **Overlay:**
+  - Both `.popup` and `.directions-popup` classes have their own overlay styles.
+
+**Objective:** Streamline the pop-up system so that both "View Directions" and "Export Options" share a common overlay, ensuring consistency and easier management.
+
+### **2. Refactoring the HTML Structure**
+
+To ensure both pop-ups use the same overlay, we'll define a single overlay element and separate pop-up content containers within it.
+
+#### **a. Add a Common Overlay Element**
+
+If not already present, add the following HTML snippet **once** in your HTML file, preferably right after the opening `<body>` tag:
+
+```html
+<!-- Common Overlay -->
+<div id="overlay" class="overlay hidden"></div>
+```
+
+#### **b. Define Pop-up Containers Within the Overlay**
+
+Place your pop-up content within the overlay. Here's how you can structure both "View Directions" and "Export Options" pop-ups:
+
+```html
+<!-- View Directions Pop-up -->
+<div id="directionsPopup" class="popup-content hidden">
+    <span class="close-popup">&times;</span>
+    <h3>View Directions</h3>
+    <!-- Your Directions Content Here -->
+</div>
+
+<!-- Export Options Pop-up -->
+<div id="exportOptionsPopup" class="popup-content hidden">
+    <span class="close-popup">&times;</span>
+    <h3>Export Options</h3>
+    <button id="exportCSV">Export as CSV</button>
+    <button id="exportJSON">Export as JSON</button>
+</div>
+
+<!-- Trigger Buttons -->
+<button id="viewDirections">View Directions</button>
+<button id="exportButton">Export Options</button>
+```
+
+**Notes:**
+
+- Both pop-ups (`#directionsPopup` and `#exportOptionsPopup`) are **children** of the common overlay.
+- The `hidden` class ensures they are hidden by default.
+- Each pop-up has a close button (`.close-popup`) to facilitate closing the pop-up.
+
+### **3. Updating the CSS**
+
+Adjust your CSS to accommodate the new structure and ensure consistency across pop-ups.
+
+#### **a. Define the Overlay Styles**
+
+Add or update the following CSS to style the common overlay:
+
+```css
+/* Common Overlay Style */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    display: none; /* Hidden by default */
+    z-index: 1000; /* Ensure it's above other elements */
+}
+
+/* Show Overlay */
+.overlay.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Pop-up Content Style */
+.popup-content {
+    background-color: var(--card-bg);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 80%;
+    position: relative;
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Hidden Class to Hide Elements */
+.hidden {
+    display: none;
+}
+
+/* Close Button Style */
+.close-popup {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--text-color);
+    cursor: pointer;
+}
+
+.close-popup:hover,
+.close-popup:focus {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+/* Ensure Pop-up Content Overrides Overlay */
+.overlay .popup-content {
+    z-index: 1001;
+}
+```
+
+**Explanation:**
+
+- **`.overlay`**: Covers the entire viewport with a semi-transparent background. Hidden by default.
+- **`.overlay.active`**: When the `active` class is added, the overlay becomes visible and centers its child pop-up content.
+- **`.popup-content`**: Styles for the pop-up content containers. Positioned relative to allow absolute positioning of the close button.
+- **`.close-popup`**: Positioned at the top-right corner of the pop-up content for easy access.
+
+#### **b. Remove or Adjust Conflicting Styles**
+
+Since we're unifying the overlay mechanism, you can remove or adjust any existing styles related to `.popup`, `.directions-popup`, or `.export-options` to prevent conflicts.
+
+For example, **remove** the following CSS if it's no longer needed:
+
+```css
+/* Remove these if replacing with the common overlay */
+/*
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-content {
+    background-color: var(--card-bg);
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    max-width: 80%;
+}
+*/
+```
+
+Similarly, **remove or adjust** `.directions-popup`, `.directions-content`, and `.export-options` classes if they were previously handling overlay functionality.
+
+### **4. Modifying the JavaScript**
+
+Update your JavaScript to utilize the common overlay and manage both pop-ups accordingly.
+
+#### **a. Select the Common Overlay and Pop-up Elements**
+
+Update your existing JavaScript to reference the common overlay and pop-up elements:
+
+```javascript
+document.addEventListener('DOMContentLoaded', function() {
+    // ... [Existing code up to the pop-up handling] ...
+
+    // Get Common Overlay Element
+    const overlay = document.getElementById('overlay');
+
+    // Get Pop-up Elements
+    const directionsPopup = document.getElementById('directionsPopup');
+    const exportOptionsPopup = document.getElementById('exportOptionsPopup');
+
+    // Get Trigger Buttons
+    const viewDirections = document.getElementById('viewDirections');
+    const exportButton = document.getElementById('exportButton');
+
+    // Get Close Buttons
+    const closePopups = document.querySelectorAll('.close-popup');
+
+    // Function to Show a Pop-up
+    function showPopup(popup) {
+        overlay.classList.add('active');
+        popup.classList.remove('hidden');
+    }
+
+    // Function to Hide a Pop-up
+    function hidePopup(popup) {
+        popup.classList.add('hidden');
+        // If no other pop-ups are visible, hide the overlay
+        const anyVisible = document.querySelectorAll('.popup-content:not(.hidden)');
+        if (anyVisible.length === 0) {
+            overlay.classList.remove('active');
+        }
+    }
+
+    // Event Listener to Open View Directions Pop-up
+    if (viewDirections) {
+        viewDirections.addEventListener('click', function() {
+            showPopup(directionsPopup);
+        });
+    }
+
+    // Event Listener to Open Export Options Pop-up
+    if (exportButton) {
+        exportButton.addEventListener('click', function() {
+            showPopup(exportOptionsPopup);
+        });
+    }
+
+    // Event Listeners to Close Pop-ups
+    closePopups.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const popup = this.closest('.popup-content');
+            hidePopup(popup);
+        });
+    });
+
+    // Event Listener to Close Pop-ups When Clicking on the Overlay
+    if (overlay) {
+        overlay.addEventListener('click', function(event) {
+            // Ensure that clicks on the overlay itself (not on the pop-up content) close the pop-up
+            if (event.target === overlay) {
+                const visiblePopups = document.querySelectorAll('.popup-content:not(.hidden)');
+                visiblePopups.forEach(popup => hidePopup(popup));
+            }
+        });
+    }
+
+    // ... [Rest of your existing code] ...
+});
+```
+
+**Explanation:**
+
+- **`showPopup(popup)`**: Adds the `active` class to the overlay and removes the `hidden` class from the specified pop-up, making both visible.
+- **`hidePopup(popup)`**: Adds the `hidden` class back to the specified pop-up. If no other pop-ups are visible, it removes the `active` class from the overlay, hiding it.
+- **Close Pop-ups**: Clicking the close button (`.close-popup`) within a pop-up hides that pop-up.
+- **Overlay Click**: Clicking outside the pop-up content (i.e., on the overlay itself) closes all visible pop-ups.
+
+#### **b. Remove or Adjust the Existing `showExportOptions` Function**
+
+In your original JavaScript, you have a `showExportOptions` function that dynamically creates the "Export Options" pop-up. Since we're now using a static pop-up within the overlay, you can **remove** or **comment out** this function to prevent duplication and conflicts.
+
+```javascript
+// Remove or comment out the dynamic creation of Export Options Pop-up
+/*
+function showExportOptions() {
+    const exportOptions = document.createElement('div');
+    exportOptions.className = 'export-options';
+    exportOptions.innerHTML = `
+        <h3>Export Options</h3>
+        <button id="exportCSV">Export as CSV</button>
+        <button id="exportJSON">Export as JSON</button>
+    `;
+    document.body.appendChild(exportOptions);
+
+    document.getElementById('exportCSV').addEventListener('click', () => exportResults('csv'));
+    document.getElementById('exportJSON').addEventListener('click', () => exportResults('json'));
+
+    document.addEventListener('click', (e) => {
+        if (!exportOptions.contains(e.target) && e.target !== exportButton) {
+            document.body.removeChild(exportOptions);
+        }
+    });
+}
+*/
+```
+
+**Rationale:** Using a static pop-up ensures consistency and reusability of the overlay mechanism.
+
+### **5. Adjusting the Existing `.export-options` CSS (If Needed)**
+
+Since we're now using `.popup-content` for all pop-ups, you may need to adjust or remove the existing `.export-options` CSS to prevent conflicts. However, if you wish to maintain specific styles for the "Export Options" pop-up, you can extend the `.popup-content` class.
+
+**Example:**
+
+```css
+/* Specific Styles for Export Options Pop-up */
+#exportOptionsPopup.popup-content {
+    /* Add any additional styles if necessary */
+}
+```
+
+**Alternatively**, if no specific styles are needed beyond `.popup-content`, you can remove the `.export-options` class from your CSS to avoid redundancy.
+
+### **6. Finalizing and Testing**
+
+After implementing the above changes, follow these steps to ensure everything works seamlessly:
+
+1. **Open and Close Pop-ups:**
+   - Click the "View Directions" button to ensure the pop-up appears with the dim overlay.
+   - Click the "Export Options" button to ensure the export pop-up appears with the same overlay.
+   
+2. **Close Functionality:**
+   - Click the close (`&times;`) buttons to ensure pop-ups close correctly.
+   - Click outside the pop-up content (on the overlay) to ensure pop-ups close.
+   
+3. **Overlay Consistency:**
+   - Verify that the dim overlay appears consistently across both pop-ups.
+   - Ensure that the overlay does not interfere with other interactive elements when visible.
+   
+4. **Responsive Design:**
+   - Test the pop-ups on various screen sizes to ensure they are responsive.
+   
+5. **Dark Mode Compatibility:**
+   - Toggle dark mode to ensure the pop-ups and overlay adapt appropriately.
+
+6. **Accessibility:**
+   - Navigate using the keyboard (e.g., `Tab` key) to ensure focus management within pop-ups.
+   - Use screen readers to verify that pop-ups are announced correctly.
+
+### **7. Optional Enhancements**
+
+For a more polished user experience, consider the following enhancements:
+
+#### **a. Animations for Pop-ups and Overlay**
+
+Add smooth fade-in and fade-out animations for the overlay and pop-ups.
+
+**Example CSS:**
+
+```css
+/* Overlay Transition */
+.overlay {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.overlay.active {
+    opacity: 1;
+}
+
+/* Pop-up Content Transition */
+.popup-content {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.overlay.active .popup-content {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+}
+```
+
+#### **b. Focus Management for Accessibility**
+
+Ensure that focus is trapped within the pop-up when it's open and returned to the triggering element when closed.
+
+**Example JavaScript Enhancements:**
+
+```javascript
+document.addEventListener('DOMContentLoaded', function() {
+    // ... [Existing code] ...
+
+    // Keep track of the element that triggered the pop-up
+    let lastFocusedElement = null;
+
+    function showPopup(popup) {
+        lastFocusedElement = document.activeElement;
+        overlay.classList.add('active');
+        popup.classList.remove('hidden');
+        // Set focus to the first focusable element in the pop-up
+        const focusableElements = popup.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        if (focusableElements.length) {
+            focusableElements[0].focus();
+        }
+        // Prevent scrolling on the body
+        document.body.style.overflow = 'hidden';
+    }
+
+    function hidePopup(popup) {
+        popup.classList.add('hidden');
+        // If no other pop-ups are visible, hide the overlay
+        const anyVisible = document.querySelectorAll('.popup-content:not(.hidden)');
+        if (anyVisible.length === 0) {
+            overlay.classList.remove('active');
+            // Restore scrolling
+            document.body.style.overflow = '';
+        }
+        // Return focus to the last focused element
+        if (lastFocusedElement) {
+            lastFocusedElement.focus();
+        }
+    }
+
+    // Optional: Close pop-up with the 'Esc' key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            const visiblePopups = document.querySelectorAll('.popup-content:not(.hidden)');
+            visiblePopups.forEach(popup => hidePopup(popup));
+        }
+    });
+
+    // ... [Rest of your existing code] ...
+});
+```
+
+**Explanation:**
+
+- **Focus Tracking:** Saves the last focused element before opening a pop-up and returns focus to it upon closing.
+- **Scroll Prevention:** Disables background scrolling when a pop-up is open.
+- **Escape Key Handling:** Allows users to close pop-ups using the `Esc` key.
+
+### **8. Complete Example Integration**
+
+To provide clarity, here's a consolidated view of the necessary HTML, CSS, and JavaScript changes.
+
+#### **a. HTML Structure**
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Change Pattern Visualization</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Your existing content -->
+
+        <!-- Trigger Buttons -->
+        <button id="viewDirections">View Directions</button>
+        <button id="exportButton">Export Options</button>
+
+        <!-- Common Overlay -->
+        <div id="overlay" class="overlay hidden">
+            <!-- View Directions Pop-up -->
+            <div id="directionsPopup" class="popup-content hidden">
+                <span class="close-popup">&times;</span>
+                <h3>View Directions</h3>
+                <!-- Your Directions Content Here -->
+            </div>
+
+            <!-- Export Options Pop-up -->
+            <div id="exportOptionsPopup" class="popup-content hidden">
+                <span class="close-popup">&times;</span>
+                <h3>Export Options</h3>
+                <button id="exportCSV">Export as CSV</button>
+                <button id="exportJSON">Export as JSON</button>
+            </div>
+        </div>
+
+        <!-- Rest of your existing content -->
+    </div>
+
+    <!-- Include Your JavaScript File -->
+    <script src="script.js"></script>
+</body>
+</html>
+```
+
+#### **b. CSS (`styles.css`)**
+
+Ensure your CSS includes the necessary styles for the overlay and pop-ups as outlined in **Step 3**. Here's the essential addition/modification:
+
+```css
+/* Common Overlay Style */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    display: none; /* Hidden by default */
+    z-index: 1000; /* Ensure it's above other elements */
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+
+.overlay.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+}
+
+/* Pop-up Content Style */
+.popup-content {
+    background-color: var(--card-bg);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 80%;
+    position: relative;
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s, transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+    transform: translateY(-20px);
+}
+
+.overlay.active .popup-content {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Hidden Class to Hide Elements */
+.hidden {
+    display: none;
+}
+
+/* Close Button Style */
+.close-popup {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--text-color);
+    cursor: pointer;
+}
+
+.close-popup:hover,
+.close-popup:focus {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+```
+
+**Note:** Ensure that you remove or adjust any existing styles for `.directions-popup`, `.directions-content`, and `.export-options` to prevent conflicts.
+
+#### **c. JavaScript (`script.js`)**
+
+Update your JavaScript as follows:
+
+```javascript
+document.addEventListener('DOMContentLoaded', function() {
+    // ... [Your existing code up to the pop-up handling] ...
+
+    // Get Common Overlay Element
+    const overlay = document.getElementById('overlay');
+
+    // Get Pop-up Elements
+    const directionsPopup = document.getElementById('directionsPopup');
+    const exportOptionsPopup = document.getElementById('exportOptionsPopup');
+
+    // Get Trigger Buttons
+    const viewDirections = document.getElementById('viewDirections');
+    const exportButton = document.getElementById('exportButton');
+
+    // Get Close Buttons
+    const closePopups = document.querySelectorAll('.close-popup');
+
+    // Variable to keep track of the last focused element
+    let lastFocusedElement = null;
+
+    // Function to Show a Pop-up
+    function showPopup(popup) {
+        lastFocusedElement = document.activeElement;
+        overlay.classList.add('active');
+        popup.classList.remove('hidden');
+        // Set focus to the first focusable element in the pop-up
+        const focusableElements = popup.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        if (focusableElements.length) {
+            focusableElements[0].focus();
+        }
+        // Prevent scrolling on the body
+        document.body.style.overflow = 'hidden';
+    }
+
+    // Function to Hide a Pop-up
+    function hidePopup(popup) {
+        popup.classList.add('hidden');
+        // If no other pop-ups are visible, hide the overlay
+        const anyVisible = document.querySelectorAll('.popup-content:not(.hidden)');
+        if (anyVisible.length === 0) {
+            overlay.classList.remove('active');
+            // Restore scrolling
+            document.body.style.overflow = '';
+        }
+        // Return focus to the last focused element
+        if (lastFocusedElement) {
+            lastFocusedElement.focus();
+            lastFocusedElement = null;
+        }
+    }
+
+    // Event Listener to Open View Directions Pop-up
+    if (viewDirections) {
+        viewDirections.addEventListener('click', function() {
+            showPopup(directionsPopup);
+        });
+    }
+
+    // Event Listener to Open Export Options Pop-up
+    if (exportButton) {
+        exportButton.addEventListener('click', function() {
+            showPopup(exportOptionsPopup);
+        });
+    }
+
+    // Event Listeners to Close Pop-ups
+    closePopups.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const popup = this.closest('.popup-content');
+            hidePopup(popup);
+        });
+    });
+
+    // Event Listener to Close Pop-ups When Clicking on the Overlay
+    if (overlay) {
+        overlay.addEventListener('click', function(event) {
+            // Ensure that clicks on the overlay itself (not on the pop-up content) close the pop-up
+            if (event.target === overlay) {
+                const visiblePopups = document.querySelectorAll('.popup-content:not(.hidden)');
+                visiblePopups.forEach(popup => hidePopup(popup));
+            }
+        });
+    }
+
+    // Optional: Close Pop-up with the 'Esc' Key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            const visiblePopups = document.querySelectorAll('.popup-content:not(.hidden)');
+            visiblePopups.forEach(popup => hidePopup(popup));
+        }
+    });
+
+    // ... [Rest of your existing code] ...
+});
+```
+
+**Explanation:**
+
+- **Focus Management:** Saves the last focused element before opening a pop-up and returns focus to it upon closing, enhancing accessibility.
+- **Scroll Prevention:** Disables background scrolling when a pop-up is open to prevent users from interacting with the background content.
+- **Escape Key Handling:** Allows users to close pop-ups using the `Esc` key.
+- **Overlay Click Handling:** Ensures that only clicks directly on the overlay (and not within pop-up content) close the pop-up.
+
+### **9. Cleaning Up Existing Pop-up Implementations**
+
+Since we're now using a unified pop-up system, ensure that you **remove or disable** any existing pop-up implementations that might conflict. This includes:
+
+- **Removing the `.directions-popup` and `.directions-content` elements** from your HTML if they're replaced by the new structure.
+- **Deleting or commenting out** any redundant CSS styles related to `.directions-popup`, `.directions-content`, `.export-options`, etc.
+- **Eliminating dynamic pop-up creation** in your JavaScript, such as the previously defined `showExportOptions` function, to avoid duplicate overlays or conflicting behaviors.
+
+### **10. Final Testing**
+
+After implementing all the above changes, perform thorough testing to ensure everything works as expected:
+
+1. **Trigger Both Pop-ups:**
+   - Click the "View Directions" button to open its pop-up with the dim overlay.
+   - Click the "Export Options" button to open its pop-up with the same dim overlay.
+
+2. **Close Functionality:**
+   - Click the close (`&times;`) buttons within each pop-up to ensure they close correctly.
+   - Click outside the pop-up content (on the overlay) to ensure the pop-ups close.
+   - Press the `Esc` key to verify that pop-ups close as intended.
+
+3. **Overlay Consistency:**
+   - Ensure that the dim overlay appears consistently across both pop-ups.
+   - Verify that the overlay dims the background content effectively.
+
+4. **Responsive Design:**
+   - Test the pop-ups on various screen sizes to ensure they are responsive and visually appealing.
+
+5. **Dark Mode Compatibility:**
+   - Toggle dark mode to confirm that pop-ups and the overlay adapt correctly to different themes.
+
+6. **Accessibility Checks:**
+   - Navigate using the keyboard to ensure that focus management works.
+   - Use screen readers to verify that pop-ups are announced appropriately.
+
+### **11. Optional: Enhancing User Experience with Animations**
+
+To make the pop-ups appear more smoothly, consider adding CSS transitions or animations.
+
+**Example CSS Enhancements:**
+
+```css
+/* Overlay Fade-In Transition */
+.overlay {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.overlay.active {
+    opacity: 1;
+}
+
+/* Pop-up Content Slide and Fade-In */
+.popup-content {
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.overlay.active .popup-content {
+    opacity: 1;
+    transform: translateY(0);
+}
+```
+
+**Explanation:**
+
+- **Overlay:** Smoothly fades in when activated.
+- **Pop-up Content:** Slides up and fades in, enhancing the visual appeal.
+
+### **12. Summary**
+
+By following the steps outlined above, you can successfully implement a dim overlay for your "Export Options" pop-up that matches the existing overlay for the "View Directions" pop-up. This unified approach ensures consistency, simplifies management, and enhances the user experience.
+
+**Key Points:**
+
+- **Single Overlay:** Use one common overlay (`#overlay`) for all pop-ups to maintain consistency.
+- **Unified Pop-up Structure:** Ensure all pop-ups share the same base classes (`.popup-content`) for consistent styling and behavior.
+- **Accessible Interactions:** Implement focus management and keyboard accessibility to cater to all users.
+- **Responsive and Themed Design:** Ensure that pop-ups are responsive and adapt to dark mode seamlessly.
+
+If you encounter any issues during implementation or need further customization, feel free to ask for additional assistance!
