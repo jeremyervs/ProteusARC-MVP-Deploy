@@ -318,14 +318,54 @@ body.dark-mode .moon-icon {
     background-color: var(--card-bg);
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
     z-index: 1000;
 }
 
-.export-options h3 {
+.export-options-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 15px;
+}
+
+.export-options h3 {
+    margin: 0;
     font-size: 1.2em;
-    text-align: center;
+}
+
+.close-export-options {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: var(--text-color);
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+}
+
+.close-export-options:hover {
+    color: var(--primary-color);
+}
+
+#exportCSV,
+#exportJSON {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#exportCSV:hover,
+#exportJSON:hover {
+    background-color: var(--gradient-end);
 }
 
 .percent-display {
@@ -827,4 +867,8 @@ footer {
         flex-direction: column;
         gap: 15px;
     }
+}
+
+#changeTitle:focus {
+    background-color: transparent;
 }
