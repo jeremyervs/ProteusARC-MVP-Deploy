@@ -119,6 +119,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (viewDirections) {
         viewDirections.addEventListener('click', function() {
+            const overlay = document.createElement('div');
+            overlay.className = 'dim-overlay';
+            document.body.appendChild(overlay);
             directionsPopup.style.display = 'block';
         });
     }
@@ -126,12 +129,16 @@ document.addEventListener('DOMContentLoaded', function() {
     if (closePopup) {
         closePopup.addEventListener('click', function() {
             directionsPopup.style.display = 'none';
+            const overlay = document.querySelector('.dim-overlay');
+            if (overlay) document.body.removeChild(overlay);
         });
     }
 
     window.addEventListener('click', function(event) {
         if (event.target == directionsPopup) {
             directionsPopup.style.display = 'none';
+            const overlay = document.querySelector('.dim-overlay');
+            if (overlay) document.body.removeChild(overlay);
         }
     });
 
@@ -405,7 +412,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function showExportOptions() {
         const overlay = document.createElement('div');
-        overlay.className = 'overlay';
+        overlay.className = 'dim-overlay';
         document.body.appendChild(overlay);
 
         const exportOptions = document.createElement('div');
@@ -423,7 +430,8 @@ document.addEventListener('DOMContentLoaded', function() {
         document.addEventListener('click', (e) => {
             if (!exportOptions.contains(e.target) && e.target !== exportButton) {
                 document.body.removeChild(exportOptions);
-                document.body.removeChild(overlay);
+                const overlay = document.querySelector('.dim-overlay');
+                if (overlay) document.body.removeChild(overlay);
             }
         });
     }
