@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const chartLabels = [
         'EN (P1)', 'EX (P2)', 'ST (P3)', 'TR (P4)', 'TX (P5)', 'CN (P6)', 'IN (P7)', 'CO (P8)',
-        'PA (P9)', 'VI (P10)', 'TD (P11)', 'BU (P12)', 'DO (P13)', 'PT (P14)', 'TN (P15)', 'VS (P16)',
+        'PA (P9)', 'VI (P10)', 'TD (P11)', 'BU (P12)', 'DO (P13)', 'PT (P14)', 'TN (P15)', 'VI (P16)',
         'AC (P17)', 'DE (P18)'
     ];
 
@@ -174,7 +174,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (changeTitleInput) {
         changeTitleInput.addEventListener('input', function() {
-            this.style.backgroundColor = '';
             if (updateChartButton) updateChartButton.classList.add('needs-update');
             indicateChartNeedsUpdate();
         });
@@ -408,10 +407,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const exportOptions = document.createElement('div');
         exportOptions.className = 'export-options';
         exportOptions.innerHTML = `
-            <div class="export-options-header">
-                <h3>Export Options</h3>
-                <button class="close-export-options">&times;</button>
-            </div>
+            <h3>Export Options</h3>
             <button id="exportCSV">Export as CSV</button>
             <button id="exportJSON">Export as JSON</button>
         `;
@@ -419,11 +415,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         document.getElementById('exportCSV').addEventListener('click', () => exportResults('csv'));
         document.getElementById('exportJSON').addEventListener('click', () => exportResults('json'));
-
-        const closeButton = exportOptions.querySelector('.close-export-options');
-        closeButton.addEventListener('click', () => {
-            document.body.removeChild(exportOptions);
-        });
 
         document.addEventListener('click', (e) => {
             if (!exportOptions.contains(e.target) && e.target !== exportButton) {

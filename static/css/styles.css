@@ -18,7 +18,6 @@ body.dark-mode {
     --border-color: #4a5568;
     --gradient-start: #2b6cb0;
     --gradient-end: #4299e1;
-    --radio-checked-bg-dark: #4299e1;
 }
 
 * {
@@ -319,23 +318,8 @@ body.dark-mode .moon-icon {
     background-color: var(--card-bg);
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 1000;
-}
-
-.export-options-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.close-export-options {
-    background: none;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-    color: var(--text-color);
 }
 
 .export-options h3 {
@@ -817,10 +801,6 @@ footer {
 .radio-group input[type="radio"]:checked + label {
     background-color: var(--primary-color);
     color: white;
-}
-
-body.dark-mode .radio-group input[type="radio"]:checked + label {
-    background-color: var(--radio-checked-bg-dark);
 }
 
 #clearAdvancedButton {
