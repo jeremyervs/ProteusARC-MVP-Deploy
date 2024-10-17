@@ -318,8 +318,9 @@ body.dark-mode .moon-icon {
     background-color: var(--card-bg);
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 1000;
+    width: 300px;
 }
 
 .export-options-header {
@@ -331,13 +332,13 @@ body.dark-mode .moon-icon {
 
 .export-options h3 {
     margin: 0;
-    font-size: 1.2em;
+    font-size: 1.1em;
 }
 
 .close-export-options {
     background: none;
     border: none;
-    font-size: 1.5em;
+    font-size: 1.2em;
     cursor: pointer;
     color: var(--text-color);
     padding: 0;
